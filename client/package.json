@@ -1,6 +1,5 @@
 {
   "name": "admin",
-  "homepage": "https://Mehedi-haasan.github.io/Care-Connect/client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

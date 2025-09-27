@@ -1,4 +1,6 @@
-const Hero = ({ title }) => {
+
+
+const Recenthealth = ({ title }) => {
     let data = [
         {
             "id": 1,
@@ -36,26 +38,28 @@ const Hero = ({ title }) => {
     return <div className='w-full py-10 px-56'>
         <div className='border-b flex justify-between items-center pb-3'>
             <h1 className='font-bold text-xl text-[#6A1B9A]'>{title}</h1>
-            <h1 className='text-[#1976D2]'>সমস্ত বিষয় পড়ুন</h1>
+            <h1 className='text-[#1976D2] font-semibold text-[12px]'>সমস্ত বিষয় পড়ুন</h1>
         </div>
-        <div className='grid grid-cols-2 w-full gap-8 pt-6'>
+        <div className='w-full gap-8 pt-6 px-56'>
             {data.map((item) => {
-                return <div className='grid grid-cols-3 cursor-pointer transform transition-all duration-300 hover:-translate-y-2' onClick={() => { goto(`/content/details/${item?.id}`) }}>
+                return <div className='grid grid-cols-3 mx-auto gap-8 mt-8 cursor-pointer transform transition-all duration-300 hover:-translate-y-2' onClick={() => { goto(`/content/details/${item?.id}`) }}>
+                    <div className="grid col-span-2">
+                        <div>
+                            <div>
+                                <button className='px-4 bg-[#E8D4F4] text-[13px] rounded-full py-1'>{item?.category}</button>
+                            </div>
+                            <h1 className='font-semibold py-2 text-[15px] pl-1 my-2 text-wrap leading-6 pr-8'>{item?.title}</h1>
+                            <h1 className='font-semibold pb-1 text-xs pl-1 pr-8 text-wrap leading-6'>{item?.description}</h1>
+                        </div>
+                    </div>
                     <div className="">
                         <img src={item?.imageUrl} alt='' className='h-[200px] w-full rounded-2xl' />
                     </div>
-                    <div className="pl-5 grid col-span-2">
-                        <div>
-                            <button className='px-4 bg-[#E8D4F4] text-[13px] rounded-full py-1'>{item?.category}</button>
-                        </div>
-                        <h1 className='font-semibold py-2 text-[15px] pl-1 my-2 text-wrap leading-6 pr-8'>{item?.title}</h1>
-                        <h1 className='font-semibold pb-2 text-xs pl-1 pr-8 text-wrap leading-6'>{item?.description}</h1>
-                        <p className='py-2 px-1 text-sm'>{item?.author}</p>
-                    </div>
+
                 </div>
             })}
         </div>
     </div>
 }
 
-export default Hero
+export default Recenthealth
