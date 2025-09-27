@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/Care-Connect/static/css/main.88fed6eb.css",
-    "main.js": "/Care-Connect/static/js/main.2190e4c8.js",
-    "static/js/453.1c13788b.chunk.js": "/Care-Connect/static/js/453.1c13788b.chunk.js",
-    "static/media/Logo.png": "/Care-Connect/static/media/Logo.40b3571793df04f5007e.png",
-    "static/media/slick.svg": "/Care-Connect/static/media/slick.2630a3e3eab21c607e21.svg",
-    "static/media/slick.eot": "/Care-Connect/static/media/slick.a4e97f5a2a64f0ab1323.eot",
-    "static/media/slick.ttf": "/Care-Connect/static/media/slick.c94f7671dcc99dce43e2.ttf",
-    "static/media/slick.woff": "/Care-Connect/static/media/slick.295183786cd8a1389865.woff",
-    "index.html": "/Care-Connect/index.html",
-    "main.88fed6eb.css.map": "/Care-Connect/static/css/main.88fed6eb.css.map",
-    "main.2190e4c8.js.map": "/Care-Connect/static/js/main.2190e4c8.js.map",
-    "453.1c13788b.chunk.js.map": "/Care-Connect/static/js/453.1c13788b.chunk.js.map"
+    "main.css": "/Care-Connect/client/static/css/main.3dfe1d0f.css",
+    "main.js": "/Care-Connect/client/static/js/main.98e82c96.js",
+    "static/js/453.1c13788b.chunk.js": "/Care-Connect/client/static/js/453.1c13788b.chunk.js",
+    "static/media/Logo.png": "/Care-Connect/client/static/media/Logo.40b3571793df04f5007e.png",
+    "static/media/slick.svg": "/Care-Connect/client/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/Care-Connect/client/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/Care-Connect/client/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/Care-Connect/client/static/media/slick.295183786cd8a1389865.woff",
+    "index.html": "/Care-Connect/client/index.html",
+    "main.3dfe1d0f.css.map": "/Care-Connect/client/static/css/main.3dfe1d0f.css.map",
+    "main.98e82c96.js.map": "/Care-Connect/client/static/js/main.98e82c96.js.map",
+    "453.1c13788b.chunk.js.map": "/Care-Connect/client/static/js/453.1c13788b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.88fed6eb.css",
-    "static/js/main.2190e4c8.js"
+    "static/css/main.3dfe1d0f.css",
+    "static/js/main.98e82c96.js"
   ]
 }
