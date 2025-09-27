@@ -32,8 +32,6 @@ const MessageBar = () => {
         setAllMessage(prevMessages => [...prevMessages, { senderId: senderId, recieverId: recieverId, message: message }]);
         socket.timeout(5000).emit('create-message', { senderId, recieverId, message }, (response) => {
             setIsLoading(false);
-            console.log(response);
-
         });
         setMessage('')
         setIsLoading(false)

@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 const Header = () => {
 
   return (
-    <div className='w-full bg-white p-3 shadow-lg top-0 sticky'>
+    <div className='w-full bg-white p-3 shadow-lg top-0 sticky z-50'>
       <div className='flex justify-between items-center'>
         <div className="">
           <NavLink to={`/`}>
@@ -14,7 +14,7 @@ const Header = () => {
           </NavLink>
         </div>
         <div>
-          <ul className='flex justify-end items-center gap-6'>
+          <ul className='flex justify-end items-center gap-6 '>
             <li><a href="#">বিশেষজ্ঞ ডাক্তার</a></li>
             <li><a href="#">বিশেষজ্ঞ ডাক্তার</a></li>
             <li><a href="#">নিকটস্থ হাসপাতাল</a></li>
