@@ -37,7 +37,7 @@ const Recenthealth = ({ title }) => {
     ]
     return <div className='w-full py-10 px-56'>
         <div className='border-b flex justify-between items-center pb-3'>
-            <h1 className='font-bold text-xl text-[#6A1B9A]'>{title}</h1>
+            <h1 className='font-extrabold text-xl text-[#6A1B9A]'>{title}</h1>
             <h1 className='text-[#1976D2] font-semibold text-[12px]'>সমস্ত বিষয় পড়ুন</h1>
         </div>
         <div className='w-full gap-8 pt-6 px-56'>

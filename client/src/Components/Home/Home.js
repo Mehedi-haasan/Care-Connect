@@ -107,7 +107,7 @@ const Home = () => {
       </div>
       <div className='w-full pt-10 px-56'>
         <div className='border-b flex justify-between items-center pb-3'>
-          <h1 className='font-bold text-xl'>রোগের ধরনসমূহ</h1>
+          <h1 className='font-extrabold text-xl'>রোগের ধরনসমূহ</h1>
           <h1 className='text-[#1976D2] font-semibold text-[12px]'>সমস্ত বিষয় পড়ুন</h1>
         </div>
         <div className='grid grid-cols-5 w-full gap-5 py-4 bg-[#F2EEF8]'>
@@ -150,7 +150,7 @@ const Home = () => {
       </div>
 
       <div className='w-full pt-10 pb-5 px-56 bg-[#F4F9FD] rounded-full'>
-        <div className='border-b flex justify-between items-center'>
+        <div className='border-b flex justify-between items-center pb-2'>
           <h1 className='font-bold text-xl'>স্বাস্থ্য সেবা লিংক </h1>
           <h1 className='text-[#1976D2] font-semibold text-[15px]'>সমস্ত বিষয় পড়ুন</h1>
         </div>
