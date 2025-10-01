@@ -1,7 +1,7 @@
-import Banner from './Banner';
-import { NavLink, useNavigate } from 'react-router-dom';
-import Hero from './Hero';
+import { useNavigate } from 'react-router-dom';
 import AllDoctors from './AllDoctors';
+import Banner from './Banner';
+import Hero from './Hero';
 
 
 const Home = () => {

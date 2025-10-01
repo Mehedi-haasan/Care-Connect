@@ -1,10 +1,10 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import ContentDetails from "./Components/ContantDetails/ContentDetails";
+import Home from "./Components/Home/Home";
+import Login from "./Components/Login/Login";
+import Registration from './Components/Login/Registration';
 import Footer from "./Share/Footer";
 import Header from "./Share/Header";
-import Home from "./Components/Home/Home";
-import ContentDetails from "./Components/ContantDetails/ContentDetails";
-import Login from "./Components/Login/Login";
-import Registration from './Components/Login/Registration'
 
 function App() {
 
