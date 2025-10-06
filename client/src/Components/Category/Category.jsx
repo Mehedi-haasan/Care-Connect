@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import RightBoldArrow from '../Common/RightBoldArrow';
 import Advertisement from '../Common/Advertisement';
 import Cart from '../Common/Cart';
+import RightBoldArrow from '../Common/RightBoldArrow';
 
 const Category = () => {
     const [open, setOpen] = useState(false)
