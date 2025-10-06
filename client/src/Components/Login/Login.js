@@ -75,7 +75,7 @@ import { FcGoogle } from "react-icons/fc";
 import image from '../../Logo/Logo.png';
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#1a75a3]">
+    <div className="py-8 flex items-center justify-center bg-[#1a75a3]">
       <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 w-[90%] max-w-md">
         {/* Logo */}
         <div className="flex justify-left mb-4">
@@ -114,7 +114,7 @@ export default function LoginPage() {
 
         {/* Forgot Password */}
         <div className="text-center mt-3">
-          <a href="#" className="text-sm text-gray-600 hover:underline">
+          <a href="/ForgetPassword" className="text-sm text-gray-600 hover:underline">
             পাসওয়ার্ড মনে নেই?
           </a>
         </div>
@@ -132,10 +132,10 @@ export default function LoginPage() {
             <FaFacebookF className="text-blue-600" />
             Facebook
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-gray-100 transition">
+         <a href="/HospitalSearch" > <button className="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-gray-100 transition">
             <FcGoogle />
             Google
-          </button>
+          </button></a>
         </div>
 
         {/* Footer */}
