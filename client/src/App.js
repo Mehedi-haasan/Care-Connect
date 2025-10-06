@@ -10,6 +10,7 @@ import Header from "./Share/Header";
 
 import HospitalSearch from "./Components/FindDoctorHospital/HospitalSearch"
 
+import Category from "./Components/Category/Category";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/category" element={<Category />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/ForgetPassword" element={<ForgetPassword />} />
