@@ -5,6 +5,7 @@ import Home from "./Components/Home/Home";
 import ContentDetails from "./Components/ContantDetails/ContentDetails";
 import Login from "./Components/Login/Login";
 import Registration from './Components/Login/Registration'
+import Category from "./Components/Category/Category";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/category" element={<Category />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/content/details/:id" element={<ContentDetails />} />
