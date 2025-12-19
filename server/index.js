@@ -51,12 +51,12 @@ require('./routes/order.routes')(app);
 const Role = db.role;
 
 db.sequelize.sync({ force: true }).then(async () => {
-    // await initStates();
-    // await initUserRoles();
-    // await initCarousel();
-    // await initCategories();
-    // await initProductAttributes();
-    // await initProductAttributeValues();
+    await initStates();
+    await initUserRoles();
+    await initCarousel();
+    await initCategories();
+    await initProductAttributes();
+    await initProductAttributeValues();
 });
 
 async function initUserRoles() {
