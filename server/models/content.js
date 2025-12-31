@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const ProductTemplate = sequelize.define("product_template", {
+    const Content = sequelize.define("content", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -17,6 +17,9 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
+        title: {
+            type: Sequelize.TEXT
+        },
         description: {
             type: Sequelize.TEXT
         },
@@ -32,11 +35,25 @@ module.exports = (sequelize, Sequelize) => {
         sku: {
             type: Sequelize.STRING
         },
-        product_type: {
+        content_type_id: {
             type: Sequelize.BOOLEAN,
         },
     });
 
-    return ProductTemplate;
+    Content.associate = (models) => {
+        // many2one → user_type
+        Content.belongsTo(models.category, {
+            foreignKey: "category_id",
+            as: "category"
+        });
+
+        // one2many → user_role
+        Content.belongsTo(models.content_type, {
+            foreignKey: "content_type_id",
+            as: "content_type"
+        });
+    };
+
+    return Content;
 };
 

@@ -6,7 +6,7 @@ import Login from "./Components/Login/Login";
 import Registration from './Components/Login/Registration';
 import Footer from "./Share/Footer";
 import Header from "./Share/Header";
-import HospitalSearch from "./Components/FindDoctorHospital/HospitalSearch";
+import HospitalSearch from "./Components/FindDoctorHospital/HospitalSearch"
 import Category from "./Components/Category/Category";
 
 function App() {

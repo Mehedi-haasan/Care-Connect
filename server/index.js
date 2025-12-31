@@ -199,35 +199,110 @@ const cors = require("cors");
 const articles = require("./Data/articles");
 
 const app = express();
-const PORT = 8050;
+const port = 8050;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
-
-// Test route
-app.get("/", (req, res) => {
-  res.send("Health Content API is running");
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server, {
+    cors: {
+        origin: ['http://localhost:3000', 'http://localhost:3001'],
+        methods: ['GET', 'POST'],
+        credentials: true
+    }
 });
 
 
-app.get("/articles/:id", (req, res) => {
-  const id = Number(req.params.id);
+const store_id = 'qubic66e072f1d9e9d';
+const store_passwd = 'qubic66e072f1d9e9d@ssl';
+const is_live = false; 
 
-  const article = articles.find(item => item.id === id);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  if (!article) {
-    return res.status(404).json({ message: "Content not found" });
-  }
+const corsOptions = {
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+};
 
-  res.json(article);
+app.use(cors(corsOptions));
+app.use('/uploads', express.static('uploads'));
+
+const db = require("./models");
+require('./routes/user.routes')(app);
+require('./routes/state.routes')(app);
+require('./routes/category.routes')(app);
+require('./routes/company.routes')(app);
+require('./routes/imageupload.routes')(app);
+require('./routes/carousel.routes')(app);
+require('./routes/hotsale.routes')(app);
+require('./routes/payment.routes')(app);
+require('./routes/message.routes')(app);
+require('./routes/order.routes')(app);
+
+const Role = db.role;
+
+db.sequelize.sync({ force: true }).then(async () => {
+    // await initStates();
 });
 
 
-app.get("/articles", (req, res) => {
-  res.json(articles);
+const DB = require('./models');
+const Message = DB.message;
+
+const socketUserMap = new Map(); 
+const userSocketMap = new Map(); 
+
+io.on('connection', (socket) => {
+   
+
+    socket.on('login', (userId) => {
+        socketUserMap.set(socket.id, userId);
+        userSocketMap.set(userId, socket.id);
+        console.log(`User ${userId} is now connected with socket ${socket.id}`);
+    });
+
+    // When a user logs out, remove their socket ID
+    socket.on('logout', () => {
+        const userId = socketUserMap.get(socket.id);
+        if (userId) {
+            userSocketMap.delete(userId);
+            socketUserMap.delete(socket.id);
+            console.log(`User ${userId} has disconnected`);
+        }
+    });
+
+    socket.on('create-message', async (data, callback) => {
+        const { senderId, recieverId, message } = data;
+
+
+        try {
+            // Store the message in the database (example code, adjust based on your DB setup)
+            await Message.create({ senderId, recieverId, message });
+
+            // Find the socket ID of the receiver
+            const receiverSocketId = userSocketMap.get(recieverId);
+            if (receiverSocketId) {
+                io.to(receiverSocketId).emit('receive-message', { senderId, message });
+            }
+
+            callback({ status: 'success', message: 'Message sent successfully' });
+        } catch (error) {
+            console.error('Error saving message:', error);
+            callback({ status: 'error', message: 'Could not save message' });
+        }
+    });
+
+    socket.on('disconnect', () => {
+        const userId = socketUserMap.get(socket.id);
+        if (userId) {
+            userSocketMap.delete(userId);
+            socketUserMap.delete(socket.id);
+            console.log('User disconnected:', socket.id);
+        }
+    });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+server.listen(port, () => { 
+    console.log(`Server is running on port ${port}`);
 });
