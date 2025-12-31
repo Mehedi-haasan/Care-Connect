@@ -132,7 +132,7 @@ export default function LoginPage() {
             <FaFacebookF className="text-blue-600" />
             Facebook
           </button>
-         <a href="/HospitalSearch" > <button className="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-gray-100 transition">
+         <a href="#" > <button className="flex items-center gap-2 px-4 py-2 border rounded-full hover:bg-gray-100 transition">
             <FcGoogle />
             Google
           </button></a>

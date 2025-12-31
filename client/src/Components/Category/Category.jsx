@@ -1,110 +1,188 @@
-import { useState } from 'react';
-import Advertisement from '../Common/Advertisement';
-import Cart from '../Common/Cart';
-import RightBoldArrow from '../Common/RightBoldArrow';
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import Advertisement from "../Common/Advertisement";
+import Cart from "../Common/Cart";
 
 const Category = () => {
-    const [open, setOpen] = useState(false)
-    let data = [
-        {
-            "id": 1,
-            "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=800&auto=format&fit=crop",
-            "category": "মানসিক স্বাস্থ্য",
-            "title": "কৌশোর বয়সে মানসিক বিকাশ প্রক্রিয়া ও যত্ন",
-            "author": "ড. সামান্তা রহমান, বিশেষজ্ঞ, মানসিক স্বাস্থ্য"
-        },
-        {
-            "id": 1,
-            "imageUrl": "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=800&auto=format&fit=crop",
-            "category": "Technology",
-            "title": "Mastering JavaScript",
-            "author": "Emily Johnson"
-        },
-        {
-            "id": 1,
-            "imageUrl": "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop",
-            "category": "History",
-            "title": "World War II Chronicles",
-            "author": "Michael Brown"
-        },
-        {
-            "id": 1,
-            "imageUrl": "https://images.unsplash.com/photo-1516822003754-cca485356ecb?q=80&w=800&auto=format&fit=crop",
-            "category": "Science",
-            "title": "The Universe Explained",
-            "author": "Sophia Williams"
-        },
-        {
-            "id": 1,
-            "imageUrl": "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?q=80&w=800&auto=format&fit=crop",
-            "category": "Self-Help",
-            "title": "The Power of Focus",
-            "author": "David Lee"
-        }
-    ]
-    return (
-        <div className='bg-white min-h-screen'>
-            <div className='px-56 py-4'>
-                <div className='flex justify-start items-center gap-2 text-lg' onClick={() => { setOpen(!open) }}>
-                    স্বাস্থ্য কথা
-                    <RightBoldArrow />
-                </div>
-                <div className={`pl-2 overflow-hidden transition-all dark:text[#040404] duration-300 ease-in-out ${open ? "max-h-[500px]" : "max-h-0"} grid grid-cols-6 pb-10`}>
-                    {['অ্যালার্জি', 'গ্যাস্ট্রিক', 'অ্যাজমা', 'মাইগ্রেন', 'হাইপারটেনশন', 'ডিপ্রেশন', 'ত্বকের ফাঙ্গাস', 'ডায়াবেটিস', 'জন্ডিস', 'সর্দি-কাশি']?.map((item) => {
-                        return <div>
-                            <button className='mt-2 py-1 float-left'>{item}</button>
-                        </div>
-                    })}
-                </div>
+  const { categorySlug } = useParams(); // dynamic slug from URL
 
-            </div>
-            <div className='px-56 py-4'>
-                <Advertisement className={`bg-[#AFD7E2] text-[#8B61C2] w-[700px]`}/>
-                <div className='w-full pt-10'>
-                    <div className='grid grid-cols-4 w-full gap-8 pt-6'>
-                        {data.map((item, i) => {
-                            return <Cart key={i} item={item} />
-                        })}
-                    </div>
-                </div>
+  const [allCards, setAllCards] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("");
+  const [activeSubCategory, setActiveSubCategory] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-                <Advertisement className={`bg-[#AFD7E2] text-[#8B61C2] w-[700px]`}/>
-                <div className='w-full pt-10'>
-                    <div className='grid grid-cols-4 w-full gap-8 pt-6'>
-                        {data.map((item, i) => {
-                            return <Cart key={i} item={item} />
-                        })}
-                    </div>
-                </div>
-                <Advertisement className={`bg-[#AFD7E2] text-[#8B61C2] w-[700px]`} />
-                <div className='w-full pt-10'>
-                    <div className='grid grid-cols-4 w-full gap-8 pt-6'>
-                        {data.map((item, i) => {
-                            return <Cart key={i} item={item} />
-                        })}
-                    </div>
-                </div>
+  // CATEGORY NAME MAP
+  const categoryNames = {
+    maternal_health: "মাতৃ স্বাস্থ্য",
+    child_care: "শিশু যত্ন",
+    family_planning: "পরিবার পরিকল্পনা",
+    adolescent_health: "কৈশোর স্বাস্থ্য",
+    mental_health: "মানসিক স্বাস্থ্য",
+    elderly_health: "প্রবীণ স্বাস্থ্য",
+    general_health: "সাধারণ স্বাস্থ্য",
+    women_health: "নারী স্বাস্থ্য",
+    nutrition: "খাদ্য ও পুষ্টি",
+    fitness: "ফিটনেস",
+  };
 
+  // CATEGORY → SUBCATEGORY MAP
+  const categoryMap = {
+    maternal_health: [
+      "মাতৃত্বের প্রস্তুতি",
+      "গর্ভকালীন শিশুর বিকাশ",
+      "প্রয়োজনীয় পুষ্টি",
+      "গর্ভকালীন অসুস্থতা",
+      "নিরাপদ ওষুধ ও সাপ্লিমেন্ট",
+      "প্রসব প্রস্তুতি",
+      "নবজাতকের যত্ন",
+      "প্রসব পরবর্তী সুস্থতা",
+      "মাতৃ পরিচয়ে যাত্রা",
+      "মাতৃত্বকালীন মানসিক স্বাস্থ্য",
+    ],
+    child_care: [
+      "নবজাতক স্বাস্থ্য (০–২ মাস)",
+      "শিশু স্বাস্থ্য (২ মাস–১ বছর)",
+      "টডলার স্বাস্থ্য (১–৩ বছর)",
+      "প্রি-স্কুল স্বাস্থ্য (৩–৫ বছর)",
+      "প্রাইমারি স্কুল বয়সী স্বাস্থ্য (৬–১০ বছর)",
+      "সাধারণ স্বাস্থ্য বিষয়",
+      "শিশুর খাদ্য ও পুষ্টি",
+    ],
+    family_planning: [
+      "মৌলিক ধারণা ও গুরুত্ব",
+      "প্রয়োজনীয়তা ও সুবিধা",
+      "নারীদের পদ্ধতি",
+      "পুরুষদের পদ্ধতি",
+      "নিরাপত্তা ও পার্শ্বপ্রতিক্রিয়া",
+      "জরুরি পরিবার পরিকল্পনা",
+    ],
+    adolescent_health: [
+      "বয়ঃসন্ধিকাল",
+      "ব্যক্তিগত পরিচ্ছন্নতা",
+      "পুষ্টিকর খাদ্যাভ্যাস",
+      "দৈহিক ফিটনেস",
+      "মানসিক সুস্থতা",
+      "আত্মরক্ষা কৌশল",
+      "নিরাপদ প্রযুক্তি ব্যবহার",
+      "সুস্থ সম্পর্ক গঠন",
+      "প্রজনন স্বাস্থ্য",
+      "শিক্ষা ও ক্যারিয়ার প্রস্তুতি",
+    ],
+    mental_health: [
+      "মানসিক স্বাস্থ্য পরিচিতি",
+      "ডিপ্রেশন",
+      "স্ট্রেস",
+      "শিশু-কিশোর মানসিক বিকাশ",
+      "নারী ও মাতৃত্বকালীন মানসিক স্বাস্থ্য",
+    ],
+    elderly_health: [
+      "শারীরিক স্বাস্থ্য",
+      "মানসিক স্বাস্থ্য",
+      "প্রয়োজনীয় খাদ্য ও পুষ্টি",
+      "প্রতিরোধমূলক স্বাস্থ্যসেবা",
+      "প্রবীণদের যত্ন",
+    ],
+    general_health: [
+      "ব্যক্তিগত স্বাস্থ্যবিধি",
+      "পারিবারিক স্বাস্থ্যবিধি",
+      "পরিবেশ ও পেশাগত স্বাস্থ্য",
+      "প্রাথমিক চিকিৎসা",
+      "জরুরি স্বাস্থ্যসেবা",
+    ],
+    women_health: [
+      "খাদ্য ও পুষ্টি",
+      "শারীরিক স্বাস্থ্য",
+      "প্রজনন স্বাস্থ্য",
+      "হরমোনাল যত্ন",
+      "ফিটনেস ও মেডিটেশন",
+    ],
+    nutrition: [
+      "সুষম খাদ্য",
+      "ভিটামিন ও খনিজ",
+      "শিশু ও কিশোর পুষ্টি",
+      "গর্ভকালীন ও মাতৃ পুষ্টি",
+    ],
+    fitness: [
+      "দৈনন্দিন ব্যায়াম",
+      "কার্ডিওভাসকুলার ফিটনেস",
+      "শক্তি ও পেশি গঠন",
+      "মানসিক স্বাস্থ্য ও ফিটনেস",
+    ],
+  };
 
+  // 🔥 FETCH DATA BY CATEGORY
+  useEffect(() => {
+    setActiveCategory(categorySlug);
+    setActiveSubCategory("");
+    setLoading(true);
 
-                <div className='w-full pt-10'>
-                    <div className='border-b flex justify-between items-center pb-2'>
-                        <h1 className='font-bold text-xl text-[#8b61c2]'>স্বাস্থ্য সেবা লিংক </h1>
+    fetch(`http://localhost:8085/articles?category=${categorySlug}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Data not found");
+        return res.json();
+      })
+      .then((data) => {
+        setAllCards(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, [categorySlug]);
 
-                    </div>
-                    <div className='grid grid-cols-5 w-full gap-5 pt-6'>
-                        {['অ্যালার্জি', 'গ্যাস্ট্রিক', 'অ্যাজমা', 'মাইগ্রেন', 'হাইপারটেনশন', 'ডিপ্রেশন', 'ত্বকের ফাঙ্গাস', 'ডায়াবেটিস', 'জন্ডিস', 'সর্দি-কাশি'].map((item) => {
-                            return <div>
-                                <button className='mt-2 py-1 font-semibold float-left text-[#286291]'>{item}</button>
-                            </div>
-                        })}
+  if (loading) {
+    return <p className="text-center py-10">Loading...</p>;
+  }
 
-                    </div>
-                </div>
-            </div>
+  if (error) {
+    return <p className="text-center text-red-500 py-10">{error}</p>;
+  }
+
+  // FILTER BY SUBCATEGORY
+  const filteredCards = allCards.filter(
+    (item) =>
+      !activeSubCategory || item.subCategoryKey === activeSubCategory
+  );
+
+  return (
+    <div className="bg-white min-h-screen px-4 md:px-16 lg:px-32 py-6">
+      <h1 className="text-2xl font-bold mb-4">
+        {categoryNames[activeCategory] || "ক্যাটাগরি"}
+      </h1>
+
+      {/* SUBCATEGORY BUTTONS */}
+      <div className="flex gap-3 flex-wrap mb-6">
+        {categoryMap[activeCategory]?.map((sub) => (
+          <button
+            key={sub}
+            onClick={() => setActiveSubCategory(sub)}
+            className={`px-3 py-2 rounded transition ${
+              activeSubCategory === sub
+                ? "bg-purple-600 text-white"
+                : "bg-gray-100 hover:bg-purple-600 hover:text-white"
+            }`}
+          >
+            {sub}
+          </button>
+        ))}
+      </div>
+
+      {/* CARDS */}
+      {filteredCards.length === 0 ? (
+        <p className="text-center text-gray-500">কোন তথ্য পাওয়া যায়নি</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {filteredCards.map((item) => (
+            <Cart key={item.id} item={item} />
+          ))}
         </div>
-    )
-}
+      )}
 
-export default Category
+      <Advertisement />
+    </div>
+  );
+};
 
+export default Category;

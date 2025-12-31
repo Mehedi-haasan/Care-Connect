@@ -6,7 +6,7 @@
         "icon":"subway:menu"
     },
     {
-        "id":"1",
+        "id":"2",
         "name":"Product",
         "route":"product",
         "icon":"fluent-mdl2:product-variant"

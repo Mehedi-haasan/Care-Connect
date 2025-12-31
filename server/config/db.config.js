@@ -1,8 +1,8 @@
 const config = {
     HOST: "localhost",
     USER: "root",
-    PASSWORD: "ceevit250#",
-    DB: "care_connect",
+    PASSWORD: "Ceevit250#",
+    DB: "careconnect",
     dialect: "mysql",
     pool: {
         max: 5,

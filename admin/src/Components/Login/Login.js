@@ -5,8 +5,8 @@ import InputComponent from '../Input/InputComponent'
 const Login = ({auth}) => {
   const goToHome = useNavigate();
   const [values, setValues] = useState({
-    username: "",
-    password: "",
+    username: "1",
+    password: "1",
   })
 
   const handleSubmit = async (e) => {

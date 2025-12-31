@@ -16,7 +16,7 @@ const Header = ({ auth }) => {
       <div className="flex justify-between items-center sticky top-0 z-50 w-[98%] mx-auto bg-white py-1">
 
         <div className="">
-          <NavLink className={`font-bold text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-[#FB923C] py-2`} to="/">DAZEL</NavLink>
+          <NavLink className={`font-bold text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-[#FB923C] py-2`} to="/">Care Connect</NavLink>
         </div>
 
 
