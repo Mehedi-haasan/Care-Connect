@@ -61,12 +61,14 @@ exports.singUp = async (req, res) => {
             last_name: req.body.last_name,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            image_url:req.body.image_url
+            image_url: req.body.image_url
         });
 
 
         const user = await User.findOne({
-            order: [['id', 'DESC']]
+            where: {
+                username: req.body.username
+            }
         });
 
         await RoleSetup(data?.rules, user?.id);
@@ -135,7 +137,7 @@ exports.singIn = async (req, res) => {
 exports.getUsers = async (req, res) => {
     try {
         const data = await User.findAll({
-            limit:30
+            limit: 30
         })
         res.status(200).send({
             success: true,

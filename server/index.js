@@ -34,15 +34,11 @@ app.use('/uploads', express.static('uploads'));
 
 const db = require("./models");
 require('./routes/user.routes')(app);
-require('./routes/product.template.routes')(app);
-require('./routes/saleorderline.routes')(app);
 require('./routes/state.routes')(app);
 require('./routes/category.routes')(app);
-require('./routes/productVariant.routes')(app);
 require('./routes/company.routes')(app);
 require('./routes/imageupload.routes')(app);
 require('./routes/carousel.routes')(app);
-require('./routes/rating.routes')(app);
 require('./routes/hotsale.routes')(app);
 require('./routes/payment.routes')(app);
 require('./routes/message.routes')(app);
@@ -51,36 +47,9 @@ require('./routes/order.routes')(app);
 const Role = db.role;
 
 db.sequelize.sync({ force: true }).then(async () => {
-    await initStates();
-    await initUserRoles();
-    await initCarousel();
-    await initCategories();
-    await initProductAttributes();
-    await initProductAttributeValues();
+    // await initStates();
 });
 
-async function initUserRoles() {
-    // roles
-    Role.create({
-        id: 1,
-        name: "user"
-    });
-
-    Role.create({
-        id: 2,
-        name: "admin"
-    });
-
-    Role.create({
-        id: 3,
-        name: "superadmin"
-    });
-
-    Role.create({
-        id: 4,
-        name: "moderator"
-    });
-}
 
 const DB = require('./models');
 const Message = DB.message;
@@ -138,6 +107,6 @@ io.on('connection', (socket) => {
     });
 });
 
-server.listen(port, () => { // Use server.listen instead of app.listen
+server.listen(port, () => { 
     console.log(`Server is running on port ${port}`);
 });

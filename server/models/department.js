@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const hotsale = sequelize.define("hotsale", {
+    const Department = sequelize.define("Departments", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -8,10 +8,13 @@ module.exports = (sequelize, Sequelize) => {
         active: {
             type: Sequelize.BOOLEAN,
         },
-        template_id:{
-            type: Sequelize.INTEGER,
+        name: {
+            type: Sequelize.STRING
+        },
+        image_url: {
+            type: Sequelize.STRING
         }
     });
 
-    return hotsale;
+    return Department;
 };
