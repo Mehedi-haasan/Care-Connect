@@ -44,6 +44,7 @@ require('./routes/rating.routes')(app);
 require('./routes/payment.routes')(app);
 require('./routes/message.routes')(app);
 require('./routes/content.routes')(app);
+require('./routes/department.routes')(app);
 
 
 
