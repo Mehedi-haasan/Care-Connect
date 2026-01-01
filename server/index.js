@@ -34,7 +34,7 @@ app.use('/uploads', express.static('uploads'));
 
 const db = require("./models");
 require('./routes/user.routes')(app);
-
+require('./routes/usertype.routes')(app);
 require('./routes/state.routes')(app);
 require('./routes/category.routes')(app);
 require('./routes/company.routes')(app);
