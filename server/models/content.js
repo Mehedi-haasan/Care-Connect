@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
         category_id: {
             type: Sequelize.INTEGER,
         },
+        sub_cate_id: {
+            type: Sequelize.INTEGER,
+        },
         name: {
             type: Sequelize.STRING
         },
@@ -44,6 +47,10 @@ module.exports = (sequelize, Sequelize) => {
         // many2one → user_type
         Content.belongsTo(models.category, {
             foreignKey: "category_id",
+            as: "category"
+        });
+        Content.belongsTo(models.category, {
+            foreignKey: "sub_cate_id",
             as: "category"
         });
 

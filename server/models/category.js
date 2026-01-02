@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const ProductCategory = sequelize.define("category", {
+    const Category = sequelize.define("category", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -7,14 +7,34 @@ module.exports = (sequelize, Sequelize) => {
         },
         active: {
             type: Sequelize.BOOLEAN,
+            defaultValue: true,
         },
         name: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
         },
         image_url: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+        },
+        parent_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
         }
     });
 
-    return ProductCategory;
+    Category.associate = (models) => {
+        // Parent category (many categories belong to one parent)
+        Category.belongsTo(models.category, {
+            foreignKey: "parent_id",
+            as: "parent",
+        });
+
+        // Child categories (one category has many children)
+        Category.hasMany(models.category, {
+            foreignKey: "parent_id",
+            as: "children",
+        });
+    };
+
+    return Category;
 };

@@ -26,10 +26,8 @@ async function someAsyncOperation(rules) {
 }
 
 const RoleSetup = async (rules, userId) => {
-    console.log(rules)
     if (!rules) return;
     for (const item of rules) {
-        console.log(item, userId)
         await Role.create({
             name: item.name,
             user_id: userId

@@ -28,6 +28,7 @@ exports.CreateContent = async (req, res) => {
             active,
             sequence,
             category_id,
+            sub_cate_id,
             name,
             title,
             description,
@@ -43,6 +44,7 @@ exports.CreateContent = async (req, res) => {
             active: active ?? true,              // default to true if not provided
             sequence: sequence ?? 0,             // default sequence
             category_id,
+            sub_cate_id,
             name,
             title,
             description,

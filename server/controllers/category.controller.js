@@ -25,7 +25,8 @@ exports.CreateCategory = async (req, res) => {
     try {
         await Category.create({
             name: req.body.name,
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
+            parent_id:req.body.parent_id
         });
 
         res.status(200).send({
