@@ -3,7 +3,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const config = require("../config/auth.config");
 const User = db.user;
-const Role = db.roles;
+const Role = db.role;
 
 const Op = db.Sequelize.Op;
 
@@ -26,11 +26,13 @@ async function someAsyncOperation(rules) {
 }
 
 const RoleSetup = async (rules, userId) => {
+    console.log(rules)
     if (!rules) return;
     for (const item of rules) {
+        console.log(item, userId)
         await Role.create({
-            name: item,
-            userId: userId
+            name: item.name,
+            user_id: userId
         });
     }
 };
@@ -61,7 +63,10 @@ exports.singUp = async (req, res) => {
             last_name: req.body.last_name,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
+            user_type_id:req.body.user_type_id,
+            dept_id:req.body.dept_id,
+            address_id:req.body.address_id
         });
 
 
@@ -71,7 +76,7 @@ exports.singUp = async (req, res) => {
             }
         });
 
-        await RoleSetup(data?.rules, user?.id);
+        await RoleSetup(req?.body?.roles, user?.id);
 
 
         res.status(200).send({
