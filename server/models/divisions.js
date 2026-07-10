@@ -14,9 +14,9 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     Division.associate = (models) => {
-        Division.hasMany(models.district, {
+        Division.hasMany(models.distric, {
             foreignKey: "division_id",
-            as: "divisions"
+            as: "districts"
         });
     };
 

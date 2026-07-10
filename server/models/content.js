@@ -49,15 +49,9 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: "category_id",
             as: "category"
         });
-        Content.belongsTo(models.category, {
+        Content.belongsTo(models.sub_category, {
             foreignKey: "sub_cate_id",
-            as: "category"
-        });
-
-        // one2many → user_role
-        Content.belongsTo(models.content_type, {
-            foreignKey: "content_type_id",
-            as: "content_type"
+            as: "sub_category"
         });
     };
 

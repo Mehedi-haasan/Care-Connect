@@ -26,15 +26,15 @@ module.exports = (sequelize, Sequelize) => {
     });
     Address.associate = (models) => {
         // many2one → user_type
-        User.belongsTo(models.division, {
+        Address.belongsTo(models.division, {
             foreignKey: "division_id",
             as: "division"
         });
-        User.belongsTo(models.district, {
+        Address.belongsTo(models.distric, {
             foreignKey: "district_id",
             as: "district"
         });
-        User.belongsTo(models.division, {
+        Address.belongsTo(models.upazila, {
             foreignKey: "upazila_id",
             as: "upazila"
         });

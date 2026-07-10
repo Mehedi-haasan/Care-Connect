@@ -5,8 +5,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        active:{
-            type:Sequelize.BOOLEAN
+        active: {
+            type: Sequelize.BOOLEAN
         },
         name: {
             type: Sequelize.STRING,
@@ -15,10 +15,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
         }
     });
-    Upazila.belongsTo(models.division, {
-        foreignKey: "district_id",
-        as: "district"
-    });
-
+    Upazila.associate = (models) => {
+        Upazila.belongsTo(models.distric, {
+            foreignKey: "district_id",
+            as: "district"
+        });
+    };
     return Upazila;
 };

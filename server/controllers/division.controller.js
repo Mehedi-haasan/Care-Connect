@@ -7,8 +7,22 @@ const Op = db.Sequelize.Op;
 exports.GetDivision = async (req, res) => {
     try {
         let data = await Division.findAll({
-            attributes: ['id', 'name', 'charge'],
-        })
+            attributes: ['id', 'name'],
+            include: [
+                {
+                    model: db.distric,
+                    as: "districts",
+                    attributes: ["id", "name"],
+                    include: [
+                        {
+                            model: db.upazila,
+                            as: "upazilas",
+                            attributes: ["id", "name"]
+                        }
+                    ]
+                }
+            ]
+        });
         res.status(200).send({
             success: true,
             items: data

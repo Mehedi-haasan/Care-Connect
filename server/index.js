@@ -14,6 +14,7 @@ require('./routes/state.routes')(app);
 require('./routes/category.routes')(app);
 require('./routes/company.routes')(app);
 require('./routes/imageupload.routes')(app);
+require('./routes/striming')(app)
 require('./routes/carousel.routes')(app);
 require('./routes/rating.routes')(app);
 require('./routes/payment.routes')(app);

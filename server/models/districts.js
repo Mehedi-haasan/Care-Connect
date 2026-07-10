@@ -5,8 +5,8 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        active:{
-            type:Sequelize.BOOLEAN
+        active: {
+            type: Sequelize.BOOLEAN
         },
         name: {
             type: Sequelize.STRING,
@@ -17,12 +17,12 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     District.associate = (models) => {
-        // many2one → user
         District.belongsTo(models.division, {
             foreignKey: "division_id",
             as: "division"
         });
-        District.hasMany(models.upazilas, {
+
+        District.hasMany(models.upazila, {
             foreignKey: "district_id",
             as: "upazilas"
         });
