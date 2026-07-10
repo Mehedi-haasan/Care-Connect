@@ -15,6 +15,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
         }
     });
+    Upazila.belongsTo(models.division, {
+        foreignKey: "district_id",
+        as: "district"
+    });
 
     return Upazila;
 };

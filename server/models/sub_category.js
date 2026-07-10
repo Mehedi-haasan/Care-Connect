@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Category = sequelize.define("category", {
+    const SubCategory = sequelize.define("sub_category", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -16,16 +16,16 @@ module.exports = (sequelize, Sequelize) => {
         image_url: {
             type: Sequelize.STRING,
         },
-        parent_id: {
+        cate_id: {
             type: Sequelize.INTEGER,
             allowNull: true,
         }
     });
 
-    Category.associate = (models) => {
-        Category.hasMany(models.sub_category, {
+    SubCategory.associate = (models) => {
+        SubCategory.belongsTo(models.category, {
             foreignKey: "cate_id",
-            as: "sub_cates",
+            as: "category",
         });
     };
 

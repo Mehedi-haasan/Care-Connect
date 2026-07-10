@@ -11,10 +11,22 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING,
         },
-        divition_id: {
+        division_id: {
             type: Sequelize.INTEGER,
         }
     });
+
+    District.associate = (models) => {
+        // many2one → user
+        District.belongsTo(models.division, {
+            foreignKey: "division_id",
+            as: "division"
+        });
+        District.hasMany(models.upazilas, {
+            foreignKey: "district_id",
+            as: "upazilas"
+        });
+    };
 
     return District;
 };

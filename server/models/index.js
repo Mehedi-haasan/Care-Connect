@@ -25,12 +25,11 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.user = require("./user")(sequelize, Sequelize);
-db.usertype = require("./usertype")(sequelize, Sequelize);
 db.department = require("./department")(sequelize, Sequelize);
 db.role = require("./role")(sequelize, Sequelize);
 db.category = require("./category")(sequelize, Sequelize);
 db.content = require("./content")(sequelize, Sequelize);
-db.state = require("./state")(sequelize, Sequelize);
+db.division = require("./divisions")(sequelize, Sequelize);
 db.company = require("./company")(sequelize, Sequelize);
 db.carousel = require("./carousel")(sequelize, Sequelize);
 db.message = require("./message")(sequelize, Sequelize);

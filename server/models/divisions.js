@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const State = sequelize.define("state", {
+    const Division = sequelize.define("divisions", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -13,5 +13,12 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
-    return State;
+    Division.associate = (models) => {
+        Division.hasMany(models.district, {
+            foreignKey: "division_id",
+            as: "divisions"
+        });
+    };
+
+    return Division;
 };

@@ -1,4 +1,4 @@
-const DB = require('./models');
+const DB = require('./../models');
 const { Server } = require("socket.io");
 const Message = DB.message;
 const socketUserMap = new Map();

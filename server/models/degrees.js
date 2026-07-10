@@ -19,5 +19,13 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
+    Degrees.associate = (models) => {
+        // many2one → user
+        Degrees.belongsTo(models.user, {
+            foreignKey: "user_id",
+            as: "user"
+        });
+    };
+
     return Degrees;
 };

@@ -1,12 +1,12 @@
 const db = require("../models");
-const State = db.state;
+const Division = db.division;
 const Op = db.Sequelize.Op;
 
 
 
-exports.getState = async (req, res) => {
+exports.GetDivision = async (req, res) => {
     try {
-        let data = await State.findAll({
+        let data = await Division.findAll({
             attributes: ['id', 'name', 'charge'],
         })
         res.status(200).send({
@@ -22,16 +22,16 @@ exports.getState = async (req, res) => {
 
 
 
-exports.CreateState = async (req, res) => {
+exports.CreateDivision = async (req, res) => {
     try {
-        await State.create({
+        await Division.create({
             name: req.body.name,
             charge: req.body.charge
         });
 
         res.status(200).send({
             success: true,
-            message: "Create state Successfully"
+            message: "Create Division Successfully"
         })
 
     } catch (error) {
@@ -40,10 +40,10 @@ exports.CreateState = async (req, res) => {
 
 }
 
-exports.DeleteState = async (req, res) => {
+exports.DeleteDivision = async (req, res) => {
 
     try {
-        await State.destroy({
+        await Division.destroy({
             where: {
                 id: req.params.id
             }
@@ -51,7 +51,7 @@ exports.DeleteState = async (req, res) => {
 
         res.status(200).send({
             success: true,
-            message: "State Delete Successfully"
+            message: "Division Delete Successfully"
         })
 
     } catch (error) {

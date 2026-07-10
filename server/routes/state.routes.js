@@ -1,6 +1,6 @@
 const jwt = require('../middleware/authentication')
 // [jwt.verifyToken],
-const controller = require("../controllers/state.controller");
+const controller = require("../controllers/division.controller");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -11,7 +11,7 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/create/state", controller.CreateState);
-    app.get("/api/get/state", controller.getState);
+    app.post("/api/create/division", controller.CreateDivision);
+    app.get("/api/get/division", controller.GetDivision);
 
 };

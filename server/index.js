@@ -6,11 +6,10 @@ const http = require('http');
 const server = http.createServer(app);
 require("./socket/socket")(server);
 require("./middleware/index")(app);
-require("./db_init")();
+// require("./models/db_init")();
 
 
 require('./routes/user.routes')(app);
-require('./routes/usertype.routes')(app);
 require('./routes/state.routes')(app);
 require('./routes/category.routes')(app);
 require('./routes/company.routes')(app);
@@ -24,6 +23,6 @@ require('./routes/department.routes')(app);
 
 
 
-server.listen(port, () => { // Use server.listen instead of app.listen
+server.listen(port, () => { 
     console.log(`Server is running on port ${port}`);
 });
