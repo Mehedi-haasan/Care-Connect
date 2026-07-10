@@ -25,7 +25,14 @@ isPublicUser = async (req, res, next) => {
             next();
             return;
         }
-        const user = await User.findByPk(decoded.id);
+        const user = await User.findByPk(decoded.id, {
+            include: [
+                {
+                    model: Role,
+                    as: "roles"
+                },
+            ]
+        });
         if (!user || user && !user.active) {
             // get public user and set
             req.partnerId = PUBLIC_USER_ID;
@@ -36,6 +43,7 @@ isPublicUser = async (req, res, next) => {
 
         req.userId = decoded.id;
         req.partnerId = decoded.partnerId;
+        req.user = user
         next();
     });
 };
