@@ -1,6 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react'
 import InputComponent from '../Input/InputComponent'
+import BASE_URL from '../URL/baseurl';
 
 const Login = ({auth}) => {
   const goToHome = useNavigate();
@@ -11,7 +12,7 @@ const Login = ({auth}) => {
 
   const handleSubmit = async (e) => {
     console.log(values)
-    const response = await fetch(`http://localhost:8050/api/auth/signin`, {
+    const response = await fetch(`${BASE_URL}/api/auth/signin`, {
       method: "POST",
       headers: {
         'Content-type': 'application/json; charset=UTF-8',

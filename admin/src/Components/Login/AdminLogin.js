@@ -13,24 +13,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  /* 🔐 Already logged in → go dashboard */
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, []);
 
-  /* ================= LOGIN FUNCTION ================= */
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-
       const res = await fetch(`${BASE_URL}/api/auth/signin`, {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           'authorization': '',
         },
         body: JSON.stringify({
@@ -38,15 +29,16 @@ export default function LoginPage() {
           password: password,
         })
       })
+      const data = await res.json();
 
-      // ✅ Save token
-      localStorage.setItem("token", res.data.accessToken);
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("token", data.accessToken);
 
       alert("Login Successful ✅");
-
-      // ✅ Redirect
       navigate("/dashboard");
-
     } catch (err) {
       console.error(err);
       alert(err?.response?.data?.message || "Login Failed ❌");

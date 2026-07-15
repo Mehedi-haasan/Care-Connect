@@ -90,6 +90,7 @@ exports.singUp = async (req, res) => {
 
 
 exports.singIn = async (req, res) => {
+    console.log(req.body.username)
     try {
         const data = await User.findOne({
             where: {
@@ -128,6 +129,8 @@ exports.singIn = async (req, res) => {
             message: "Login Successfully",
             id: req.userId,
             accessToken: token,
+            name:data?.name,
+            image_url:data?.image_url
         })
 
     } catch (error) {

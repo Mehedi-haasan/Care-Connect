@@ -1,6 +1,7 @@
 const db = require(".");
 const User = db.user
 const Role = db.role;
+var bcrypt = require("bcryptjs");
 
 module.exports = async function () {
     await db.sequelize.sync({ force: true });
@@ -9,14 +10,15 @@ module.exports = async function () {
 };
 async function initAdmin() {
     await User.create({
-        first_name: 'Admin',
-        last_name: '',
+        active:1,
+        name: 'Admin',
+        user_type: 'normal',
         username: 'admin',
         email: 'admin@gmail.com',
-        password: '123456',
+        password: bcrypt.hashSync('123456', 8),
         image_url: '',
-        dept_id: false,
-        address_id: false
+        dept_id: null,
+        address_id: null
     });
 
 // Divisions
