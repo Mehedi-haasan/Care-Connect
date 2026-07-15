@@ -108,6 +108,7 @@ const Home = () => {
       {/* HERO COMPONENT */}
       <Hero title="স্বাস্থ্য কথা" />
 
+
       {/* HEALTH CARDS */}
       <div className="flex justify-start items-start px-4 md:px-16 lg:px-32 gap-8 mt-10">
         <div className="w-full">
