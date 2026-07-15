@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import image from "../Logo/userProfile.png";
+import BASE_URL from "../URL/baseurl";
 
 export default function LoginPage() {
 
@@ -27,13 +27,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        "https://server.careconnect.com.bd/api/auth/signin",
-        {
+
+      const res = await fetch(`${BASE_URL}/api/auth/signin`, {
+        method: "POST",
+        headers: {
+          'authorization': '',
+        },
+        body: JSON.stringify({
           username: username,
           password: password,
-        }
-      );
+        })
+      })
 
       // ✅ Save token
       localStorage.setItem("token", res.data.accessToken);
