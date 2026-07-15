@@ -38,8 +38,11 @@ module.exports = (sequelize, Sequelize) => {
         sku: {
             type: Sequelize.STRING
         },
-        content_type_id: {
-            type: Sequelize.BOOLEAN,
+        type_id: {
+            type: Sequelize.INTEGER,
+        },
+        creator_id: {
+            type: Sequelize.INTEGER,
         },
     });
 
@@ -52,6 +55,15 @@ module.exports = (sequelize, Sequelize) => {
         Content.belongsTo(models.sub_category, {
             foreignKey: "sub_cate_id",
             as: "sub_category"
+        });
+
+        Content.belongsTo(models.content_type, {
+            foreignKey: "type_id",
+            as: "type"
+        });
+        Content.belongsTo(models.user, {
+            foreignKey: "creator_id",
+            as: "creator"
         });
     };
 

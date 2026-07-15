@@ -56,15 +56,15 @@ exports.singUp = async (req, res) => {
         }
 
         await User.create({
+            active: 1,
+            name: req.body.name,
+            user_type: req.body.user_type,
             username: req.body.username,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
             email: req.body.email,
             password: bcrypt.hashSync(req.body.password, 8),
             image_url: req.body.image_url,
-            user_type_id:req.body.user_type_id,
-            dept_id:req.body.dept_id,
-            address_id:req.body.address_id
+            dept_id: req.body.dept_id,
+            address_id: req.body.address_id
         });
 
 
@@ -173,14 +173,14 @@ exports.getSingleUsers = async (req, res) => {
 
 exports.updateUsers = async (req, res) => {
     const id = req.userId;
-    const { first_name, last_name, email, username, password, image_url } = req.body;
+    const { name, user_type, email, username, password, image_url } = req.body;
 
     try {
 
         await User.update(
             {
-                first_name,
-                last_name,
+                name,
+                user_type,
                 username,
                 email,
                 password,

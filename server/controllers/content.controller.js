@@ -6,7 +6,31 @@ const Content = db.content;
 
 exports.GetContent = async (req, res) => {
     try {
-        let data = await Content.findAll({ limit: 20 })
+        let data = await Content.findAll({
+            include: [
+                {
+                    model: db.category,
+                    as: "category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.sub_category,
+                    as: "sub_category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.content_type,
+                    as: "type",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.user,
+                    as: "creator",
+                    attributes: ["id", "name"],
+                }
+            ],
+            limit: 20
+        })
         res.status(200).send({
             success: true,
             items: data
@@ -18,6 +42,44 @@ exports.GetContent = async (req, res) => {
 }
 
 
+exports.GetSingleContent = async (req, res) => {
+    try {
+        let data = await Content.findAll({
+            include: [
+                {
+                    model: db.category,
+                    as: "category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.sub_category,
+                    as: "sub_category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.content_type,
+                    as: "type",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.user,
+                    as: "creator",
+                    attributes: ["id", "name"],
+                }
+            ],
+            where: {
+                id: req.params.id
+            }
+        })
+        res.status(200).send({
+            success: true,
+            items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
 
 
 
@@ -36,7 +98,8 @@ exports.CreateContent = async (req, res) => {
             price,
             standard_price,
             sku,
-            content_type_id
+            type_id,
+            creator_id
         } = req.body;
 
         // Create the content record
@@ -52,7 +115,8 @@ exports.CreateContent = async (req, res) => {
             price,
             standard_price,
             sku,
-            content_type_id
+            type_id,
+            creator_id
         });
 
         res.status(201).json({
