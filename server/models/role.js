@@ -14,11 +14,7 @@ module.exports = (sequelize, Sequelize) => {
     });
     Role.associate = (models) => {
         // many2one → user
-<<<<<<< HEAD
         Role.belongsTo(models.user, {
-=======
-        User.belongsTo(models.user, {
->>>>>>> master
             foreignKey: "user_id",
             as: "user"
         });

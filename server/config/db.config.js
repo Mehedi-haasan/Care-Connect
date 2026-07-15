@@ -1,11 +1,7 @@
 const config = {
     HOST: "localhost",
     USER: "root",
-<<<<<<< HEAD
     PASSWORD: "ceevit250#",
-=======
-    PASSWORD: "Ceevit250#",
->>>>>>> master
     DB: "care_connect",
     dialect: "mysql",
     pool: {

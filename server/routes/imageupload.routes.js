@@ -1,7 +1,6 @@
 const Jwt = require("../middleware/authentication");
 const upload = require('../multer/Upload')
 
-<<<<<<< HEAD
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegPath = require('ffmpeg-static');
 ffmpeg.setFfmpegPath(ffmpegPath);
@@ -11,8 +10,6 @@ const fs = require('fs');
 const db = require('../models')
 const StrimData = db.striming_data
 
-=======
->>>>>>> master
 module.exports = function (app) {
     app.use(function (req, res, next) {
         res.header(
@@ -50,11 +47,7 @@ module.exports = function (app) {
 
 
 
-<<<<<<< HEAD
     app.post("/api/upload/image/register", upload.single('image_url'), async (req, res) => {
-=======
-    app.post("/api/upload/image/register",  upload.single('image_url'), async (req, res) => {
->>>>>>> master
         try {
             const image_url = req.file;
             if (!image_url) {
@@ -78,7 +71,6 @@ module.exports = function (app) {
     });
 
 
-<<<<<<< HEAD
 
     const CreateData = async (outputs) => {
         let data = await StrimData.create({
@@ -178,6 +170,3 @@ module.exports = function (app) {
 };
 
 
-=======
-};
->>>>>>> master

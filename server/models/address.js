@@ -14,7 +14,6 @@ module.exports = (sequelize, Sequelize) => {
         image_url: {
             type: Sequelize.STRING
         },
-<<<<<<< HEAD
         division_id: {
             type: Sequelize.INTEGER
         },
@@ -22,15 +21,11 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER
         },
         upazila_id: {
-=======
-        state_id: {
->>>>>>> master
             type: Sequelize.INTEGER
         }
     });
     Address.associate = (models) => {
         // many2one → user_type
-<<<<<<< HEAD
         Address.belongsTo(models.division, {
             foreignKey: "division_id",
             as: "division"
@@ -42,11 +37,6 @@ module.exports = (sequelize, Sequelize) => {
         Address.belongsTo(models.upazila, {
             foreignKey: "upazila_id",
             as: "upazila"
-=======
-        User.belongsTo(models.state, {
-            foreignKey: "state_id",
-            as: "state"
->>>>>>> master
         });
     };
 
