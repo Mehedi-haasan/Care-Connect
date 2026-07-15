@@ -1,14 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import videoDemo from "../../assets/video/video.mp4"; // Default main video
+import BASE_URL from "../URL/baseurl";
+
 import Advertisement from "../Common/Advertisement";
 import Cart from "../Common/Cart";
 import AllDoctors from "./AllDoctors";
 import Hero from "./Hero";
+import Banner from "./Banner";
 import Recenthealth from "./RecentHealth";
+import HealthVideoSection from "./HealthVideoSection";
+
+/* ===============================
+   UTILS
+================================ */
+// Strip HTML & truncate text
+const getShortText = (html = "", limit = 60) => {
+  const text = html.replace(/<[^>]*>/g, "");
+  return text.length > limit ? text.slice(0, limit) + "..." : text;
+};
 
 const Home = () => {
-  // ===== CATEGORY DATA =====
+  /* ===============================
+     STATIC DATA
+  ================================ */
   const categories = [
     { key: "maternal_health", label: "মাতৃ স্বাস্থ্য" },
     { key: "child_care", label: "শিশু যত্ন" },
@@ -35,162 +49,146 @@ const Home = () => {
     "সর্দি-কাশি",
   ];
 
-  // ===== DEMO CARD DATA =====
-  const data = [
-    {
-      id: 1,
-      categoryKey: "maternal_health",
-      title: "গর্ভাবস্থায় করণীয়",
-      author: "ডা. সামান্তা রহমান",
-      imageUrl:
-        "https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=800",
-      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    },
-    {
-      id: 2,
-      categoryKey: "maternal_health",
-      title: "গর্ভকালীন পুষ্টি তালিকা",
-      author: "পুষ্টিবিদ",
-      imageUrl:
-        "https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?q=80&w=800",
-      videoUrl: "https://www.w3schools.com/html/movie.mp4",
-    },
-    {
-      id: 3,
-      categoryKey: "child_care",
-      title: "নবজাতকের যত্ন নেওয়ার নিয়ম",
-      author: "ডা. রাশেদ",
-      imageUrl:
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800",
-      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    },
-    {
-      id: 3,
-      categoryKey: "child_care",
-      title: "নবজাতকের যত্ন নেওয়ার নিয়ম",
-      author: "ডা. রাশেদ",
-      imageUrl:
-        "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800",
-      videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4",
-    },
-  ];
+  /* ===============================
+     STATE
+  ================================ */
+  const [homeContents, setHomeContents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
 
-  // ===== VIDEO PLAYER STATE =====
-  const [currentVideo, setCurrentVideo] = useState(videoDemo);
+  /* ===============================
+     FETCH HOME CONTENT
+  ================================ */
+  useEffect(() => {
+    const fetchHomeContent = async () => {
+      try {
+        const res = await fetch(`${BASE_URL}/api/admin/content-section`);
+        const result = await res.json();
 
+        const items = (result.items || [])
+          .filter(
+            (item) =>
+              item.section_name === "health_protection" &&
+              item.active === true
+          )
+          .sort((a, b) => a.sequence - b.sequence);
+
+        setHomeContents(items);
+      } catch (error) {
+        console.error("Home content fetch failed:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeContent();
+  }, []);
+
+  // Show only first 4 items initially
+  const displayedContents = showAll
+    ? homeContents
+    : homeContents.slice(0, 4);
+
+  /* ===============================
+     UI
+  ================================ */
   return (
     <div className="bg-white min-h-screen">
-      {/* HERO SECTION */}
-      <div className="bg-[#D9D9D9]">
-        <div className="pr-56 grid grid-cols-5">
-          <div className="bg-[#AFD7E2]"></div>
-          <div className="font-extrabold col-span-4 py-14 text-right">
-            <h1 className="py-1 text-xl md:text-2xl lg:text-4xl xl:text-5xl text-[#8B61C2]">বাংলা ভাষায়</h1>
-            <h1 className="text-xl md:text-2xl lg:text-4xl xl:text-5xl text-[#0170C0]">সহজবোধ্য  স্বাস্থ্যকথা</h1>
-            <h1 className="pt-8 text-xl md:text-2xl lg:text-4xl text-[#102F76]">ডিজিটাল স্বাস্থ্যসেবা</h1>
-          </div>
-        </div>
-      </div>
+       <Banner />
+      
 
-      {/* CATEGORY NAVIGATION */}
-      <div className="flex justify-between items-center bg-[#F9FFF2] py-8 px-4 md:px-16 lg:px-32 overflow-x-auto hide-scrollbar gap-4">
-        {categories.map((item) => (
-          <NavLink
-            key={item.key}
-            to={`/category/${item.key}`}
-            className="px-4 py-2 rounded-full bg-gray-100 hover:bg-[#8B61C2] hover:text-white transition font-semibold whitespace-nowrap"
-          >
-            {item.label}
-          </NavLink>
-        ))}
-      </div>
 
-      {/* HERO COMPONENT */}
+
+
+      {/* ================= CATEGORY NAV ================= */}
+<div className="bg-[#F9FFF2] py-5 px-3 md:px-10 lg:px-20">
+
+  <div className="grid grid-cols-5 md:grid-cols-10 ">
+
+    {categories.map((cat) => (
+      <NavLink
+        key={cat.key}
+        to={`/category/${cat.key}`}
+        className="text-center px-2 py-1.5 rounded-full 
+                    hover:bg-[#8B61C2] hover:text-white 
+                   transition font-medium
+                   text-[10px] sm:text-xs md:text-sm
+                   whitespace-nowrap overflow-hidden text-ellipsis"
+      >
+        {cat.label}
+      </NavLink>
+    ))}
+
+  </div>
+
+</div>
+
+      {/* ================= HERO CONTENT ================= */}
       <Hero title="স্বাস্থ্য কথা" />
 
+      {/* ================= HEALTH PROTECTION ================= */}
+      <div className="px-4 md:px-16 lg:px-32 mt-10">
+        <div className="border-b pb-3 flex justify-between items-center">
+          <h1 className="font-bold text-2xl text-[#6A1B9A]">
+            স্বাস্থ্য সুরক্ষা
+          </h1>
 
-      {/* HEALTH CARDS */}
-      <div className="flex justify-start items-start px-4 md:px-16 lg:px-32 gap-8 mt-10">
-        <div className="w-full">
-          <div className="border-b flex justify-between items-center pb-3">
-            <h1 className="font-bold text-xl text-[#6A1B9A]">স্বাস্থ্য সুরক্ষা</h1>
-            <h1 className="text-[#1976D2] font-semibold text-[15px] cursor-pointer">সমস্ত বিষয় পড়ুন</h1>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full gap-8 pt-6">
-            {data.map((item) => (
-              <div
+          {!showAll && homeContents.length > 4 && (
+            <h1
+              className="text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer"
+              onClick={() => setShowAll(true)}
+            >
+              সমস্ত বিষয় পড়ুন
+            </h1>
+          )}
+        </div>
+
+        {loading ? (
+          <p className="py-10 text-gray-500">Loading...</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 pt-6">
+            {displayedContents.map((item) => (
+              <Cart
                 key={item.id}
-                className="cursor-pointer"
-                onClick={() => setCurrentVideo(item.videoUrl)}
-              >
-                <Cart item={item} />
-              </div>
+                item={{
+                  id: item.id,
+                  title: item.title,
+                  name: item.name || item.author || "ডাক্তার",
+                  category_type: item.category_type,
+                  image_url: item.image_url,
+                }}
+              />
             ))}
           </div>
-        </div>
+        )}
       </div>
 
-      {/* DISEASE TYPES */}
-      <div className="w-full pt-10 px-4 md:px-16 lg:px-32">
-        <div className="border-b flex justify-between items-center pb-3">
+      {/* ================= DISEASE TYPES ================= */}
+      <div className="pt-12 px-4 md:px-16 lg:px-32">
+        <div className="border-b pb-3">
           <h1 className="font-extrabold text-xl">রোগের ধরনসমূহ</h1>
-          <h1 className="text-[#1976D2] font-semibold text-[12px] cursor-pointer">সমস্ত বিষয় পড়ুন</h1>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 py-4 bg-[#F2EEF8] mt-4">
-          {diseases.map((item, i) => (
-            <button key={i} className="mt-2 rounded-lg px-3 py-1 font-semibold hover:bg-[#8B61C2] hover:text-white transition">{item}</button>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 py-4 bg-[#F2EEF8] mt-4 rounded-xl">
+          {diseases.map((d, i) => (
+            <button
+              key={i}
+              className="rounded-lg px-3 py-2 font-semibold hover:bg-[#8B61C2] hover:text-white transition"
+            >
+              {d}
+            </button>
           ))}
         </div>
       </div>
 
-      {/* RECENT HEALTH */}
+      {/* ================= EXTRA SECTIONS ================= */}
       <Recenthealth title="সাম্প্রতিক স্বাস্থ্য" />
-      <Advertisement className="bg-black text-[#ACA766] w-full my-8" />
+      <Advertisement className="bg-black text-[#ACA766] w-full my-10" />
       <AllDoctors />
 
-      {/* VIDEO SECTION */}
-      <div className="w-full pt-10 pb-5 px-4 md:px-16 lg:px-32 bg-[#F4F9FD]">
-        <div className="border-b flex justify-between items-center pb-2">
-          <h1 className="font-bold text-xl">স্বাস্থ্য ভিডিও</h1>
-          <h1 className="text-[#1976D2] font-semibold text-[12px] cursor-pointer">সমস্ত ভিডিও দেখুন</h1>
-        </div>
-        <div className="w-full grid grid-cols-1 lg:grid-cols-5 gap-5 pt-6">
-          {/* Main Video */}
-          <div className="lg:col-span-3">
-            <video
-              src={currentVideo}
-              className="w-full max-h-[500px] rounded"
-              controls
-              autoPlay
-              loop
-              muted
-              playsInline
-            />
-          </div>
+      {/* ================= VIDEO SECTION ================= */}
+      <HealthVideoSection homeContents={homeContents} />
 
-          {/* Video List */}
-          <div className="lg:col-span-2 flex flex-col gap-4 pt-2">
-            {data.map((item) => (
-              <div
-                key={item.id}
-                className="flex justify-between items-center cursor-pointer"
-                onClick={() => setCurrentVideo(item.videoUrl)}
-              >
-                <div className="pl-2">
-                  <h1 className="px-1 py-1 text-sm font-bold">{item.title}</h1>
-                </div>
-                <div className="w-[100px]">
-                  <img
-                    src={item.imageUrl}
-                    alt={item.title}
-                    className="h-[80px] w-full object-cover rounded-lg"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

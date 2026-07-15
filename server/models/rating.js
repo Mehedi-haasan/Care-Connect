@@ -5,10 +5,17 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true,
         },
+<<<<<<< HEAD
         receiver_id: {
             type: Sequelize.INTEGER
         },
         sender_id: {
+=======
+        userId: {
+            type: Sequelize.INTEGER
+        },
+        product_id: {
+>>>>>>> master
             type: Sequelize.INTEGER
         },
         star:{
@@ -18,6 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         }
     });
+<<<<<<< HEAD
     Rating.associate = (models) => {
         // many2one → user
         Rating.belongsTo(models.user, {
@@ -29,6 +37,8 @@ module.exports = (sequelize, Sequelize) => {
             as: "sender"
         });
     };
+=======
+>>>>>>> master
 
     return Rating;
 };

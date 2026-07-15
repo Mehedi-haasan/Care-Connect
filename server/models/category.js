@@ -23,9 +23,22 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     Category.associate = (models) => {
+<<<<<<< HEAD
         Category.hasMany(models.sub_category, {
             foreignKey: "cate_id",
             as: "sub_cates",
+=======
+        // Parent category (many categories belong to one parent)
+        Category.belongsTo(models.category, {
+            foreignKey: "parent_id",
+            as: "parent",
+        });
+
+        // Child categories (one category has many children)
+        Category.hasMany(models.category, {
+            foreignKey: "parent_id",
+            as: "children",
+>>>>>>> master
         });
     };
 

@@ -1,6 +1,10 @@
 ﻿import React, { useState } from "react";
 
+<<<<<<< HEAD
 // 🏥 Sample hospital data
+=======
+
+>>>>>>> master
 const hospitals = [
   {
     id: 1,

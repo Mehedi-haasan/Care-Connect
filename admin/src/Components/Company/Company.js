@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import InputComponent from '../Input/InputComponent';
 import Button from '../Input/Button';
+=======
+import Button from '../Input/Button';
+import InputComponent from '../Input/InputComponent';
+>>>>>>> master
 
 const Company = () => {
 

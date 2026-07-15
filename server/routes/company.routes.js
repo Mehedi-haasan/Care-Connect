@@ -9,7 +9,11 @@ module.exports = function (app) {
         next();
     })
 
+<<<<<<< HEAD
     app.post('/api/create/company/info', jwt.verifyToken, jwt.isAdmin, controller.CreateInfo);
+=======
+    app.post('/api/create/company/info', jwt.verifyToken, controller.CreateInfo);
+>>>>>>> master
     app.post('/api/update/company/info', jwt.verifyToken, controller.updateInfo);
     app.get('/api/get/company/info', controller.GetCompanyInfo);
 }

@@ -7,8 +7,15 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const menuItems = [
+<<<<<<< HEAD
     { title: "বিশেষজ্ঞ ডাক্তার", link: "#" },
     { title: "নিকটস্থ হাসপাতাল", link: "/HospitalSearch" },
+=======
+    { title: "স্বাস্থ্য পাঠ", link: "/" },
+    { title: "বিষয়-ভিত্তিক", link: "#" },
+    { title: "ডাক্তার", link: "/doctorlistPage" },
+    { title: "হাসপাতাল", link: "/HospitalSearch" },
+>>>>>>> master
     { title: "সেবা সমূহ", link: "#" },
     { title: "লগইন", link: "/login" },
   ];

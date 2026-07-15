@@ -1,32 +1,61 @@
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import image from "../../Logo/Logo.png";
-import t from "../Data/Data"
 
 export default function RegistrationPage() {
-  const [lan, setLan] = useState("bn"); // 'bn' = Bangla, 'en' = English
+  const [language, setLanguage] = useState("bn"); // 'bn' = Bangla, 'en' = English
   const [userType, setUserType] = useState("general"); // general | doctor | hospital | corporate
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreed, setAgreed] = useState(false);
 
-  const [values, setValues] = useState({
-    username: "",
-    password: "",
-  });
-  
-  const handleSubmit = async (e) => {
-    const response = await fetch(`http://localhost:8050/api/auth/signup`, {
-      method: "POST",
-      headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
-      body: JSON.stringify(values),
-    });
-    const data = await response.json();
-    localStorage.setItem('token', data.accessToken);
-    goTo('/')
-  }
+  // Text dictionary
+  const t = {
+    bn: {
+      register: "রেজিস্ট্রেশন করুন",
+      general: "সাধারণ ব্যবহারকারী",
+      doctor: "ডাক্তার",
+      hospital: "হাসপাতাল/ক্লিনিক",
+      corporate: "কর্পোরেট",
+      fullName: "আপনার পূর্ণ নাম",
+      phone: "ফোন নাম্বার",
+      email: "ইমেইল (ঐচ্ছিক)",
+      password: "পাসওয়ার্ড",
+      confirmPassword: "পাসওয়ার্ড নিশ্চিত করুন",
+      terms: "ব্যবহারের শর্তাবলী ও গোপনীয়তার নীতিমালা আমি সম্মতি জানাই।",
+      signUp: "সাইন আপ",
+      already: "ইতিমধ্যে অ্যাকাউন্ট আছে?",
+      login: "লগইন করুন",
+      regNo: "রেজিস্ট্রেশন নম্বর",
+      specialty: "বিশেষজ্ঞতার নাম",
+      hospitalName: "হাসপাতালের নাম",
+      hospitalReg: "হাসপাতাল রেজিস্ট্রেশন নম্বর",
+      companyName: "প্রতিষ্ঠানের নাম",
+      companyId: "প্রতিষ্ঠানের আইডি/কোড",
+    },
+    en: {
+      register: "Register Now",
+      general: "General User",
+      doctor: "Doctor",
+      hospital: "Hospital/Clinic",
+      corporate: "Corporate",
+      fullName: "Full Name",
+      phone: "Phone Number",
+      email: "Email (Optional)",
+      password: "Password",
+      confirmPassword: "Confirm Password",
+      terms: "I agree to the Terms of Use & Privacy Policy.",
+      signUp: "Sign Up",
+      already: "Already have an account?",
+      login: "Login",
+      regNo: "Registration Number",
+      specialty: "Specialty",
+      hospitalName: "Hospital Name",
+      hospitalReg: "Hospital Registration No.",
+      companyName: "Company Name",
+      companyId: "Company ID/Code",
+    },
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#1a75a3] p-6 md:p-10">
@@ -38,15 +67,15 @@ export default function RegistrationPage() {
 
         {/* Title */}
         <h2 className="text-center text-lg font-semibold text-blue-700 mb-4">
-          {t[lan].register}
+          {t[language].register}
         </h2>
 
-        {/* lan Toggle */}
+        {/* Language Toggle */}
         <div className="flex justify-center gap-2 mb-6">
           <button
-            onClick={() => setLan("bn")}
+            onClick={() => setLanguage("bn")}
             className={`px-4 py-1 rounded-full ${
-              lan === "bn"
+              language === "bn"
                 ? "bg-gray-300 text-black"
                 : "bg-gray-100 text-gray-500"
             }`}
@@ -54,9 +83,9 @@ export default function RegistrationPage() {
             বাংলা
           </button>
           <button
-            onClick={() => setLan("en")}
+            onClick={() => setLanguage("en")}
             className={`px-4 py-1 rounded-full ${
-              lan === "en"
+              language === "en"
                 ? "bg-gray-300 text-black"
                 : "bg-gray-100 text-gray-500"
             }`}
@@ -77,7 +106,7 @@ export default function RegistrationPage() {
                   : "text-gray-600"
               }`}
             >
-              {t[lan][type]}
+              {t[language][type]}
             </button>
           ))}
         </div>
@@ -87,11 +116,11 @@ export default function RegistrationPage() {
           {/* Full Name */}
           <div>
             <label className="block text-gray-700 mb-1 font-medium">
-              {t[lan].fullName}
+              {t[language].fullName}
             </label>
             <input
               type="text"
-              placeholder={t[lan].fullName}
+              placeholder={t[language].fullName}
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -99,11 +128,11 @@ export default function RegistrationPage() {
           {/* Phone */}
           <div>
             <label className="block text-gray-700 mb-1 font-medium">
-              {t[lan].phone}
+              {t[language].phone}
             </label>
             <input
               type="text"
-              placeholder={t[lan].phone}
+              placeholder={t[language].phone}
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -111,11 +140,11 @@ export default function RegistrationPage() {
           {/* Email */}
           <div>
             <label className="block text-gray-700 mb-1 font-medium">
-              {t[lan].email}
+              {t[language].email}
             </label>
             <input
               type="email"
-              placeholder={t[lan].email}
+              placeholder={t[language].email}
               className="w-full px-4 py-2 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
             />
           </div>
@@ -125,21 +154,21 @@ export default function RegistrationPage() {
             <>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].regNo}
+                  {t[language].regNo}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].regNo}
+                  placeholder={t[language].regNo}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].specialty}
+                  {t[language].specialty}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].specialty}
+                  placeholder={t[language].specialty}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
@@ -150,21 +179,21 @@ export default function RegistrationPage() {
             <>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].hospitalName}
+                  {t[language].hospitalName}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].hospitalName}
+                  placeholder={t[language].hospitalName}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].hospitalReg}
+                  {t[language].hospitalReg}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].hospitalReg}
+                  placeholder={t[language].hospitalReg}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
@@ -175,21 +204,21 @@ export default function RegistrationPage() {
             <>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].companyName}
+                  {t[language].companyName}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].companyName}
+                  placeholder={t[language].companyName}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
               <div>
                 <label className="block text-gray-700 mb-1 font-medium">
-                  {t[lan].companyId}
+                  {t[language].companyId}
                 </label>
                 <input
                   type="text"
-                  placeholder={t[lan].companyId}
+                  placeholder={t[language].companyId}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                 />
               </div>
@@ -199,12 +228,12 @@ export default function RegistrationPage() {
           {/* Password */}
           <div>
             <label className="block text-gray-700 mb-1 font-medium">
-              {t[lan].password}
+              {t[language].password}
             </label>
             <div className="relative">
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder={t[lan].password}
+                placeholder={t[language].password}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
@@ -220,12 +249,12 @@ export default function RegistrationPage() {
           {/* Confirm Password */}
           <div>
             <label className="block text-gray-700 mb-1 font-medium">
-              {t[lan].confirmPassword}
+              {t[language].confirmPassword}
             </label>
             <div className="relative">
               <input
                 type={showConfirmPassword ? "text" : "password"}
-                placeholder={t[lan].confirmPassword}
+                placeholder={t[language].confirmPassword}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
               <button
@@ -246,13 +275,12 @@ export default function RegistrationPage() {
               onChange={() => setAgreed(!agreed)}
               className="h-4 w-4"
             />
-            <label className="text-gray-600">{t[lan].terms}</label>
+            <label className="text-gray-600">{t[language].terms}</label>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
-            onClick={handleSubmit}
             disabled={!agreed} // ✅ Disabled until checked
             className={`w-full py-2 rounded-full font-semibold transition ${
               agreed
@@ -260,15 +288,15 @@ export default function RegistrationPage() {
                 : "bg-gray-300 text-gray-500 cursor-not-allowed"
             }`}
           >
-            {t[lan].signUp}
+            {t[language].signUp}
           </button>
         </form>
 
         {/* Footer */}
         <div className="text-center text-sm mt-6 text-gray-600">
-          {t[lan].already}{" "}
+          {t[language].already}{" "}
           <a href="/login" className="text-blue-600 hover:underline">
-            {t[lan].login}
+            {t[language].login}
           </a>
         </div>
       </div>
