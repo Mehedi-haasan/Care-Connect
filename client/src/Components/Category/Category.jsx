@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Advertisement from "../Common/Advertisement";
 import Cart from "../Common/Cart";
-<<<<<<< HEAD
-
-=======
 import BASE_URL from "../URL/baseurl";
->>>>>>> master
 const Category = () => {
   const { categorySlug } = useParams(); // dynamic slug from URL
 
@@ -60,13 +56,10 @@ const Category = () => {
       "পুরুষদের পদ্ধতি",
       "নিরাপত্তা ও পার্শ্বপ্রতিক্রিয়া",
       "জরুরি পরিবার পরিকল্পনা",
-<<<<<<< HEAD
-=======
       "বন্ধ্যতা ও সমাধান",
       "সন্তান নেওয়ার সঠিক সময়",
       "যৌথ সিদ্ধান্ত ও অংশগ্রহণ",
       "সেবা, চ্যালেঞ্জ ও সচেতনতা",
->>>>>>> master
     ],
     adolescent_health: [
       "বয়ঃসন্ধিকাল",
@@ -79,17 +72,6 @@ const Category = () => {
       "সুস্থ সম্পর্ক গঠন",
       "প্রজনন স্বাস্থ্য",
       "শিক্ষা ও ক্যারিয়ার প্রস্তুতি",
-<<<<<<< HEAD
-    ],
-    mental_health: [
-      "মানসিক স্বাস্থ্য পরিচিতি",
-      "ডিপ্রেশন",
-      "স্ট্রেস",
-      "শিশু-কিশোর মানসিক বিকাশ",
-      "নারী ও মাতৃত্বকালীন মানসিক স্বাস্থ্য",
-    ],
-    elderly_health: [
-=======
       "ক্ষতিকর অভ্যাস পরিহার",
     ],
     mental_health: [
@@ -107,20 +89,16 @@ const Category = () => {
     ],
     elderly_health: [
       "প্রবীণ স্বাস্থ্য পরিচিতি",
->>>>>>> master
       "শারীরিক স্বাস্থ্য",
       "মানসিক স্বাস্থ্য",
       "প্রয়োজনীয় খাদ্য ও পুষ্টি",
       "প্রতিরোধমূলক স্বাস্থ্যসেবা",
       "প্রবীণদের যত্ন",
-<<<<<<< HEAD
-=======
       "পারিবারিক ও সামাজিক দায়িত্ব",
       "পুনর্বাসন ও সহায়ক সেবা",
       "সামাজিক ও অর্থনৈতিক নিরাপত্তা",
       "স্বাস্থ্যকর জীবনযাপন",
 
->>>>>>> master
     ],
     general_health: [
       "ব্যক্তিগত স্বাস্থ্যবিধি",
@@ -128,55 +106,41 @@ const Category = () => {
       "পরিবেশ ও পেশাগত স্বাস্থ্য",
       "প্রাথমিক চিকিৎসা",
       "জরুরি স্বাস্থ্যসেবা",
-<<<<<<< HEAD
-=======
       "প্রতিরোধমূলক স্বাস্থ্যসেবা",
       "টিকা ও ইমিউনাইজেশন",
       "পুষ্টি ও খাদ্যাভ্যাস",
       "জরুরি স্বাস্থ্যসেবা",
->>>>>>> master
     ],
     women_health: [
       "খাদ্য ও পুষ্টি",
       "শারীরিক স্বাস্থ্য",
       "প্রজনন স্বাস্থ্য",
       "হরমোনাল যত্ন",
-<<<<<<< HEAD
-      "ফিটনেস ও মেডিটেশন",
-=======
       "রোগ প্রতিকার",
       "মানসিক স্বাস্থ্য",
       "ফিটনেস ও মেডিটেশন",
       "সৌন্দর্য ও যত্ন",
       "পারিবারিক দায়িত্ব",
       "নিরাপদ জীবন",
->>>>>>> master
     ],
     nutrition: [
       "সুষম খাদ্য",
       "ভিটামিন ও খনিজ",
       "শিশু ও কিশোর পুষ্টি",
       "গর্ভকালীন ও মাতৃ পুষ্টি",
-<<<<<<< HEAD
-=======
       "বয়স্কদের পুষ্টি",
       "রোগ নির্দিষ্ট খাদ্যাভ্যাস",
       "বাংলাদেশি খাবার ও পুষ্টি",
       "ডায়েট ট্রেন্ড ও ভ্রান্ত ধারণা",
->>>>>>> master
     ],
     fitness: [
       "দৈনন্দিন ব্যায়াম",
       "কার্ডিওভাসকুলার ফিটনেস",
       "শক্তি ও পেশি গঠন",
-<<<<<<< HEAD
-      "মানসিক স্বাস্থ্য ও ফিটনেস",
-=======
       "ফিটনেস ফর স্পেশাল গ্রুপস",
       "মানসিক স্বাস্থ্য ও ফিটনেস",
       "ওজন নিয়ন্ত্রণ",
       "স্পোর্টস ফিটনেস",
->>>>>>> master
     ],
   };
 
@@ -185,29 +149,20 @@ const Category = () => {
     setActiveCategory(categorySlug);
     setActiveSubCategory("");
     setLoading(true);
-<<<<<<< HEAD
-
-    fetch(`http://localhost:8085/articles?category=${categorySlug}`)
-=======
     setError("");
   
     // ✅ Correct API call: pass category_type as query
     fetch(`${BASE_URL}/api/get/content?category_type=${categorySlug}`)
->>>>>>> master
       .then((res) => {
         if (!res.ok) throw new Error("Data not found");
         return res.json();
       })
       .then((data) => {
-<<<<<<< HEAD
-        setAllCards(data);
-=======
         if (data.success) {
           setAllCards(data.items);
         } else {
           setError("No content found");
         }
->>>>>>> master
         setLoading(false);
       })
       .catch((err) => {
@@ -215,11 +170,7 @@ const Category = () => {
         setLoading(false);
       });
   }, [categorySlug]);
-<<<<<<< HEAD
-
-=======
   
->>>>>>> master
   if (loading) {
     return <p className="text-center py-10">Loading...</p>;
   }
@@ -231,14 +182,9 @@ const Category = () => {
   // FILTER BY SUBCATEGORY
   const filteredCards = allCards.filter(
     (item) =>
-<<<<<<< HEAD
-      !activeSubCategory || item.subCategoryKey === activeSubCategory
-  );
-=======
       !activeSubCategory || item.sub_cate_type === activeSubCategory
   );
   
->>>>>>> master
 
   return (
     <div className="bg-white min-h-screen px-4 md:px-16 lg:px-32 py-6">

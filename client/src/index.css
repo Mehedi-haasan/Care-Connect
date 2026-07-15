@@ -16,23 +16,6 @@ code {
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&family=Tiro+Bangla:ital@0;1&display=swap');
-<<<<<<< HEAD
-
-body {
-  font-family: "STIX Two Text", serif;
-}
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  scrollbar-width: none;
-  /* Firefox */
-}
-=======
 /*  */
 
 
->>>>>>> master

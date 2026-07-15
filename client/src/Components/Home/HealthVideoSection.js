@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import BASE_URL from "../URL/baseurl";
 import { Play, Heart } from "lucide-react";
 
@@ -13,7 +12,7 @@ const HealthVideoSection = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await axios.get(`${BASE_URL}/video`);
+        const res = await fetch(`${BASE_URL}/video`);
 
         if (Array.isArray(res.data)) {
           setVideos(res.data);
