@@ -1,14 +1,14 @@
 const db = require("../models");
-const Category = db.category;
+const Degree = db.degree;
+
+
+const Op = db.Sequelize.Op;
 
 
 
-exports.getCategory = async (req, res) => {
+exports.GetDegree = async (req, res) => {
     try {
-        let data = await Category.findAll({
-            limit:12,
-            attributes: ['id', 'name', 'image_url'],
-        })
+        let data = await Degree.findAll({})
         res.status(200).send({
             success: true,
             items: data
@@ -21,13 +21,16 @@ exports.getCategory = async (req, res) => {
 
 
 
-exports.CreateCategory = async (req, res) => {
+
+exports.CreateDegree = async (req, res) => {
+
     try {
-        await Category.create({
-            active:1,
-            sequence:req.body.sequence,
+        await Degree.create({
             name: req.body.name,
-            image_url: req.body.image_url
+            major: req.body.major,
+            institute: req.body.institute,
+            year: req.body.year,
+            user_id: req.body.user_id
         });
 
         res.status(200).send({
@@ -41,11 +44,10 @@ exports.CreateCategory = async (req, res) => {
 
 }
 
-
-exports.updateCategory = async (req, res)=>{
+exports.UpdateDegree = async (req, res) => {
     try {
-        const { id, name,image_url } = req.body;
-        
+        const { id, name, image_url } = req.body;
+
         if (!id) {
             return res.status(400).send({
                 success: false,
@@ -53,10 +55,10 @@ exports.updateCategory = async (req, res)=>{
             });
         }
 
-        
-        const [updatedRowsCount] = await Category.update(
-            { name: name, image_url: image_url }, 
-            { where: { id: id } } 
+
+        const [updatedRowsCount] = await Degree.update(
+            { name: name, image_url: image_url },
+            { where: { id: id } }
         );
 
         if (updatedRowsCount === 0) {
@@ -73,13 +75,13 @@ exports.updateCategory = async (req, res)=>{
 
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
-    } 
-}
+    }
+};
 
-exports.DeleteCategory = async (req, res) => {
+exports.DeleteDegree = async (req, res) => {
 
     try {
-        await Category.destroy({
+        await Degree.destroy({
             where: {
                 id: req.params.id
             }
@@ -87,7 +89,7 @@ exports.DeleteCategory = async (req, res) => {
 
         res.status(200).send({
             success: true,
-            message: "Category Delete Successfully"
+            message: "State Delete Successfully"
         })
 
     } catch (error) {

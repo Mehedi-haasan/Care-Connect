@@ -11,5 +11,5 @@ module.exports = function (app) {
 
     app.post('/api/create/company/info', jwt.verifyToken, jwt.isAdmin, controller.CreateInfo);
     app.post('/api/update/company/info', jwt.verifyToken, controller.updateInfo);
-    app.get('/api/get/company/info', controller.GetCompanyInfo);
+    app.get('/api/get/company/info/:id', controller.GetCompanyInfo);
 }

@@ -9,16 +9,15 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: true,
         },
+        sequence:{
+            type: Sequelize.INTEGER,
+        },
         name: {
             type: Sequelize.STRING,
             allowNull: false,
         },
         image_url: {
             type: Sequelize.STRING,
-        },
-        parent_id: {
-            type: Sequelize.INTEGER,
-            allowNull: true,
         }
     });
 

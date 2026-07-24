@@ -11,7 +11,19 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
+        phone: {
+            type: Sequelize.STRING
+        },
         user_type: {
+            type: Sequelize.STRING
+        },
+        date_of_birth: {
+            type: Sequelize.STRING
+        },
+        personal_email: {
+            type: Sequelize.STRING
+        },
+        designation: {
             type: Sequelize.STRING
         },
         username: {
@@ -28,9 +40,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         dept_id: {
             type: Sequelize.INTEGER
-        },
-        address_id: {
-            type: Sequelize.INTEGER
         }
     });
     User.associate = (models) => {
@@ -42,8 +51,8 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: "user_id",
             as: "degrees"
         });
-        User.belongsTo(models.address, {
-            foreignKey: "address_id",
+        User.hasMany(models.address, {
+            foreignKey: "user_id",
             as: "address"
         });
         User.belongsTo(models.department, {

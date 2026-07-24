@@ -129,8 +129,9 @@ exports.singIn = async (req, res) => {
             message: "Login Successfully",
             id: req.userId,
             accessToken: token,
-            name:data?.name,
-            image_url:data?.image_url
+            name: data?.name,
+            image: data?.image_url,
+            role: 'admin',
         })
 
     } catch (error) {
@@ -143,6 +144,10 @@ exports.singIn = async (req, res) => {
 exports.getUsers = async (req, res) => {
     try {
         const data = await User.findAll({
+            include: [{
+                model: Role,
+                as: 'roles'
+            }],
             limit: 30
         })
         res.status(200).send({
@@ -159,13 +164,53 @@ exports.getUsers = async (req, res) => {
 exports.getSingleUsers = async (req, res) => {
     try {
         const data = await User.findOne({
+            include: [{
+                model: db.department,
+                as: 'department'
+            },
+            {
+                model: db.address,
+                as: 'address',
+                include: [
+                    {
+                        model: db.division,
+                        as: 'division'
+                    },
+                    {
+                        model: db.distric,
+                        as: 'district'
+                    },
+                    {
+                        model: db.upazila,
+                        as: 'upazila'
+                    }
+                ]
+            },
+            {
+                model: db.degree,
+                as: 'degrees'
+            },
+            {
+                model: db.role,
+                as: 'roles'
+            }],
             where: {
-                id: req.userId
+                id: req.params.id
+            }
+        })
+        const role = await Role.findAll({})
+        const address = await db.address.findAll({})
+        const exactUser = await User.findOne({
+            where: {
+                id: req.params.id
             }
         })
         res.status(200).send({
             success: true,
             items: data,
+            role: role,
+            address: address,
+            exactUser: exactUser
         })
 
     } catch (error) {
@@ -175,23 +220,11 @@ exports.getSingleUsers = async (req, res) => {
 }
 
 exports.updateUsers = async (req, res) => {
-    const id = req.userId;
-    const { name, user_type, email, username, password, image_url } = req.body;
 
     try {
 
-        await User.update(
-            {
-                name,
-                user_type,
-                username,
-                email,
-                password,
-                image_url
-            },
-            {
-                where: { id }
-            }
+        await User.update(req.body.user,
+            { where: { id: req.body.user?.id } }
         );
         res.status(200).send({
             success: true,

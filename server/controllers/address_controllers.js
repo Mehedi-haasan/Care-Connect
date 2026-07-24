@@ -1,14 +1,14 @@
 const db = require("../models");
-const Category = db.category;
+const Address = db.address;
+
+
+const Op = db.Sequelize.Op;
 
 
 
-exports.getCategory = async (req, res) => {
+exports.GetAddress = async (req, res) => {
     try {
-        let data = await Category.findAll({
-            limit:12,
-            attributes: ['id', 'name', 'image_url'],
-        })
+        let data = await Address.findAll({})
         res.status(200).send({
             success: true,
             items: data
@@ -21,13 +21,17 @@ exports.getCategory = async (req, res) => {
 
 
 
-exports.CreateCategory = async (req, res) => {
+
+exports.CreateAddress = async (req, res) => {
+
     try {
-        await Category.create({
-            active:1,
-            sequence:req.body.sequence,
+        await Address.create({
             name: req.body.name,
-            image_url: req.body.image_url
+            address_type: req.body.address_type,
+            division_id: req.body.division_id,
+            district_id: req.body.district_id,
+            upazila_id: req.body.upazila_id,
+            user_id:req.body.user_id
         });
 
         res.status(200).send({
@@ -41,11 +45,10 @@ exports.CreateCategory = async (req, res) => {
 
 }
 
-
-exports.updateCategory = async (req, res)=>{
+exports.UpdateAddress = async (req, res) => {
     try {
-        const { id, name,image_url } = req.body;
-        
+        const { id, name, image_url } = req.body;
+
         if (!id) {
             return res.status(400).send({
                 success: false,
@@ -53,10 +56,10 @@ exports.updateCategory = async (req, res)=>{
             });
         }
 
-        
-        const [updatedRowsCount] = await Category.update(
-            { name: name, image_url: image_url }, 
-            { where: { id: id } } 
+
+        const [updatedRowsCount] = await Address.update(
+            { name: name, image_url: image_url },
+            { where: { id: id } }
         );
 
         if (updatedRowsCount === 0) {
@@ -73,13 +76,13 @@ exports.updateCategory = async (req, res)=>{
 
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
-    } 
-}
+    }
+};
 
-exports.DeleteCategory = async (req, res) => {
+exports.DeleteAddress = async (req, res) => {
 
     try {
-        await Category.destroy({
+        await Address.destroy({
             where: {
                 id: req.params.id
             }
@@ -87,7 +90,7 @@ exports.DeleteCategory = async (req, res) => {
 
         res.status(200).send({
             success: true,
-            message: "Category Delete Successfully"
+            message: "State Delete Successfully"
         })
 
     } catch (error) {

@@ -42,6 +42,26 @@ exports.GetContent = async (req, res) => {
 }
 
 
+exports.GetCommonContent = async (req, res) => {
+    try {
+        let category = await db.category.findAll({})
+        let sub_category = await db.sub_category.findAll({})
+        let content_type = await db.content_type.findAll({})
+        let users = await db.user.findAll({})
+        res.status(200).send({
+            success: true,
+            category: category,
+            sub_category:sub_category,
+            content_type:content_type,
+            users:users
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+
 exports.GetSingleContent = async (req, res) => {
     try {
         let data = await Content.findAll({

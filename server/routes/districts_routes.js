@@ -1,6 +1,6 @@
 const jwt = require('../middleware/authentication')
 // [jwt.verifyToken],
-const controller = require("../controllers/division.controller");
+const controller = require("../controllers/district_controllers");
 
 module.exports = function (app) {
     app.use(function (req, res, next) {
@@ -11,7 +11,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/create/division", controller.CreateDivision);
-    app.get("/api/get/division", controller.GetDivision);
+    app.post("/api/create/districts", controller.CreateDistrict);
+    app.get("/api/get/districts", controller.GetDistrict);
+    app.get("/api/get/just/districts", controller.GetJustDistrict);
 
 };

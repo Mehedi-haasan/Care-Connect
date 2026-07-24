@@ -19,7 +19,7 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/upload/image", Jwt.verifyToken, upload.single('image_url'), async (req, res) => {
+    app.post("/api/upload/image", upload.single('image_url'), async (req, res) => {
         try {
             const image_url = req.file;
             console.log(image_url);

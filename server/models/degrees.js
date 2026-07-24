@@ -11,7 +11,13 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
-        image_url: {
+        major: {
+            type: Sequelize.STRING
+        },
+        institute: {
+            type: Sequelize.STRING
+        },
+        year: {
             type: Sequelize.STRING
         },
         user_id: {

@@ -1,25 +1,18 @@
 const db = require("../models");
-const Division = db.division;
+const District = db.distric;
 const Op = db.Sequelize.Op;
 
 
 
-exports.GetDivision = async (req, res) => {
+exports.GetDistrict = async (req, res) => {
     try {
-        let data = await Division.findAll({
-            attributes: ['id', 'name', 'createdAt'],
+        let data = await District.findAll({
+            attributes: ['id', 'name','createdAt'],
             include: [
                 {
-                    model: db.distric,
-                    as: "districts",
+                    model: db.upazila,
+                    as: "upazilas",
                     attributes: ["id", "name"],
-                    include: [
-                        {
-                            model: db.upazila,
-                            as: "upazilas",
-                            attributes: ["id", "name"]
-                        }
-                    ]
                 }
             ]
         });
@@ -34,10 +27,10 @@ exports.GetDivision = async (req, res) => {
 
 }
 
-exports.GetJustDivision = async (req, res) => {
+exports.GetJustDistrict = async (req, res) => {
     try {
-        let data = await Division.findAll({
-            attributes: ['id', 'name', 'createdAt'],
+        let data = await District.findAll({
+            attributes: ['id', 'name','createdAt'],
         });
         res.status(200).send({
             success: true,
@@ -51,34 +44,16 @@ exports.GetJustDivision = async (req, res) => {
 }
 
 
-exports.CreateDivision = async (req, res) => {
+exports.CreateDistrict = async (req, res) => {
     try {
-        await Division.create({
+        await District.create({
             name: req.body.name,
-            charge: req.body.charge
+            division_id: req.body.division_id
         });
 
         res.status(200).send({
             success: true,
             message: "Create Division Successfully"
-        })
-
-    } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
-    }
-
-}
-
-exports.GetCommonState = async (req, res) => {
-    try {
-        let divitions = await Division.findAll({});
-        let districts = await db.distric.findAll({});
-        let upazilas = await db.upazila.findAll({});
-        res.status(200).send({
-            success: true,
-            divitions: divitions,
-            districts: districts,
-            upazilas: upazilas
         })
 
     } catch (error) {

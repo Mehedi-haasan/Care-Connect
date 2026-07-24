@@ -10,5 +10,6 @@ module.exports = function (app) {
     })
 
     app.get('/api/get/content', controller.GetContent);
+    app.get('/api/get/content/common/data', controller.GetCommonContent);
     app.post('/api/create/content', controller.CreateContent);
 }

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import Dashboard from "./Components/Dashboard/Dashboard";
@@ -24,101 +24,51 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   const token = localStorage.getItem("token");
-  const [auth, setAuth] = useState(false)
-  const [open, setopen] = useState(true);
+
   return (
-    // <BrowserRouter>
-    //   <Routes>
-
-    //     {/* ROOT REDIRECT */}
-    //     <Route
-    //       path="/"
-    //       element={
-    //         token
-    //           ? <Navigate to="/dashboard" replace />
-    //           : <Navigate to="/admin/adminlogin" replace />
-    //       }
-    //     />
-
-    //     {/* LOGIN PAGE */}
-    //     <Route path="/admin/adminlogin" element={<AdminLogin />} />
-
-    //     {/* 🔐 PROTECTED ROUTES */}
-    //     <Route
-    //       element={
-    //         <PrivateRoute>
-    //           <Container />
-    //         </PrivateRoute>
-    //       }
-    //     >
-    //       <Route path="dashboard" element={<Dashboard />} />
-    //       <Route path="admin/managecontent" element={<Home />} />
-    //       <Route path="admin/content/create" element={<ContentForm />} />
-    //       <Route path="admin/content/edit/:id" element={<EditContent />} />
-    //       <Route path="createpost/:id" element={<ContentForm />} />
-    //       <Route path="admin/details/:id" element={<ContentDetails />} />
-    //       <Route path="admin/video" element={<VideoAdmin />} />
-
-    //       {/* Nested Routes */}
-    //       <Route path="admin/position_home" element={<HomeSections />}>
-    //         <Route path="allcontent" element={<AllContentSection />} />
-    //         <Route path="home_content" element={<HomeContentSection />} />
-    //         <Route path="health_protection" element={<HealthProtection />} />
-    //         <Route path="recent_health" element={<RecentHealth />} />
-    //         <Route path="featured" element={<FeaturedSection />} />
-    //       </Route>
-    //     </Route>
-
-    //   </Routes>
-    // </BrowserRouter>
-
     <BrowserRouter>
-      {/* <Header auth={auth} isLoggedOut={(v) => setAuth(v)} open={open} isOpen={(v) => { setopen(v) }}/> */}
-      <div className={`min-h-[calc(80vh-160px)] ${auth ? 'mt-12' : ''} bg-[#F7F7FF] dark:bg-[#040404] transition-all font-bold w-full top-12 ease-in duration-200 ${!auth ? "pl-0" : open ? "pl-[170px] md:pl-[230px]" : "pl-0 md:pl-[60px]"} font-roboto`}>
-        <Routes>
+      <Routes>
 
-          {/* ROOT REDIRECT */}
-          <Route
-            path="/"
-            element={
-              token
-                ? <Navigate to="/dashboard" replace />
-                : <Navigate to="/admin/adminlogin" replace />
-            }
-          />
+        {/* ROOT REDIRECT */}
+        <Route
+          path="/"
+          element={
+            token
+              ? <Navigate to="/dashboard" replace />
+              : <Navigate to="/admin/adminlogin" replace />
+          }
+        />
 
-          {/* LOGIN PAGE */}
-          <Route path="/admin/adminlogin" element={<AdminLogin />} />
+        {/* LOGIN PAGE */}
+        <Route path="/admin/adminlogin" element={<AdminLogin />} />
 
-          {/* 🔐 PROTECTED ROUTES */}
-          <Route
-            element={
-              <PrivateRoute>
-                <Container />
-              </PrivateRoute>
-            }
-          >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="admin/managecontent" element={<Home />} />
-            <Route path="admin/content/create" element={<ContentForm />} />
-            <Route path="admin/content/edit/:id" element={<EditContent />} />
-            <Route path="createpost/:id" element={<ContentForm />} />
-            <Route path="admin/details/:id" element={<ContentDetails />} />
-            <Route path="admin/video" element={<VideoAdmin />} />
+        {/* 🔐 PROTECTED ROUTES */}
+        <Route
+          element={
+            <PrivateRoute>
+              <Container />
+            </PrivateRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="admin/managecontent" element={<Home />} />
+          <Route path="admin/content/create" element={<ContentForm />} />
+          <Route path="admin/content/edit/:id" element={<EditContent />} />
+          <Route path="createpost/:id" element={<ContentForm />} />
+          <Route path="admin/details/:id" element={<ContentDetails />} />
+          <Route path="admin/video" element={<VideoAdmin />} />
 
-            {/* Nested Routes */}
-            <Route path="admin/position_home" element={<HomeSections />}>
-              <Route path="allcontent" element={<AllContentSection />} />
-              <Route path="home_content" element={<HomeContentSection />} />
-              <Route path="health_protection" element={<HealthProtection />} />
-              <Route path="recent_health" element={<RecentHealth />} />
-              <Route path="featured" element={<FeaturedSection />} />
-            </Route>
+          {/* Nested Routes */}
+          <Route path="admin/position_home" element={<HomeSections />}>
+            <Route path="allcontent" element={<AllContentSection />} />
+            <Route path="home_content" element={<HomeContentSection />} />
+            <Route path="health_protection" element={<HealthProtection />} />
+            <Route path="recent_health" element={<RecentHealth />} />
+            <Route path="featured" element={<FeaturedSection />} />
           </Route>
+        </Route>
 
-        </Routes>
-      </div>
-      {/* <Footer /> */}
+      </Routes>
     </BrowserRouter>
   );
 }

@@ -1,13 +1,12 @@
 const db = require("../models");
-const Category = db.category;
+const SubCategory = db.sub_category;
 
 
 
-exports.getCategory = async (req, res) => {
+exports.getSubCategory = async (req, res) => {
     try {
-        let data = await Category.findAll({
-            limit:12,
-            attributes: ['id', 'name', 'image_url'],
+        let data = await SubCategory.findAll({
+            limit: 12,
         })
         res.status(200).send({
             success: true,
@@ -21,13 +20,14 @@ exports.getCategory = async (req, res) => {
 
 
 
-exports.CreateCategory = async (req, res) => {
+exports.CreateSubCategory = async (req, res) => {
     try {
-        await Category.create({
-            active:1,
-            sequence:req.body.sequence,
+        await SubCategory.create({
+            active: 1,
+            sequence: req.body.sequence,
             name: req.body.name,
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
+            cate_id: req.body.cate_id
         });
 
         res.status(200).send({
@@ -42,10 +42,10 @@ exports.CreateCategory = async (req, res) => {
 }
 
 
-exports.updateCategory = async (req, res)=>{
+exports.updateSubCategory = async (req, res) => {
     try {
-        const { id, name,image_url } = req.body;
-        
+        const { id, name, image_url, cate_id } = req.body;
+
         if (!id) {
             return res.status(400).send({
                 success: false,
@@ -53,10 +53,10 @@ exports.updateCategory = async (req, res)=>{
             });
         }
 
-        
-        const [updatedRowsCount] = await Category.update(
-            { name: name, image_url: image_url }, 
-            { where: { id: id } } 
+
+        const [updatedRowsCount] = await SubCategory.update(
+            { name: name, image_url: image_url, cate_id: cate_id },
+            { where: { id: id } }
         );
 
         if (updatedRowsCount === 0) {
@@ -73,13 +73,13 @@ exports.updateCategory = async (req, res)=>{
 
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
-    } 
+    }
 }
 
-exports.DeleteCategory = async (req, res) => {
+exports.DeleteSubCategory = async (req, res) => {
 
     try {
-        await Category.destroy({
+        await SubCategory.destroy({
             where: {
                 id: req.params.id
             }

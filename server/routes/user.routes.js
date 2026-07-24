@@ -15,4 +15,10 @@ module.exports = function (app) {
 
     app.post("/api/auth/signup", controller.singUp);
 
+    app.get("/api/get/users/with/role/:page/:pageSize", controller.getUsers);
+
+    app.get("/api/get/single/users/:id", controller.getSingleUsers);
+
+    app.patch("/api/update/single/user", controller.updateUsers);
+
 };

@@ -1,5 +1,5 @@
 const jwt = require('../middleware/authentication')
-const controller = require("../controllers/category.controller");
+const controller = require("../controllers/sub_category_controller");
 const upload = require('../multer/Upload')
 
 module.exports = function (app) {
@@ -11,8 +11,8 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/create/category", controller.CreateCategory);
-    app.patch("/api/update/category", controller.updateCategory);
-    app.get("/api/get/category/:page/:pageSize", controller.getCategory);
+    app.post("/api/create/sub/category", controller.CreateSubCategory);
+    app.patch("/api/update/sub/category", controller.updateSubCategory);
+    app.get("/api/get/sub/category/:page/:pageSize", controller.getSubCategory);
 
 };
