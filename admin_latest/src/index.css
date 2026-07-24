@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+a.canvasjs-chart-credit {
+  display: none;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+.react-datepicker-wrapper {
+  display: inline-block;
+  padding: 0;
+  border: 0;
+  width: 100% !important;
+}
+
+@font-face {
+  font-family: "SutonnyMJ";
+  src: url("../public/font/SutonnyMJ.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.text-sutonny-16 {
+  font-size: 24px;
+}
+
+#kalpurush {
+  font-family: Kalpurush, "Siyam Rupali", serif;
+}
+
+body {
+  font-family: "Times New Roman", Times, serif;
+}
+
+
+.pdf-th {
+  padding: 0;
+  border-right: 1px solid #000;
+}
+.pdf-th > div {
+  height: 24px;          /* top+bottom approx 6px like */
+  line-height: 24px;     /* IMPORTANT */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;   /* vertically center text */
+}

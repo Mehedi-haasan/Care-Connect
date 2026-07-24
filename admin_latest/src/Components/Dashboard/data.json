@@ -1,0 +1,97 @@
+[
+    {
+        "id": "1",
+        "name": "Dashboard",
+        "route": "dashboard",
+        "icon": "material-symbols:home-outline",
+        "class": "",
+        "option": false
+    },
+    {
+        "id": "2",
+        "name": "Items",
+        "route": "product",
+        "icon": "fluent-mdl2:work-item",
+        "class": "mt-2",
+        "option": true,
+        "items": [
+            {
+                "id": 21,
+                "parent": "2",
+                "name": "Content List",
+                "route": "items"
+            },
+            {
+                "id": 22,
+                "parent": "2",
+                "name": "Content Type",
+                "route": "content/type"
+            },
+            {
+                "id": 23,
+                "parent": "2",
+                "name": "Category",
+                "route": "category"
+            },
+            {
+                "id": 24,
+                "parent": "2",
+                "name": "Sub-Category",
+                "route": "sub/category"
+            }
+        ]
+    },
+    {
+        "id": "3",
+        "name": "Users",
+        "route": "",
+        "icon": "mdi:cart-outline",
+        "className": "mt-2",
+        "option": true,
+        "items": [
+            {
+                "id": 31,
+                "parent": "32",
+                "name": "Users",
+                "route": "users"
+            },
+            {
+                "id": 31,
+                "parent": "32",
+                "name": "Division",
+                "route": "division"
+            }
+        ]
+    },
+    {
+        "id": "8",
+        "name": "Warehouse",
+        "route": "update/product",
+        "icon": "dashicons:update",
+        "className": "mt-4",
+        "option": true,
+        "items": [
+            {
+                "id": 24,
+                "parent": "2",
+                "name": "Warehouses",
+                "route": "warehouses"
+            }
+        ]
+    },
+    {
+        "id": "10",
+        "name": "Settings",
+        "route": "setting",
+        "icon": "uil:setting",
+        "class": "my-3",
+        "option": true,
+        "items": [
+            {
+                "id": 83,
+                "name": "App Setting",
+                "route": "app/setting"
+            }
+        ]
+    }
+]
