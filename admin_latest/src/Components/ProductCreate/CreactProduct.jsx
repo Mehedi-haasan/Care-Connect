@@ -256,8 +256,6 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 pb-14'>
 
                         <div>
-
-
                             <div className='flex justify-start items-center w-full z-50'>
                                 <div className='w-full'>
                                     <h1 className='text-[15px] pb-1.5'>Content Name/Title</h1>
@@ -278,8 +276,6 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
 
                                 </div>
                             </div>
-
-
                         </div>
 
                         <div className='flex justify-start items-end pb-1 z-40'>

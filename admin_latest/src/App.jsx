@@ -175,11 +175,19 @@ function App() {
 
           <Route path="/OTP/varification" element={auth ? <OtpVarification /> : <Login auth={(v) => { setAuth(v) }} />} />
 
+
+
+
           <Route path="/create" element={auth ? <CreactProduct edition={edition} category={category} brand={brand} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
-          <Route path="/update/product/:id" element={auth ? <ProductUpdate category={category} brand={brand} info={info} editio={edition} /> : <Login auth={(v) => { setAuth(v) }} />} />
+          <Route path="/update/content/:id" element={auth ? <ProductUpdate category={category} brand={brand} info={info} editio={edition} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
           <Route path="/items" element={auth ? <Product category={category} brand={brand} entries={entries} shop={shop} user={user} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
+
+
+
+
+
 
           <Route path="/notification" element={<Notification data={data} info={info} />} />
 

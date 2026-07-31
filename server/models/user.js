@@ -40,7 +40,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         dept_id: {
             type: Sequelize.INTEGER
-        }
+        },
+        hospital_ids: {
+            type: Sequelize.JSON,
+            allowNull: true,
+            defaultValue: []
+        },
     });
     User.associate = (models) => {
         User.hasMany(models.role, {

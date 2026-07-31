@@ -236,4 +236,50 @@ exports.updateUsers = async (req, res) => {
     }
 };
 
+exports.GetDoctors = async (req, res) => {
+
+    try {
+
+        let whereClause = {}
+        if (req?.body?.division_id) {
+            whereClause['division_id'] = req?.body?.division_id
+        }
+        if (req?.body?.district_id) {
+            whereClause['district_id'] = req?.body?.district_id
+        }
+        if (req?.body?.upazila_id) {
+            whereClause['upazila_id'] = req?.body?.upazila_id
+        }
+
+
+        const doctors = await User.findAll({
+            where: whereClause,
+        })
+
+        const doctorsWithHospitals = await Promise.all(
+            doctors.map(async (doctor) => {
+                const hospitals = await db.hospital.findAll({
+                    where: {
+                        id: doctor.hospital_ids
+                    }
+                });
+
+                return {
+                    ...doctor.toJSON(),
+                    hospitals
+                };
+            })
+        );
+
+
+        res.status(200).send({
+            success: true,
+            items: doctorsWithHospitals,
+        });
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+};
+
 

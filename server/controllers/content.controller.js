@@ -51,9 +51,9 @@ exports.GetCommonContent = async (req, res) => {
         res.status(200).send({
             success: true,
             category: category,
-            sub_category:sub_category,
-            content_type:content_type,
-            users:users
+            sub_category: sub_category,
+            content_type: content_type,
+            users: users
         })
 
     } catch (error) {
@@ -64,7 +64,7 @@ exports.GetCommonContent = async (req, res) => {
 
 exports.GetSingleContent = async (req, res) => {
     try {
-        let data = await Content.findAll({
+        let data = await Content.findOne({
             include: [
                 {
                     model: db.category,
@@ -91,9 +91,38 @@ exports.GetSingleContent = async (req, res) => {
                 id: req.params.id
             }
         })
+
+        let related_data = await Content.findAll({
+            include: [
+                {
+                    model: db.category,
+                    as: "category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.sub_category,
+                    as: "sub_category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.content_type,
+                    as: "type",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.user,
+                    as: "creator",
+                    attributes: ["id", "name"],
+                }
+            ],
+            where: {
+                category_id: data?.category?.id
+            }
+        })
         res.status(200).send({
             success: true,
-            items: data
+            items: data,
+            related_data: related_data
         })
 
     } catch (error) {
@@ -139,6 +168,8 @@ exports.CreateContent = async (req, res) => {
             creator_id
         });
 
+
+
         res.status(201).json({
             success: true,
             message: "Content created successfully",
@@ -155,4 +186,24 @@ exports.CreateContent = async (req, res) => {
     }
 };
 
+
+exports.UpdateContent = async (req, res) => {
+    try {
+        let content = await Content.update(req.body.content, { where: { id: req?.body?.content?.id } });
+
+        res.status(201).json({
+            success: true,
+            message: "Content update successfully",
+            data: content
+        });
+
+    } catch (error) {
+        console.error("Error creating content:", error);
+        res.status(500).json({
+            success: false,
+            message: "Failed to create content",
+            error: error.message
+        });
+    }
+};
 

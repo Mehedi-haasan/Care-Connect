@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Category from "./Components/Category/Category";
 import ContentDetails from "./Components/ContantDetails/ContentDetails";
-import HospitalSearch from "./Components/FindDoctorHospital/HospitalSearch";
-import DoctorListPage from "./Components/FindDoctorHospital/DoctorListPage";
+import Hospitals from "./Components/FindDoctorHospital/Hospitals";
+import Doctors from "./Components/FindDoctorHospital/Doctors";
 import Home from "./Components/Home/Home";
 import ForgetPassword from "./Components/Login/ForgetPassword";
 import Login from "./Components/Login/Login";
@@ -23,8 +23,8 @@ function App() {
         <Route path="/registration" element={<Registration />} />
         <Route path="/ForgetPassword" element={<ForgetPassword />} />
         <Route path="/content/details/:id" element={<ContentDetails />} />
-        <Route path="/HospitalSearch" element={<HospitalSearch/>} />
-        <Route path="/DoctorListPage" element={<DoctorListPage />} />
+        <Route path="/hospitals" element={<Hospitals/>} />
+        <Route path="/doctors" element={<Doctors />} />
       
       </Routes>
       <Footer/>

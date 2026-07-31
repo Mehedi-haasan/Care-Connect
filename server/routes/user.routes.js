@@ -21,4 +21,6 @@ module.exports = function (app) {
 
     app.patch("/api/update/single/user", controller.updateUsers);
 
+    app.post("/api/get/doctors", controller.GetDoctors);
+
 };

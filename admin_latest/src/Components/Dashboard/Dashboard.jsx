@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BaseUrl from '../../Constant';
 import NotiFi from '../Input/Notification';
 import DCart from './Dcard';
+import PatientManagement from './PatientManagement';
 
 
 
@@ -15,6 +16,47 @@ const Dashboard = ({ info = {} }) => {
     useEffect(() => {
         document.title = "Dashboard - Care-Connect";
     }, []);
+
+    let data =[{
+        id:'1001',
+        name:'Mehedi hasan',
+        age:'25',
+        gender:'Male',
+        created_by:'Mehedi hasan',
+        created_at:'31 July 2026',
+        state:'Dhaka',
+        
+    },
+    {
+        id:'1001',
+        name:'Mehedi hasan',
+        age:'25',
+        gender:'Male',
+        created_by:'Mehedi hasan',
+        created_at:'31 July 2026',
+        state:'Dhaka',
+        
+    },
+    {
+        id:'1001',
+        name:'Mehedi hasan',
+        age:'25',
+        gender:'Male',
+        created_by:'Mehedi hasan',
+        created_at:'31 July 2026',
+        state:'Dhaka',
+        
+    },
+    {
+        id:'1001',
+        name:'Mehedi hasan',
+        age:'25',
+        gender:'Male',
+        created_by:'Mehedi hasan',
+        created_at:'31 July 2026',
+        state:'Dhaka',
+        
+    }]
 
 
     return (
@@ -38,7 +80,7 @@ const Dashboard = ({ info = {} }) => {
                         <div className='flex justify-between items-center'>
                             <h1 className='text-[20px]'>Patients Management</h1>
                         </div>
-                        {/* <InvoiceTemp info={info} invoices={invoices} RecentInvoice={RecentInvoice} /> */}
+                        <PatientManagement invoices={data}/>
 
                     </div>
                 </div>

@@ -32,7 +32,7 @@ export default function ForgetPassword() {
     if (email.trim() === "") return;
     setSubmitted(true);
 
-    // 🔹 Later: integrate with backend API (e.g., axios.post("/api/forgot-password", { email }))
+
   };
 
   return (

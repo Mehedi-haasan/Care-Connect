@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import image from '../../Logo/Logo.png';
+import BASE_URL from '../URL/baseurl';
 
 
 
@@ -13,7 +14,7 @@ export default function LoginPage() {
   });
   
   const handleSubmit = async (e) => {
-    const response = await fetch(`http://localhost:8050/api/auth/signin`, {
+    const response = await fetch(`${BASE_URL}/api/auth/signin`, {
       method: "POST",
       headers: {
         'Content-type': 'application/json; charset=UTF-8',

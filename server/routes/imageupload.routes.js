@@ -22,7 +22,7 @@ module.exports = function (app) {
     app.post("/api/upload/image", upload.single('image_url'), async (req, res) => {
         try {
             const image_url = req.file;
-            console.log(image_url);
+
 
             if (!image_url) {
                 return res.status(400).send({

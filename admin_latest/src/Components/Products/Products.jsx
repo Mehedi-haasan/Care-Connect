@@ -16,13 +16,8 @@ import Remove from '../../icons/Remove';
 
 const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
 
-    const [selectAll, setSelectAll] = useState(false);
     const [contents, setContents] = useState([])
-    const targetRef = useRef();
-    const outside = useRef(null)
-    const option = { width: 950, backgroundColor: '#ffffff' };
     const [message, setMessage] = useState({ id: Date.now(), mgs: '' });
-    const { ref, getPng } = useToImage(option)
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalItem, setTotalItem] = useState(0)
@@ -31,9 +26,7 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
     const [brandId, setBrandId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [comId, setComId] = useState(null);
-    const [isChecked, setIsChecked] = useState(false);
-    const [selected, setSelected] = useState(null)
-    const [preview, setPreview] = useState(false)
+
     const [filter, setFilter] = useState({
         cate: false,
         cate_value: "Select a filter",
@@ -42,7 +35,7 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
         war: false,
         war_value: 'Select a filter',
     })
-    let entries = [{ id: 501, name: "20" }, { id: 502, name: "30" }, { id: 503, name: "40" }, { id: 504, name: "50" }]
+
 
     useEffect(() => {
         document.title = "Items"
@@ -117,31 +110,6 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
     }
 
 
-    // const fetchContents = async () => {
-    //     try {
-
-    //         const url = category
-    //             ? `${BASE_URL}/api/get/content?category_type=${encodeURIComponent(category)}`
-    //             : `${BASE_URL}/api/get/content`;
-    //         const res = await fetch(url);
-    //         const data = await res.json();
-    //         setContents(data.items || []);
-    //     } catch (err) {
-    //         console.error(err);
-    //         setContents([]);
-    //     } finally {
-
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     fetchContents();
-    // }, [category]);
-
-
-
-
-
     return (
         <div className="pl-3 pt-5 pr-2 min-h-screen pb-12">
             <div className="flex justify-between items-center px-4 py-2 bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded shadow">
@@ -204,17 +172,14 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
 
                                         {/* Action Buttons */}
                                         <div className="flex gap-2 mt-auto">
-                                            <button
-                                                // onClick={() => navigate(`/admin/content/edit/${item.id}`)}
-                                                className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg hover:bg-gray-100"
-                                            >
+                                            <NavLink to={`/update/content/${item.id}`}
+                                                className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg hover:bg-gray-100">
                                                 <Edit /> Edit
-                                            </button>
-                                            <button
-                                                onClick={() => BulkDelete(item.id)}
+                                            </NavLink>
+                                            <button onClick={() => BulkDelete(item.id)}
                                                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg text-red-600 hover:bg-red-50"
                                             >
-                                                <Remove/>
+                                                <Remove />
                                             </button>
                                         </div>
                                     </div>

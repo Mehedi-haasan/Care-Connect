@@ -4,9 +4,10 @@ const Role = db.role;
 var bcrypt = require("bcryptjs");
 
 module.exports = async function () {
-    await db.sequelize.sync({ force: true });
-    await initAdmin()
-    await initUserRoles();
+    await db.sequelize.sync({ alter: true });
+
+    // await initAdmin();
+    // await initUserRoles();
 };
 async function initAdmin() {
     await User.create({

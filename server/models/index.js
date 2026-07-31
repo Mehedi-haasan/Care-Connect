@@ -43,6 +43,9 @@ db.address = require("./address")(sequelize, Sequelize);
 db.specialtie = require("./specialties")(sequelize, Sequelize);
 db.degree = require("./degrees")(sequelize, Sequelize);
 db.disease = require("./disease")(sequelize, Sequelize);
+db.appoinment = require("./appoinment")(sequelize, Sequelize);
+db.payment = require("./payment")(sequelize, Sequelize);
+db.hospital = require("./hospitals")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
