@@ -1,16 +1,15 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import BaseUrl from '../../Constant';
 import ShowEntries from "../Input/ShowEntries";
-import CategoryCard from "./CategoryCard";
+import DiseaseCard from "./DiseaseCard";
 import Loading from "../../icons/Loading";
 import Notification from "../Input/Notification";
 import Excel from "../Input/Excel";
 import Search from "../Input/Search";
-import EscapeRedirect from "../Wholesale/EscapeRedirect";
 import { useNavigate } from "react-router-dom";
 
 
-const Category = ({ entries, info = {} }) => {
+const Disease = () => {
 
 
     const [category, setCategory] = useState([])
@@ -21,10 +20,9 @@ const Category = ({ entries, info = {} }) => {
     const goto = useNavigate()
     const [message, setMessage] = useState({ id: '', mgs: '' });
 
-    const getCategory = async () => {
-        // setIsLoading(true)
+    const GetDisease = async () => {
         const token = localStorage.getItem('token')
-        const response = await fetch(`${BaseUrl}/api/get/category/${page}/${pageSize}`, {
+        const response = await fetch(`${BaseUrl}/api/get/disease/${page}/${pageSize}`, {
             method: 'GET',
             headers: {
                 "authorization": token,
@@ -39,33 +37,8 @@ const Category = ({ entries, info = {} }) => {
 
 
     useEffect(() => {
-        document.title = `Categorys - Care-Connect`;
-        getCategory()
+        GetDisease()
     }, [page, pageSize]);
-
-    const SearchCategory = async (value) => {
-        const name = value
-        const token = localStorage.getItem('token')
-        if (name !== '') {
-            const response = await fetch(`${BaseUrl}/api/get/category/filter/search/${name}`, {
-                method: 'GET',
-                headers: {
-                    'authorization': token,
-                },
-            });
-            const data = await response.json();
-            setCategory(data?.items);
-        } else {
-            getCategory()
-        }
-    }
-
-
-
-
-    EscapeRedirect()
-
-
 
 
     return (
@@ -73,24 +46,16 @@ const Category = ({ entries, info = {} }) => {
             <Notification message={message} />
 
             <div className="flex justify-between items-center px-4 py-2.5 bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded shadow">
-                <h1 className="font-semibold text-lg">Category List</h1>
-                <button onClick={() => { goto('/create/category') }} className={`bg-blue-500 rounded px-4 py-1.5 text-white font-thin`}>Create Category</button>
+                <h1 className="font-semibold text-lg">Disease List</h1>
+                <button onClick={() => { goto('/create/disease') }} className={`bg-blue-500 rounded px-4 py-1.5 text-white font-thin`}>Create Disease</button>
             </div>
 
             <div className="bg-[#FFFFFF] dark:bg-[#040404] dark:text-white p-4 shadow rounded-lg mt-2">
-                <div className='flex justify-between items-center my-3'>
-                    <div className="flex justify-start items-center gap-1.5">
-                        <ShowEntries options={entries} onSelect={(v) => { setPageSize(parseInt(v?.name)) }} />
-                    </div>
-                    <div className="flex justify-end items-center gap-8">
-                        <Excel filename='category.xlsx' data={category} />
-                        <Search SearchProduct={SearchCategory} />
-                    </div>
-                </div>
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5">
                     {
                         category?.map((item, i) => (
-                            <CategoryCard item={item} i={i} isChecked={!item?.active} info={info} getCategory={getCategory} />
+                            <DiseaseCard item={item} i={i} />
                         ))
                     }
                 </div>
@@ -112,4 +77,4 @@ const Category = ({ entries, info = {} }) => {
     )
 }
 
-export default Category
+export default Disease

@@ -1,20 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import BaseUrl from '../../Constant';
 import SelectionComponent from '../Input/SelectionComponent';
-import ShowEntries from '../Input/ShowEntries';
 import Loading from '../../icons/Loading';
 import { NavLink } from 'react-router-dom';
-import Excel from '../Input/Excel';
 import Search from '../Input/Search';
-import { useToImage } from '@hcorta/react-to-image'
 import EscapeRedirect from '../Wholesale/EscapeRedirect';
 import Edit from '../../icons/Edit';
-import BASE_URL from "../../Constant";
 import Remove from '../../icons/Remove';
 
 
 
-const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
+const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
 
     const [contents, setContents] = useState([])
     const [message, setMessage] = useState({ id: Date.now(), mgs: '' });
@@ -113,42 +109,12 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
     return (
         <div className="pl-3 pt-5 pr-2 min-h-screen pb-12">
             <div className="flex justify-between items-center px-4 py-2 bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded shadow">
-                <h1 className="font-semibold text-lg">Content List</h1>
-                <NavLink to='/create' className={`border text-white rounded-lg font-thin shadow py-2 px-5 bg-blue-600`}>Create Item</NavLink>
+                <h1 className="font-semibold text-lg">Hospital List</h1>
+                <NavLink to='/create/hospital' className={`border text-white rounded-lg font-thin shadow py-2 px-5 bg-blue-600`}>Create Hospital</NavLink>
             </div>
             <div className="bg-[#FFFFFF] dark:bg-[#040404] dark:text-white p-4 shadow rounded-lg mt-2">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div>
-                        <SelectionComponent options={category ? category : []} default_select={filter?.cate} default_value={filter?.cate_value}
-                            onSelect={(v) => { setFilter({ ...filter, cate_value: v?.name }); setCatId(v?.id) }} label={'Categories'} />
-                    </div>
-                    <div>
-                        <SelectionComponent options={brand} default_select={filter?.bran} default_value={filter?.bran_value}
-                            onSelect={(v) => { setFilter({ ...filter, bran_value: v?.name }); setBrandId(v?.id) }} label={'Sub Category'} />
-                    </div>
-
-                    <div>
-                        <SelectionComponent options={shop ? shop : []} default_select={filter?.war} default_value={filter?.war_value}
-                            onSelect={(v) => { setFilter({ ...filter, war_value: v?.name }); setComId(v?.id) }} label={'Content Type'} />
-                    </div>
-
-
-                    <div className="flex justify-end items-center gap-8">
-                        <Search SearchProduct={(e) => { SearchProduct(e) }} />
-                    </div>
-
-                </div>
-
                 <div >
-                    {/* <div className='flex justify-between items-center my-3'>
-                        <div className="flex justify-start items-center gap-1.5">
-                            <ShowEntries options={entries} onSelect={(v) => { setPageSize(parseInt(v?.name)) }} />
-                        </div>
-                        <div className="flex justify-end items-center gap-8">
 
-                            <Search SearchProduct={(e) => { SearchProduct(e) }} />
-                        </div>
-                    </div> */}
                     <div className="pt-3 w-full overflow-hidden overflow-x-auto actual-receipt" >
                         {/* Content Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -209,6 +175,6 @@ const Product = ({ category = [], brand = [], shop = [], info = {} }) => {
     )
 }
 
-export default Product
+export default Hospital
 
 

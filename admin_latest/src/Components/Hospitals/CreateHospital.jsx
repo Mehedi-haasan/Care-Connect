@@ -3,19 +3,18 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Button from '../Input/Button';
 import SelectionComponent from '../Input/SelectionComponent'
+import InputComponent from '../Input/InputComponent'
 import BaseUrl from '../../Constant';
 import Notification from '../Input/Notification';
 import { useNavigate } from 'react-router-dom';
 import Add from '../../icons/Add';
 import logo from '../Logo/photo.png'
 import ImageSelect from '../Input/ImageSelect'
-import EscapeRedirect from '../Wholesale/EscapeRedirect';
 
 
 
-const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
+const CreactHospital = () => {
     const goto = useNavigate()
-    const quillRef = useRef(null);
     const input_name = useRef(null);
     const [filter, setFilter] = useState({
         editor_value: "Select a filter",
@@ -37,10 +36,10 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
     const [second, setSecond] = useState(false)
     const [third, setThird] = useState(false)
 
-    const [category, setCategory] = useState([]);
-    const [subCategory, setSubCategory] = useState([])
+    const [division, setDivision] = useState([]);
+    const [district, setDistrict] = useState([])
     const [users, setUsers] = useState([])
-    const [contentType, setContentType] = useState([])
+    const [upazila, setUpazila] = useState([])
 
 
     const [image_url, setImage_Url] = useState(null);
@@ -64,11 +63,9 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
     })
 
 
-    EscapeRedirect("/items")
-
     const GetCommonData = async () => {
         const token = localStorage.getItem('token')
-        const response = await fetch(`${BaseUrl}/api/get/content/common/data`, {
+        const response = await fetch(`${BaseUrl}/api/get/common/state`, {
             method: 'GET',
             headers: {
                 "authorization": token,
@@ -76,51 +73,10 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
             },
         });
         const data = await response.json()
-        setCategory(data?.category);
-        setSubCategory(data?.sub_category);
-        setUsers(data?.users);
-        setContentType(data?.content_type)
+        setDivision(data?.divitions);
+        setDistrict(data?.districts);
+        setUpazila(data?.upazilas)
     }
-
-    const imageHandler = () => {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = "image/*";
-        input.click();
-
-        input.onchange = async () => {
-            const file = input.files?.[0];
-            if (!file) return;
-
-            const editor = quillRef.current?.getEditor();
-            if (!editor) return;
-
-            const formData = new FormData();
-            formData.append("image", file);
-
-            try {
-                const res = await fetch(`${BaseUrl}/api/upload/image`, {
-                    method: "POST",
-                    body: formData,
-                });
-
-                const data = await res.json();
-
-                if (data.success && data.path) {
-                    const range = editor.getSelection(true);
-                    editor.insertEmbed(
-                        range.index,
-                        "image",
-                        `${BaseUrl}${data.path}`
-                    );
-                    editor.setSelection(range.index + 1);
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        };
-    };
-
 
 
     useEffect(() => {
@@ -130,17 +86,8 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
     }, []);
 
 
-    const anotherFunction = () => {
-        setIsLoading(false);
-        goto('/items')
-    }
-
-
-
-
 
     const handleCreate = async (image_url) => {
-        console.log(values)
         setIsLoading(true)
         if (!values?.name || !values?.category_id || !values?.sub_cate_id || !values?.type_id) {
             setMessage({ id: Date.now(), mgs: "Required field is missing" });
@@ -148,7 +95,6 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
         }
 
         values.image_url = image_url;
-
         const token = localStorage.getItem('token');
         try {
             const response = await fetch(`${BaseUrl}/api/create/content`, {
@@ -163,10 +109,7 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
             const data = await response.json();
             setIsLoading(false)
             setMessage({ id: Date.now(), mgs: data?.message });
-            anotherFunction();
-            handleClose(false);
-            callAgain()
-            goto('/items')
+            goto('/hospitals')
         } catch (error) {
             setIsLoading(false)
             console.error('Error updating variant:', error);
@@ -222,33 +165,13 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
 
 
 
-    const modules = {
-        toolbar: {
-            container: [
-                [{ header: [1, 2, 3, false] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link", "image", "video"],
-                ["clean"],
-            ],
-            handlers: {
-                image: imageHandler,
-            },
-        },
-    };
-
-
-
-
-
-
 
     return (
         <div className='min-h-screen pb-12 py-5 px-3 relative'>
 
             <div className='shadow-lg bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded-xl'>
                 <div className='border-b px-5 flex justify-between items-center'>
-                    <h1 className='text-2xl font-semibold  py-5'>Item Details</h1>
+                    <h1 className='text-2xl font-semibold  py-5'>Hospita Details</h1>
                     <Notification message={message} />
                 </div>
 
@@ -258,7 +181,7 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
                         <div>
                             <div className='flex justify-start items-center w-full z-50'>
                                 <div className='w-full'>
-                                    <h1 className='text-[15px] pb-1.5'>Content Name/Title</h1>
+                                    <h1 className='text-[15px] pb-1.5'>Hospital Name</h1>
                                     <input
                                         type="text"
                                         ref={input_name}
@@ -277,21 +200,22 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
                                 </div>
                             </div>
                         </div>
-
+                        <InputComponent label='Phone' placeholder={'Enter hospital phone'} onChange={(v) => { setValues({ ...values, phone: v }) }} />
+                        <InputComponent label='Email' placeholder={'Enter hospital email'} onChange={(v) => { setValues({ ...values, email: v }) }} />
                         <div className='flex justify-start items-end pb-1 z-40'>
-                            <SelectionComponent options={contentType} default_select={first} default_value={filter?.bran_value}
-                                onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Content Type*"} className='rounded-l' />
+                            <SelectionComponent options={division} default_select={first} default_value={filter?.bran_value}
+                                onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Division"} className='rounded-l' />
                             <div onClick={() => goto(`/create/brand`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
                         </div>
 
                         <div className='flex justify-start items-end pb-1 '>
-                            <SelectionComponent options={category} default_select={second} default_value={filter?.cate_value}
+                            <SelectionComponent options={district} default_select={second} default_value={filter?.cate_value}
                                 onSelect={(v) => {
                                     setSecond(false); setThird(true); setValues({ ...values, category_id: v?.id });
                                     setFilter({ ...filter, cate_value: v?.name })
-                                }} label={"Category*"} className='rounded-l' />
+                                }} label={"District"} className='rounded-l' />
                             <div onClick={() => goto(`/create/category`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
@@ -299,40 +223,25 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
 
 
                         <div className='flex justify-start items-end pb-1'>
-                            <SelectionComponent options={subCategory} default_select={third} default_value={filter?.sup_value} onSelect={(v) => { desc.current?.focus(); setValues({ ...values, sub_cate_id: v?.id }); setFilter({ ...filter, sup_value: v?.name }) }} label={"Sub Category*"} className='rounded-l' />
+                            <SelectionComponent options={upazila} default_select={third} default_value={filter?.sup_value}
+                                onSelect={(v) => { desc.current?.focus(); setValues({ ...values, sub_cate_id: v?.id }); setFilter({ ...filter, sup_value: v?.name }) }}
+                                label={"Upazila"} className='rounded-l' />
                             <div onClick={() => goto(`/create/supplier`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
                         </div>
                         <div className='my-2 grid col-span-1 pb-2'>
                             <div>
-                                <h1 className="py-1">Description</h1>
-                                {/* <textarea placeholder="Enter your note" ref={desc} value={values?.description}
+                                <h1 className="py-1">Address</h1>
+                                <textarea placeholder="Enter your address" ref={desc} value={values?.description}
                                     onChange={(e) => { setValues({ ...values, description: e?.target?.value }) }}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             setCreator(true)
                                         }
                                     }}
-                                    className="font-thin focus:outline-none border p-1.5 w-full rounded dark:bg-[#040404] dark:text-white" /> */}
+                                    className="font-thin focus:outline-none border p-1.5 w-full rounded dark:bg-[#040404] dark:text-white" />
 
-                                <div>
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={values.description}
-                                        onChange={(value) =>
-                                            setValues((prev) => ({ ...prev, description: value }))
-                                        }
-                                        formats={["header", "bold", "italic", "underline", "strike", "list", "bullet", "link", "image", "video"]}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                setCreator(true)
-                                            }
-                                        }}
-                                        placeholder="Write description here with images, links, videos..."
-                                        className="bg-white rounded-lg shadow-sm"
-                                    />
-                                </div>
                             </div>
                         </div>
 
@@ -341,8 +250,7 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
                                 <div className="flex justify-start items-end">
                                     <button onClick={() => { setActive("Pricing") }} className={`${active === "Pricing" ? "border-x border-t border-green-500 text-green-500" : "border-b text-blue-500"} px-4 py-1.5 rounded-t flex justify-start items-start font-thin`}>
                                         <svg xmlns="http://www.w3.org/2000/svg" className='mt-0.5 mr-1' width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4c4.411 0 8 3.589 8 8s-3.589 8-8 8s-8-3.589-8-8s3.589-8 8-8m0-2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 9h-4V7h-2v4H7v2h4v4h2v-4h4z" /></svg>
-
-                                        Creator
+                                        Doctors
                                     </button>
                                     <button onClick={() => { setActive("Image") }} className={`${active === "Image" ? "border-x border-t border-green-500 text-green-600" : "border-b text-blue-500"} px-4 py-1.5 rounded-t flex justify-start items-center gap-1 font-thin`}>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M4 5h13v7h2V5c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v12c0 1.103.897 2 2 2h8v-2H4z" /><path fill="currentColor" d="m8 11l-3 4h11l-4-6l-3 4z" /><path fill="currentColor" d="M19 14h-2v3h-3v2h3v3h2v-3h3v-2h-3z" /></svg>
@@ -389,4 +297,4 @@ const CreactProduct = ({ handleClose, callAgain, info = {} }) => {
     );
 };
 
-export default CreactProduct;
+export default CreactHospital;

@@ -3,8 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './Components/Share/Header.jsx'
 import Footer from './Components/Share/Footer.jsx'
 import Dashboard from "./Components/Dashboard/Dashboard.jsx";
-import CreactProduct from "./Components/ProductCreate/CreactProduct.jsx";
-import Product from './Components/Products/Products.jsx';
+import Content from './Components/Contents/Contents.jsx';
 import Profile from "./Components/Profile/Profile.jsx";
 import Login from "./Components/Login/Login.jsx";
 import Registration from "./Components/Login/Registration.jsx";
@@ -21,7 +20,6 @@ import Setting from "./Components/Setting/Setting.jsx";
 import House from "./Components/Warehouse/House.jsx";
 import CreateCategory from './Components/Category/CreateCategory.jsx'
 import CreateContentType from "./Components/ContentType/CreateContentType.jsx";
-import ProductUpdate from "./Components/Products/ProductUpdate.jsx";
 import Division from './Components/Division/Division.jsx'
 import english from './lang/en.json'
 import bangla from './lang/bn.json'
@@ -35,6 +33,12 @@ import CreateSubCategory from "./Components/SubCategory/CreateSubCategory.jsx";
 import DivisionCreate from "./Components/Division/DivisionCreate.jsx";
 import CreateDistrict from "./Components/Division/CreateDistrict.jsx";
 import CreateUpazila from "./Components/Division/CreateUpazila.jsx";
+import Disease from "./Components/Disease/Disease.jsx";
+import CreateDisease from "./Components/Disease/CreateDisease.jsx";
+import CreactContent from "./Components/Contents/CreateContent.jsx";
+import UpdateContent from "./Components/Contents/ContentUpdate.jsx";
+import Hospital from "./Components/Hospitals/Hospital.jsx";
+import CreactHospital from "./Components/Hospitals/CreateHospital.jsx";
 
 
 
@@ -178,15 +182,15 @@ function App() {
 
 
 
-          <Route path="/create" element={auth ? <CreactProduct edition={edition} category={category} brand={brand} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
+          <Route path="/create" element={auth ? <CreactContent edition={edition} category={category} brand={brand} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
-          <Route path="/update/content/:id" element={auth ? <ProductUpdate category={category} brand={brand} info={info} editio={edition} /> : <Login auth={(v) => { setAuth(v) }} />} />
+          <Route path="/update/content/:id" element={auth ? <UpdateContent category={category} brand={brand} info={info} editio={edition} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
-          <Route path="/items" element={auth ? <Product category={category} brand={brand} entries={entries} shop={shop} user={user} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
+          <Route path="/contents" element={auth ? <Content category={category} brand={brand} entries={entries} shop={shop} user={user} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
+          <Route path="/disease" element={auth ? <Disease /> : <Login auth={(v) => { setAuth(v) }} />} />
 
-
-
+          <Route path="/create/disease" element={auth ? <CreateDisease /> : <Login auth={(v) => { setAuth(v) }} />} />
 
 
           <Route path="/notification" element={<Notification data={data} info={info} />} />
@@ -224,7 +228,9 @@ function App() {
 
           <Route path="/update/attribute/:id" element={auth ? <UpdateAttribute brands={brand} entries={entries} info={info} /> : <Login auth={(v) => { setAuth(v) }} />} />
 
+          <Route path="/hospitals" element={auth ? <Hospital /> : <Login auth={(v) => { setAuth(v) }} />} />
 
+          <Route path="/create/hospital" element={auth ? <CreactHospital /> : <Login auth={(v) => { setAuth(v) }} />} />
 
           <Route path="/create/category" element={auth ? <CreateCategory /> : <Login auth={(v) => { setAuth(v) }} />} />
 

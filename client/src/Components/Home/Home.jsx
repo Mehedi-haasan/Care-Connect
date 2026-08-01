@@ -19,7 +19,7 @@ const Home = () => {
 
 
 
-  const diseases = [
+  const dise = [
     "অ্যালার্জি",
     "গ্যাস্ট্রিক",
     "অ্যাজমা",
@@ -77,6 +77,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [contentType, setContentType] = useState([])
+  const [diseases, setDiseases]=useState([])
 
   const FetchContents = async () => {
     try {
@@ -89,6 +90,24 @@ const Home = () => {
       setLoading(false);
     }
   };
+
+  const GerDisease = async () => {
+    const token = localStorage.getItem('token');
+    try {
+        const response = await fetch(`${BASE_URL}/api/get/disease/1/15`, {
+            method: 'GET',
+            headers: {
+                'authorization': token,
+                'Content-type': 'application/json; charset=UTF-8',
+            }
+        });
+
+        const data = await response.json();
+        setDiseases(data?.items)
+    } catch (error) {
+
+    }
+}
 
 
   const GetContentType = async () => {
@@ -107,6 +126,7 @@ const Home = () => {
   useEffect(() => {
     GetContentType()
     FetchContents()
+    GerDisease()
   }, []);
 
 
@@ -167,9 +187,9 @@ const Home = () => {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 py-4 bg-[#F2EEF8] mt-4 rounded-xl">
-          {diseases.map((d, i) => (
+          {diseases?.map((d, i) => (
             <button key={i} className="rounded-lg px-3 py-2 font-semibold hover:bg-[#8B61C2] hover:text-white transition">
-              {d}
+              {d?.name}
             </button>
           ))}
         </div>

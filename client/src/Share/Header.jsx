@@ -9,8 +9,8 @@ const Header = () => {
   const menuItems = [
     { title: "স্বাস্থ্য পাঠ", link: "/" },
     { title: "বিষয়-ভিত্তিক", link: "#" },
-    { title: "ডাক্তার", link: "/doctorlistPage" },
-    { title: "হাসপাতাল", link: "/HospitalSearch" },
+    { title: "ডাক্তার", link: "/doctors" },
+    { title: "হাসপাতাল", link: "/hospitals" },
     { title: "সেবা সমূহ", link: "#" },
     { title: "লগইন", link: "/login" },
   ];

@@ -27,7 +27,7 @@ const HealthVideoSection = () => {
       }
     };
 
-    fetchVideos();
+    // fetchVideos();
   }, []);
 
   // ❤️ LIKE

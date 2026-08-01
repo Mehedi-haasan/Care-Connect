@@ -38,6 +38,18 @@
                 "parent": "2",
                 "name": "Sub-Category",
                 "route": "sub/category"
+            },
+            {
+                "id": 25,
+                "parent": "2",
+                "name": "Disease",
+                "route": "disease"
+            },
+            {
+                "id": 26,
+                "parent": "2",
+                "name": "Hospital",
+                "route": "hospitals"
             }
         ]
     },

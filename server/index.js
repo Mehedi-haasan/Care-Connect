@@ -29,6 +29,7 @@ require('./routes/address_routes')(app);
 require('./routes/degrees_routes')(app);
 require('./routes/hospital_routes')(app);
 require('./routes/appoinment_routes')(app);
+require('./routes/disease_routes')(app);
 
 
 
