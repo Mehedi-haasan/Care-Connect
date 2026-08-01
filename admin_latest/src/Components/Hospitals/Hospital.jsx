@@ -1,51 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import BaseUrl from '../../Constant';
-import SelectionComponent from '../Input/SelectionComponent';
 import Loading from '../../icons/Loading';
 import { NavLink } from 'react-router-dom';
-import Search from '../Input/Search';
-import EscapeRedirect from '../Wholesale/EscapeRedirect';
 import Edit from '../../icons/Edit';
 import Remove from '../../icons/Remove';
 
 
 
-const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
+const Hospital = () => {
 
-    const [contents, setContents] = useState([])
-    const [message, setMessage] = useState({ id: Date.now(), mgs: '' });
+
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalItem, setTotalItem] = useState(0)
     const [pageSize, setPageSize] = useState(20);
-    const [catId, setCatId] = useState(null);
-    const [brandId, setBrandId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [comId, setComId] = useState(null);
-
-    const [filter, setFilter] = useState({
-        cate: false,
-        cate_value: "Select a filter",
-        bran: false,
-        bran_value: 'Select a filter',
-        war: false,
-        war_value: 'Select a filter',
-    })
 
 
-    useEffect(() => {
-        document.title = "Items"
-        if (info?.role === "superadmin") {
-            setComId(info?.compId)
-        } else {
-            setComId(null)
-        }
-    }, [info])
 
-    const getProduct = async () => {
-        // setIsLoading(true)
+
+    const GetHospital = async () => {
         const token = localStorage.getItem('token')
-        const response = await fetch(`${BaseUrl}/api/get/content`, {
+        const response = await fetch(`${BaseUrl}/api/get/hospital`, {
             method: 'GET',
             headers: {
                 "authorization": token,
@@ -53,57 +29,12 @@ const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
             },
         });
         const data = await response.json()
-        setContents(data?.items)
-        setTotalItem(data?.count)
-        setIsLoading(false)
+        setData(data?.items)
     }
 
     useEffect(() => {
-        getProduct()
-    }, [page, pageSize, brandId, catId, comId])
-
-
-    const SearchProduct = async (e) => {
-        const name = e
-        const token = localStorage.getItem('token')
-        if (name !== '') {
-            const response = await fetch(`${BaseUrl}/api/get/product/search/with/${name}`, {
-                method: 'GET',
-                headers: {
-                    'authorization': token,
-                },
-            });
-            const data = await response.json();
-            setData(data.items)
-        } else {
-            getProduct()
-        }
-
-
-    }
-
-
-
-
-    EscapeRedirect()
-
-
-
-
-    const BulkDelete = async () => {
-        const token = localStorage.getItem('token')
-        const response = await fetch(`${BaseUrl}/api/bulk/update/product`, {
-            method: 'POST',
-            headers: {
-                'authorization': token,
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-            body: JSON.stringify({ data: data }),
-        });
-        const result = await response.json();
-        setMessage({ id: Date.now(), mgs: result?.message });
-        getProduct()
-    }
+        GetHospital()
+    }, [page, pageSize])
 
 
     return (
@@ -118,7 +49,7 @@ const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
                     <div className="pt-3 w-full overflow-hidden overflow-x-auto actual-receipt" >
                         {/* Content Grid */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {contents?.map((item) => (
+                            {data?.map((item) => (
                                 <div key={item.id} className="bg-white rounded-xl shadow flex flex-col hover:shadow-lg transition-shadow duration-200">
                                     <img
                                         src={item?.image_url}
@@ -127,13 +58,12 @@ const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
                                     />
                                     <div className="p-4 flex-1 flex flex-col">
                                         <h3 className="font-bold text-lg">{item.name}</h3>
-                                        <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item.title}</p>
+                                        <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item.address}</p>
                                         <div className="flex justify-between text-xs text-gray-500 mb-3">
                                             <span className="flex items-center gap-1">
-                                                {/* <Layers size={14} /> */}
-                                                {item?.category?.name}
+                                                Doctors
                                             </span>
-                                            <span>Pos: {item.sequence}</span>
+                                            <span>{item.doctor_ids.length} Persons</span>
                                         </div>
 
                                         {/* Action Buttons */}
@@ -142,7 +72,7 @@ const Hospital = ({ category = [], brand = [], shop = [], info = {} }) => {
                                                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg hover:bg-gray-100">
                                                 <Edit /> Edit
                                             </NavLink>
-                                            <button onClick={() => BulkDelete(item.id)}
+                                            <button onClick={() => { }}
                                                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg text-red-600 hover:bg-red-50"
                                             >
                                                 <Remove />

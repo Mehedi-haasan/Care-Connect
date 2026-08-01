@@ -25,8 +25,16 @@ exports.GetHospital = async (req, res) => {
 exports.CreateHospital = async (req, res) => {
     try {
         await Hospital.create({
+            active: true,
             name: req.body.name,
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
+            division_id: req.body.division_id,
+            district_id: req.body.district_id,
+            upazila_id: req.body.upazila_id,
+            address: req.body.address,
+            doctor_ids: req.body.doctor_ids,
+            phone: req.body.phone,
+            email: req.body.email
         });
 
         res.status(200).send({
@@ -42,8 +50,8 @@ exports.CreateHospital = async (req, res) => {
 
 exports.updateHospital = async (req, res) => {
     try {
-        const { id, name,image_url } = req.body;
-        
+        const { id, name, image_url } = req.body;
+
         if (!id) {
             return res.status(400).send({
                 success: false,
@@ -51,10 +59,10 @@ exports.updateHospital = async (req, res) => {
             });
         }
 
-        
+
         const [updatedRowsCount] = await Hospital.update(
-            { name: name, image_url: image_url }, 
-            { where: { id: id } } 
+            { name: name, image_url: image_url },
+            { where: { id: id } }
         );
 
         if (updatedRowsCount === 0) {

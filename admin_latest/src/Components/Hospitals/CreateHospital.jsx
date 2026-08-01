@@ -35,7 +35,7 @@ const CreactHospital = () => {
     const [first, setFirst] = useState(false)
     const [second, setSecond] = useState(false)
     const [third, setThird] = useState(false)
-
+    const [docts, setDocts] = useState([]);
     const [division, setDivision] = useState([]);
     const [district, setDistrict] = useState([])
     const [users, setUsers] = useState([])
@@ -48,17 +48,14 @@ const CreactHospital = () => {
     const [active, setActive] = useState("Pricing")
 
     const [values, setValues] = useState({
-        category_id: 1,
-        sub_cate_id: 1,
+        division_id: 1,
+        district_id: 1,
         name: '',
-        title: '',
-        description: '',
+        email:'',
+        phone:'',
         image_url: "",
-        price: 0,
-        standard_price: 1,
-        sku: 1,
-        type_id: 1,
-        creator_id: 1,
+        upazila_id: 1,
+        doctor_ids: [],
 
     })
 
@@ -78,26 +75,34 @@ const CreactHospital = () => {
         setUpazila(data?.upazilas)
     }
 
+    const GetDoctors = async () => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${BaseUrl}/api/get/doctors`, {
+            method: 'POST',
+            headers: {
+                "authorization": token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        const data = await response.json()
+        setUsers(data?.items)
+    }
+
 
     useEffect(() => {
         document.title = "Items - Care-Connect";
         GetCommonData()
-
+        GetDoctors()
     }, []);
 
 
 
     const handleCreate = async (image_url) => {
         setIsLoading(true)
-        if (!values?.name || !values?.category_id || !values?.sub_cate_id || !values?.type_id) {
-            setMessage({ id: Date.now(), mgs: "Required field is missing" });
-            return;
-        }
-
         values.image_url = image_url;
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`${BaseUrl}/api/create/content`, {
+            const response = await fetch(`${BaseUrl}/api/create/hospital`, {
                 method: 'POST',
                 headers: {
                     'authorization': token,
@@ -120,10 +125,6 @@ const CreactHospital = () => {
 
     const handleUpload = async () => {
         setIsLoading(true)
-        if (!values?.name || !values?.category_id || !values?.sub_cate_id || !values?.type_id || !values?.creator_id) {
-            setMessage({ id: Date.now(), mgs: "Required field is missing" });
-            return;
-        }
         const formData = new FormData();
         if (image_url) {
             formData.append('image_url', image_url);
@@ -204,7 +205,11 @@ const CreactHospital = () => {
                         <InputComponent label='Email' placeholder={'Enter hospital email'} onChange={(v) => { setValues({ ...values, email: v }) }} />
                         <div className='flex justify-start items-end pb-1 z-40'>
                             <SelectionComponent options={division} default_select={first} default_value={filter?.bran_value}
-                                onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Division"} className='rounded-l' />
+                                onSelect={(v) => {
+                                    setFirst(false); setSecond(true); setValues({ ...values, division_id: v?.id });
+                                    setFilter({ ...filter, bran_value: v?.name })
+                                }}
+                                label={"Division"} className='rounded-l' />
                             <div onClick={() => goto(`/create/brand`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
@@ -213,7 +218,7 @@ const CreactHospital = () => {
                         <div className='flex justify-start items-end pb-1 '>
                             <SelectionComponent options={district} default_select={second} default_value={filter?.cate_value}
                                 onSelect={(v) => {
-                                    setSecond(false); setThird(true); setValues({ ...values, category_id: v?.id });
+                                    setSecond(false); setThird(true); setValues({ ...values, district_id: v?.id });
                                     setFilter({ ...filter, cate_value: v?.name })
                                 }} label={"District"} className='rounded-l' />
                             <div onClick={() => goto(`/create/category`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
@@ -224,7 +229,7 @@ const CreactHospital = () => {
 
                         <div className='flex justify-start items-end pb-1'>
                             <SelectionComponent options={upazila} default_select={third} default_value={filter?.sup_value}
-                                onSelect={(v) => { desc.current?.focus(); setValues({ ...values, sub_cate_id: v?.id }); setFilter({ ...filter, sup_value: v?.name }) }}
+                                onSelect={(v) => { desc.current?.focus(); setValues({ ...values, upazila_id: v?.id }); setFilter({ ...filter, sup_value: v?.name }) }}
                                 label={"Upazila"} className='rounded-l' />
                             <div onClick={() => goto(`/create/supplier`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
@@ -233,8 +238,8 @@ const CreactHospital = () => {
                         <div className='my-2 grid col-span-1 pb-2'>
                             <div>
                                 <h1 className="py-1">Address</h1>
-                                <textarea placeholder="Enter your address" ref={desc} value={values?.description}
-                                    onChange={(e) => { setValues({ ...values, description: e?.target?.value }) }}
+                                <textarea placeholder="Enter your address" ref={desc} value={values?.address}
+                                    onChange={(e) => { setValues({ ...values, address: e?.target?.value }) }}
                                     onKeyDown={(e) => {
                                         if (e.key === "Enter") {
                                             setCreator(true)
@@ -260,27 +265,36 @@ const CreactHospital = () => {
                             </div>
 
                             <div className='h-[120px]'>
-                                {
-                                    active === "Pricing" && <div className="px-3 pt-3 grid grid-cols-1">
-                                        <div className='flex justify-start items-end pb-1 '>
-                                            <SelectionComponent options={users} default_select={creator} default_value={filter?.editor_value}
-                                                onSelect={(v) => {
-                                                    setCreator(false); setValues({ ...values, creator_id: v?.id });
-                                                    setFilter({ ...filter, editor_value: v?.name });
-                                                    setActive("Image")
-                                                }} label={""} className='rounded-l' />
-                                            <div onClick={() => goto(`/create/category`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
-                                                <Add />
-                                            </div>
+                                {active === "Pricing" && <div className="px-3 pt-3 grid grid-cols-1">
+                                    <div className='flex justify-start items-center gap-3'>
+                                        {docts?.map((item) => {
+                                            return <p>{item}</p>
+                                        })}
+                                    </div>
+                                    <div className='flex justify-start items-end pb-1 '>
+                                        <SelectionComponent options={users} default_select={creator} default_value={filter?.editor_value}
+                                            onSelect={(v) => {
+                                                setCreator(false); setValues({ ...values, creator_id: v?.id });
+                                                setFilter({ ...filter, editor_value: v?.name });
+                                                if (v?.name) {
+                                                    setDocts(prev => prev.includes(v.name) ? prev : [...prev, v.name]);
+                                                }
+                                                setValues({
+                                                    ...values,
+                                                    doctor_ids: values?.doctor_ids?.includes(v.id)
+                                                        ? values?.doctor_ids
+                                                        : [...values?.doctor_ids, v.id],
+                                                });
+                                            }} label={""} className='rounded-l' />
+                                        <div onClick={() => goto(`/create/category`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE]'>
+                                            <Add />
                                         </div>
                                     </div>
-                                }
+                                </div>}
 
-                                {
-                                    active === "Image" && <div className=" grid grid-cols-1 gap-4">
-                                        <ImageSelect handleImageChange={handleImageChange} imageFile={imageFile} logo={logo} />
-                                    </div>
-                                }
+                                {active === "Image" && <div className=" grid grid-cols-1 gap-4">
+                                    <ImageSelect handleImageChange={handleImageChange} imageFile={imageFile} logo={logo} />
+                                </div>}
 
                             </div>
                         </div>
