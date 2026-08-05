@@ -10,6 +10,7 @@ module.exports = function (app) {
     })
 
     app.get('/api/get/hospital', controller.GetHospital);
+    app.get('/api/get/single/hospital/:id', controller.GetSingleHospital);
     app.post('/api/create/hospital', jwt.verifyToken, controller.CreateHospital);
     app.patch('/api/update/hospital', jwt.verifyToken, controller.updateHospital);
     app.delete('/api/delete/hospital/:id', jwt.verifyToken, controller.updateHospital);

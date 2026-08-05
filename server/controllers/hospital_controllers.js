@@ -19,6 +19,58 @@ exports.GetHospital = async (req, res) => {
 }
 
 
+exports.GetSingleHospital = async (req, res) => {
+    try {
+        let data = await Hospital.findOne({
+            where: {
+                id: req.params.id
+            },
+            include: [
+                {
+                    model: db.division,
+                    as: "division"
+                },
+                {
+                    model: db.distric,
+                    as: "district"
+                },
+                {
+                    model: db.upazila,
+                    as: "upazila"
+                }
+            ]
+        })
+        if (data) {
+            const doctors = await db.user.findAll({
+                attributes: ['id', 'name'],
+                where: {
+                    id: {
+                        [Op.in]: data.doctor_ids
+                    }
+                }
+            });
+            if (doctors) {
+                data.setDataValue("doctors", doctors);
+            }
+        }
+
+        const allDoctors = await db.user.findAll({
+            attributes: ['id', 'name']
+        });
+
+        data.setDataValue("allDoctors", allDoctors);
+
+        res.status(200).send({
+            success: true,
+            items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+
 
 
 
@@ -50,7 +102,7 @@ exports.CreateHospital = async (req, res) => {
 
 exports.updateHospital = async (req, res) => {
     try {
-        const { id, name, image_url } = req.body;
+        const { id, active, name, image_url, address, district_id, division_id, upazila_id, doctor_ids, phone, email } = req.body;
 
         if (!id) {
             return res.status(400).send({
@@ -60,10 +112,19 @@ exports.updateHospital = async (req, res) => {
         }
 
 
-        const [updatedRowsCount] = await Hospital.update(
-            { name: name, image_url: image_url },
-            { where: { id: id } }
-        );
+        const [updatedRowsCount] = await Hospital.update({
+            id: id,
+            active: active,
+            name: name,
+            address: address,
+            image_url: image_url,
+            district_id: district_id,
+            division_id: division_id,
+            upazila_id: upazila_id,
+            phone: phone,
+            email: email,
+            doctor_ids: doctor_ids
+        }, { where: { id: id } });
 
         if (updatedRowsCount === 0) {
             return res.status(404).send({

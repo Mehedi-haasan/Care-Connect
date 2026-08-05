@@ -68,7 +68,7 @@ const Hospital = () => {
 
                                         {/* Action Buttons */}
                                         <div className="flex gap-2 mt-auto">
-                                            <NavLink to={`/update/content/${item.id}`}
+                                            <NavLink to={`/update/hospital/${item.id}`}
                                                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg hover:bg-gray-100">
                                                 <Edit /> Edit
                                             </NavLink>

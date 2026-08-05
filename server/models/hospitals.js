@@ -42,5 +42,21 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
+    Hospital.associate = (models) => {
+        Hospital.belongsTo(models.division, {
+            foreignKey: "division_id",
+            as: "division"
+        });
+        Hospital.belongsTo(models.distric, {
+            foreignKey: "district_id",
+            as: "district"
+        });
+        Hospital.belongsTo(models.upazila, {
+            foreignKey: "upazila_id",
+            as: "upazila"
+        });
+
+    };
+
     return Hospital;
 };

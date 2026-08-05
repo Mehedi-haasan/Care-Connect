@@ -39,6 +39,8 @@ import CreactContent from "./Components/Contents/CreateContent.jsx";
 import UpdateContent from "./Components/Contents/ContentUpdate.jsx";
 import Hospital from "./Components/Hospitals/Hospital.jsx";
 import CreactHospital from "./Components/Hospitals/CreateHospital.jsx";
+import UpdateHospital from "./Components/Hospitals/HospitalUpdate.jsx";
+import Appoinment from "./Components/Appoinment/Appoinment.jsx";
 
 
 
@@ -198,6 +200,8 @@ function App() {
 
           <Route path="/company" element={<Company />} />
 
+          <Route path="/appoinment" element={<Appoinment/>} />
+
 
           <Route path="/app/setting" element={<Setting userinfo={info} />} />
 
@@ -231,6 +235,8 @@ function App() {
           <Route path="/hospitals" element={auth ? <Hospital /> : <Login auth={(v) => { setAuth(v) }} />} />
 
           <Route path="/create/hospital" element={auth ? <CreactHospital /> : <Login auth={(v) => { setAuth(v) }} />} />
+
+          <Route path="/update/hospital/:id" element={auth ? <UpdateHospital /> : <Login auth={(v) => { setAuth(v) }} />} />
 
           <Route path="/create/category" element={auth ? <CreateCategory /> : <Login auth={(v) => { setAuth(v) }} />} />
 

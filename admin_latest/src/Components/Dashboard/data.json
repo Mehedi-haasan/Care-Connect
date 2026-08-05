@@ -19,7 +19,7 @@
                 "id": 21,
                 "parent": "2",
                 "name": "Content List",
-                "route": "items"
+                "route": "contents"
             },
             {
                 "id": 22,
