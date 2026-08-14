@@ -200,7 +200,7 @@ function App() {
 
           <Route path="/company" element={<Company />} />
 
-          <Route path="/appoinment" element={<Appoinment/>} />
+          <Route path="/appoinment/:doctor_id/:hospital_id" element={<Appoinment/>} />
 
 
           <Route path="/app/setting" element={<Setting userinfo={info} />} />

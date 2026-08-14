@@ -41,7 +41,7 @@ const UpdateHospital = () => {
     const [district, setDistrict] = useState([])
     const [users, setUsers] = useState([])
     const [upazila, setUpazila] = useState([])
-    const [hospital, setHospital]=useState({})
+    const [hospital, setHospital] = useState({})
 
 
     const [image_url, setImage_Url] = useState(null);
@@ -232,7 +232,7 @@ const UpdateHospital = () => {
                                 onSelect={(v) => {
                                     setSecond(false); setThird(true); setValues({ ...values, district_id: v?.id });
                                     setFilter({ ...filter, cate_value: v?.name })
-                                }} label={"District"} className='rounded-l'/>
+                                }} label={"District"} className='rounded-l' />
                             <div onClick={() => goto(`/create/category`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
@@ -263,7 +263,8 @@ const UpdateHospital = () => {
                         </div>
 
                         <div className='pt-1'>
-                            <div className="p-3">
+                            <ImageSelect handleImageChange={handleImageChange} imageFile={imageFile} logo={logo} />
+                            {/* <div className="p-3">
                                 <div className="flex justify-start items-end">
                                     <button onClick={() => { setActive("Pricing") }} className={`${active === "Pricing" ? "border-x border-t border-green-500 text-green-500" : "border-b text-blue-500"} px-4 py-1.5 rounded-t flex justify-start items-start font-thin`}>
                                         <svg xmlns="http://www.w3.org/2000/svg" className='mt-0.5 mr-1' width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 4c4.411 0 8 3.589 8 8s-3.589 8-8 8s-8-3.589-8-8s3.589-8 8-8m0-2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 9h-4V7h-2v4H7v2h4v4h2v-4h4z" /></svg>
@@ -308,7 +309,7 @@ const UpdateHospital = () => {
                                     <ImageSelect handleImageChange={handleImageChange} imageFile={imageFile} logo={values?.image_url ? values?.image_url : logo} />
                                 </div>}
 
-                            </div>
+                            </div> */}
                         </div>
 
                     </div>

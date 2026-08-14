@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Specialties = sequelize.define("specialties", {
+    const Schedules = sequelize.define("schedules", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -11,17 +11,17 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
-        user_id: {
+        hospital_id: {
             type: Sequelize.INTEGER
         }
     });
 
-    Specialties.associate = (models) => {
-        Specialties.belongsTo(models.user, {
-            foreignKey: "user_id",
-            as: "doctor"
+    Schedules.associate = (models) => {
+        Schedules.belongsTo(models.doctor_and_hospital, {
+            foreignKey: "hospital_id",
+            as: "hospital"
         });
     };
 
-    return Specialties;
+    return Schedules;
 };

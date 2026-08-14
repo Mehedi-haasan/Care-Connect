@@ -11,20 +11,32 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
-        doctor_id: {
-            type: Sequelize.INTEGER,
-            allowNull: true
+        gender: {
+            type: Sequelize.STRING
         },
-        patient_id: {
-            type: Sequelize.INTEGER,
-            allowNull: true
+        address: {
+            type: Sequelize.STRING
         },
-        payment_id: {
-            type: Sequelize.INTEGER,
-            allowNull: true
+        phone: {
+            type: Sequelize.STRING
+        },
+        emergency_number: {
+            type: Sequelize.STRING
+        },
+        email: {
+            type: Sequelize.STRING
+        },
+        running_medecine: {
+            type: Sequelize.STRING
+        },
+        allergic_food: {
+            type: Sequelize.STRING
+        },
+        previous_surgery_or_serious_illness: {
+            type: Sequelize.STRING
         },
         appoinment_date: {
-            type: Sequelize.DATEONLY
+            type: Sequelize.STRING
         },
         appoinment_time: {
             type: Sequelize.TIME
@@ -32,6 +44,12 @@ module.exports = (sequelize, Sequelize) => {
         new_patient: {
             type: Sequelize.BOOLEAN,
             defaultValue: true
+        },
+        patient_age: {
+            type: Sequelize.INTEGER,
+        },
+        prev_history: {
+            type: Sequelize.STRING
         },
         consultation_type: {
             type: Sequelize.STRING,
@@ -54,7 +72,23 @@ module.exports = (sequelize, Sequelize) => {
         },
         attachment: {
             type: Sequelize.STRING
-        }
+        },
+        doctor_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        patient_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        payment_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        hospital_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
     });
     Appoinment.associate = (models) => {
         Appoinment.belongsTo(models.user, {

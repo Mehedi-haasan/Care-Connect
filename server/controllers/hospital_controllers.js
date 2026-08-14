@@ -37,22 +37,13 @@ exports.GetSingleHospital = async (req, res) => {
                 {
                     model: db.upazila,
                     as: "upazila"
+                },
+                {
+                    model: db.user,
+                    as: "doctors"
                 }
             ]
         })
-        if (data) {
-            const doctors = await db.user.findAll({
-                attributes: ['id', 'name'],
-                where: {
-                    id: {
-                        [Op.in]: data.doctor_ids
-                    }
-                }
-            });
-            if (doctors) {
-                data.setDataValue("doctors", doctors);
-            }
-        }
 
         const allDoctors = await db.user.findAll({
             attributes: ['id', 'name']
@@ -84,7 +75,6 @@ exports.CreateHospital = async (req, res) => {
             district_id: req.body.district_id,
             upazila_id: req.body.upazila_id,
             address: req.body.address,
-            doctor_ids: req.body.doctor_ids,
             phone: req.body.phone,
             email: req.body.email
         });
@@ -102,7 +92,7 @@ exports.CreateHospital = async (req, res) => {
 
 exports.updateHospital = async (req, res) => {
     try {
-        const { id, active, name, image_url, address, district_id, division_id, upazila_id, doctor_ids, phone, email } = req.body;
+        const { id, active, name, image_url, address, district_id, division_id, upazila_id, phone, email } = req.body;
 
         if (!id) {
             return res.status(400).send({
@@ -122,8 +112,7 @@ exports.updateHospital = async (req, res) => {
             division_id: division_id,
             upazila_id: upazila_id,
             phone: phone,
-            email: email,
-            doctor_ids: doctor_ids
+            email: email
         }, { where: { id: id } });
 
         if (updatedRowsCount === 0) {

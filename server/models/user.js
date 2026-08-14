@@ -26,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
         designation: {
             type: Sequelize.STRING
         },
+        degree_name: {
+            type: Sequelize.STRING
+        },
         username: {
             type: Sequelize.STRING
         },
@@ -41,10 +44,9 @@ module.exports = (sequelize, Sequelize) => {
         dept_id: {
             type: Sequelize.INTEGER
         },
-        hospital_ids: {
-            type: Sequelize.JSON,
-            allowNull: true,
-            defaultValue: []
+        hospital_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
         },
     });
     User.associate = (models) => {
@@ -63,6 +65,18 @@ module.exports = (sequelize, Sequelize) => {
         User.belongsTo(models.department, {
             foreignKey: "dept_id",
             as: "department"
+        });
+        User.belongsTo(models.hospital, {
+            foreignKey: "hospital_id",
+            as: "hospital"
+        });
+        User.hasMany(models.specialtie, {
+            foreignKey: "user_id",
+            as: "specialties"
+        });
+        User.hasMany(models.doctor_and_hospital, {
+            foreignKey: "doctor_id",
+            as: "hospitals"
         });
     };
 

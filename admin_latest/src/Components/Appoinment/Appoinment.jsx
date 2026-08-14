@@ -2,39 +2,33 @@ import { useState, useEffect } from "react"
 import BaseUrl from '../../Constant';
 import Notification from "../Input/Notification";
 import DoctorProfile from "./DoctorProfile";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import InputComponent from '../Input/InputComponent'
 import Calendar from "../Wholesale/Calender";
+import SelectionComponent from '../Input/SelectionComponent'
 
 
 const Appoinment = () => {
 
-
-    const [category, setCategory] = useState([])
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [isLoading, setIsLoading] = useState(false)
-    const [totalItem, setTotalItem] = useState(0)
+    const params = useParams()
+    const [doctor, setDoctor] = useState({})
     const today = new Date();
     const [values, setValues] = useState({
-        pay: 0,
-        paking: 0,
-        delivary: 0,
-        pay_type: 'Challan',
-        lastdiscount: 0,
-        lastdiscounttype: "Fixed",
-        deliverydate: '',
-        sup_invo: '',
-        status: "Due"
+        is_emergency: false,
+        new_patient: true,
+        name: '',
+        appoinment_date: '',
+        appoinment_time: null,
+        consultation_type: 'in_person',
+        status: 'draft',
     })
 
     const [message, setMessage] = useState({ id: '', mgs: '' });
     const [selected, setSelected] = useState("self");
 
-    const getCategory = async () => {
-        // setIsLoading(true)
+    const GetDoctor = async () => {
         const token = localStorage.getItem('token')
-        const response = await fetch(`${BaseUrl}/api/get/category/${page}/${pageSize}`, {
+        const response = await fetch(`${BaseUrl}/api/get/single/doctor/${params?.doctor_id}/${params?.hospital_id}`, {
             method: 'GET',
             headers: {
                 "authorization": token,
@@ -42,57 +36,20 @@ const Appoinment = () => {
             },
         });
         const data = await response.json()
-        setCategory(data.items)
-        setTotalItem(data?.count)
-        setIsLoading(false)
+        setDoctor(data.items)
     }
 
 
     useEffect(() => {
         document.title = `Appoinment - Care-Connect`;
-        getCategory()
-    }, [page, pageSize]);
+        GetDoctor()
+    }, []);
 
-    const doctor = {
-        name: "ডাঃ লুবনা জামানুল",
-        title: "স্ত্রীরোগ ও প্রসূতি বিশেষজ্ঞ",
-        degree: "BBSFCPS (Obs & Gynae) Diploma in ART (ISRME, Mumbai)",
-        experience: "১৫ বছরের সেবা অভিজ্ঞতা",
-        image: "http://localhost:8050/uploads/1785514016738-97ce03195574677.Y3JvcCwzMDY4LDI0MDAsNjgsMA (1).jpg",
 
-        hospital: {
-            name: "হলি ফ্যামিলি রেড ক্রিসেন্ট মেডিকেল কলেজ হাসপাতাল",
-            address: "বনানী, ঢাকা",
-        },
-
-        specialties: [
-            "গর্ভকালীন যত্ন",
-            "সিজারিয়ান অপারেশন",
-            "বন্ধ্যাত্ব চিকিৎসা",
-            "মেনোপজ",
-            "হাই রিস্ক প্রেগন্যান্সি",
-            "জরায়ুর টিউমার",
-            "স্বাভাবিক প্রসব",
-            "নারী স্বাস্থ্য",
-            "পলিসিস্টিক ওভারি",
-            "জরায়ুর ক্যান্সার স্ক্রিনিং"
-        ],
-
-        schedule: [
-            { day: "রবি", active: true },
-            { day: "সোম", active: true },
-            { day: "মঙ্গল", active: true },
-            { day: "বুধ", active: false },
-            { day: "বৃহ", active: true },
-            { day: "শুক্র", active: true },
-            { day: "শনি", active: false },
-        ],
-
-        time: "সন্ধ্যা ৭টা থেকে রাত ১০টা পর্যন্ত"
-    };
     const [raw, setRaw] = useState({
         fromDate: today.toISOString(),
-        toDate: today.toISOString()
+        toDate: today.toISOString(),
+        gender: 'আপনার লিঙ্গ নির্বাচন করুন'
     });
 
     const handleDateConvert = (date) => {
@@ -104,10 +61,23 @@ const Appoinment = () => {
         return formatted
     };
 
+    const handleEnter = () => { }
+
+    const HandleSubmit = () => {
+        values['doctor_id'] = params?.doctor_id
+        values['hospital_id'] = params?.hospital_id
+        console.log(values)
+        setMessage({
+            ...message,
+            id: Date.now(),
+            mgs: 'Your Appoinment booked Succesffully',
+        })
+    }
+
     return (
         <div className="pl-4 pr-2 pt-5 min-h-screen pb-16 bg-white">
             <Notification message={message} />
-            <DoctorProfile doctor={doctor} />
+            <DoctorProfile doctor={doctor} HandleSubmit={HandleSubmit} />
 
             <div className="text-center">
                 {/* Heading */}
@@ -130,14 +100,14 @@ const Appoinment = () => {
                 </div>
 
                 {/* Links */}
-                <div className={`my-6 flex justify-center items-center gap-3 text-sm ${today ? 'hidden':''}`}>
-                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium"                    >
+                <div className={`my-6 flex justify-center items-center gap-3 text-sm ${today ? 'hidden' : ''}`}>
+                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium" >
                         ইতিমধ্যে অ্যাকাউন্ট আছে
                     </NavLink>
 
                     <span className="text-gray-400">|</span>
 
-                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium"                    >
+                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium" >
                         সাইনআপ করুন
                     </NavLink>
                 </div>
@@ -149,29 +119,46 @@ const Appoinment = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-5 px-10 pt-5">
-                <InputComponent placeholder={'আপনার পূর্ণ নাম লিখুন'} />
-                <InputComponent placeholder={'পূর্বের রোগ ইতিহাস (যেমন ডায়াবেটিস, উচ্চ রক্তচাপ ইত্যাদি)'} />
+                <InputComponent placeholder={'আপনার পূর্ণ নাম লিখুন'} onChange={(v) => setValues({ ...values, name: v })} value={values?.name} handleEnter={handleEnter} />
+                <InputComponent placeholder={'পূর্বের রোগ ইতিহাস (যেমন ডায়াবেটিস, উচ্চ রক্তচাপ ইত্যাদি)'}
+                    onChange={(v) => setValues({ ...values, prev_history: v })} value={values?.prev_history} handleEnter={handleEnter} />
 
-                <InputComponent placeholder={'আপনার বয়স উল্লেখ করুন'} />
-                <InputComponent placeholder={'বর্তমান ব্যবহৃত ওষুধ (যদি থাকে)'} />
+                <InputComponent placeholder={'আপনার বয়স উল্লেখ করুন'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, patient_age: v })} value={values?.patient_age} />
+                <InputComponent placeholder={'বর্তমান ব্যবহৃত ওষুধ (যদি থাকে)'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, running_medecine: v })} value={values?.running_medecine} />
 
-                <InputComponent placeholder={'আপনার লিঙ্গ নির্বাচন করুন'} />
-                <InputComponent placeholder={'অ্যালার্জি (ওষুধ বা খাবারের প্রতি)'} />
 
-                <InputComponent placeholder={'আপনার ঠিকানা লিখুন'} />
-                <InputComponent placeholder={'পূর্বে অস্ত্রোপচার বা গুরুতর অসুস্থতা'} />
+                <SelectionComponent default_select={false} options={[{ id: 1, name: "Male" }, { id: 1, name: "Female" }, { id: 1, name: "Other" }]} default_value={raw?.gender}
+                    onSelect={(v) => {
+                        setValues({ ...values, gender: v?.name })
+                        setRaw({ ...raw, gender: v?.name })
+                    }} />
 
-                <InputComponent placeholder={'আপনার মোবাইল নাম্বার লিখুন'} />
-                <InputComponent placeholder={'বর্তমানের স্বাস্থ্যগত অসুবিধা উল্লেখ করুন'} />
+                <InputComponent placeholder={'অ্যালার্জি (ওষুধ বা খাবারের প্রতি)'} handleEnter={handleEnter}
+                    onChange={(v) => setValues({ ...values, allergic_food: v })} value={values?.allergic_food} />
 
-                <InputComponent placeholder={'জরুরি যোগাযোগের নাম্বার'} />
-                <InputComponent placeholder={'আপনার ইমেইল লিখুন'} />
+                <InputComponent placeholder={'আপনার ঠিকানা লিখুন'} handleEnter={handleEnter}
+                    onChange={(v) => setValues({ ...values, address: v })} value={values?.address} />
+
+                <InputComponent placeholder={'পূর্বে অস্ত্রোপচার বা গুরুতর অসুস্থতা'} handleEnter={handleEnter}
+                    onChange={(v) => setValues({ ...values, previous_surgery_or_serious_illness: v })} value={values?.previous_surgery_or_serious_illness} />
+
+                <InputComponent placeholder={'আপনার মোবাইল নাম্বার লিখুন'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, phone: v })} value={values?.phone} />
+                <InputComponent placeholder={'বর্তমানের স্বাস্থ্যগত অসুবিধা উল্লেখ করুন'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, reason_for_visit: v })} value={values?.reason_for_visit} />
+
+                <InputComponent placeholder={'জরুরি যোগাযোগের নাম্বার'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, emergency_number: v })} value={values?.emergency_number} />
+                <InputComponent placeholder={'আপনার ইমেইল লিখুন'} handleEnter={handleEnter} onChange={(v) => setValues({ ...values, email: v })} value={values?.email} />
 
                 <div className='relative'>
                     <Calendar value={handleDateConvert(new Date(raw?.fromDate))}
-                        getDate={(date) => { setValues({ ...values, deliverydate: date }) }}
+                        getDate={(date) => { setValues({ ...values, appoinment_date: date }) }}
                         getTime={(ti) => { setRaw({ ...raw, fromDate: ti }) }} />
                 </div>
+                <div className='relative'>
+                    <input type="datetime-local" value={values?.appoinment_time} onChange={(e) => { setValues({ ...values, appoinment_time: e.target.value }) }} className={`font-thin border border-transparent rounded [border-image:linear-gradient(to_right,#3b82f6,#ef4444)_1]
+                                            text-[#6B7280] dark:bg-[#040404] dark:text-white text-[15px] focus:outline-none block w-full px-1.5 pt-[6px] pb-[7px] mt-2`} placeholder={''} />
+                </div>
+                <InputComponent type={'file'} placeholder={'Attachment'} handleEnter={handleEnter}
+                    onChange={(v) => setValues({ ...values, attachment: v })} value={values?.attachment} />
             </div>
         </div>
     )

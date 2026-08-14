@@ -53,22 +53,22 @@ const Hospital = () => {
                                 <div key={item.id} className="bg-white rounded-xl shadow flex flex-col hover:shadow-lg transition-shadow duration-200">
                                     <img
                                         src={item?.image_url}
-                                        alt={item.name}
+                                        alt={item?.name}
                                         className="h-40 object-cover rounded-t-xl cursor-pointer"
                                     />
                                     <div className="p-4 flex-1 flex flex-col">
-                                        <h3 className="font-bold text-lg">{item.name}</h3>
-                                        <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item.address}</p>
+                                        <h3 className="font-bold text-lg">{item?.name}</h3>
+                                        <p className="text-sm text-gray-500 line-clamp-2 mb-2">{item?.address}</p>
                                         <div className="flex justify-between text-xs text-gray-500 mb-3">
                                             <span className="flex items-center gap-1">
                                                 Doctors
                                             </span>
-                                            <span>{item.doctor_ids.length} Persons</span>
+                                            <span>{0} Persons</span>
                                         </div>
 
                                         {/* Action Buttons */}
                                         <div className="flex gap-2 mt-auto">
-                                            <NavLink to={`/update/hospital/${item.id}`}
+                                            <NavLink to={`/update/hospital/${item?.id}`}
                                                 className="flex-1 flex items-center justify-center gap-1 px-3 py-2 border rounded-lg hover:bg-gray-100">
                                                 <Edit /> Edit
                                             </NavLink>

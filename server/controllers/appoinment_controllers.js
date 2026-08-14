@@ -8,7 +8,7 @@ const Op = db.Sequelize.Op;
 
 exports.GetAppoinment = async (req, res) => {
     try {
-        let data = await Appoinment.findAll({ })
+        let data = await Appoinment.findAll({})
         res.status(200).send({
             success: true,
             items: data
@@ -26,13 +26,37 @@ exports.GetAppoinment = async (req, res) => {
 exports.CreateAppoinment = async (req, res) => {
     try {
         await Appoinment.create({
+            active: true,
             name: req.body.name,
-            image_url: req.body.image_url
+            gender: req.body.gender,
+            address: req.body.address,
+            phone: req.body.phone,
+            emergency_number: req.body.emergency_number,
+            email: req.body.email,
+            running_medecine: req.body.running_medecine,
+            allergic_food: req.body.allergic_food,
+            previous_surgery_or_serious_illness: req.body.previous_surgery_or_serious_illness,
+            appoinment_date: req.body.appoinment_date,
+            appoinment_time: req.appoinment_time,
+            new_patient: req.body.new_patient,
+            patient_age: req.body.patient_age,
+            prev_history: req.body.prev_history,
+            consultation_type: req.body.consultation_type,
+            duration: req.body.duration,
+            is_emergency: req.body.is_emergency,
+            image_url: req.body.image_url,
+            reason_for_visit: req.body.reason_for_visit,
+            status: req.body.status,
+            attachment: req.body.attachment,
+            doctor_id: req.body.doctor_id,
+            patient_id: req.body.patient_id,
+            payment_id: req.body.payment_id,
+            hospital_id: req.body.hospital_id
         });
 
         res.status(200).send({
             success: true,
-            message: "Create Category Successfully"
+            message: "Create Appoinment Successfully"
         })
 
     } catch (error) {
@@ -43,8 +67,8 @@ exports.CreateAppoinment = async (req, res) => {
 
 exports.UpdateAppoinment = async (req, res) => {
     try {
-        const { id, name,image_url } = req.body;
-        
+        const { id, name, image_url } = req.body;
+
         if (!id) {
             return res.status(400).send({
                 success: false,
@@ -52,10 +76,10 @@ exports.UpdateAppoinment = async (req, res) => {
             });
         }
 
-        
+
         const [updatedRowsCount] = await Appoinment.update(
-            { name: name, image_url: image_url }, 
-            { where: { id: id } } 
+            { name: name, image_url: image_url },
+            { where: { id: id } }
         );
 
         if (updatedRowsCount === 0) {

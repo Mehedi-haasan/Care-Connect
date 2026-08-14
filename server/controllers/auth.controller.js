@@ -219,6 +219,69 @@ exports.getSingleUsers = async (req, res) => {
 
 }
 
+exports.getSingleDoctor = async (req, res) => {
+    try {
+        const data = await User.findOne({
+            include: [
+                {
+                    model: db.degree,
+                    as: 'degrees'
+                },
+                // {
+                //     model: db.doctor_and_hospital,
+                //     as: 'hospitals',
+                //     where: {
+                //         doctor_id: req.params.doctor_id,
+                //         hospital_id: req.params.hospital_id
+                //     },
+                //     include: [
+                //         {
+                //             model: db.hospital,
+                //             as: "hospital",
+                //         },
+                //         {
+                //             model: db.schedule,
+                //             as: "schedules",
+                //         }
+                //     ],
+                // },
+                {
+                    model: db.specialtie,
+                    as: 'specialties'
+                }],
+            where: {
+                id: req.params.doctor_id
+            }
+        })
+
+        const hospital = await db.doctor_and_hospital.findOne({
+            where: {
+                doctor_id: req.params.doctor_id,
+                hospital_id: req.params.hospital_id
+            },
+            include: [
+                {
+                    model: db.hospital,
+                    as: "hospital",
+                },
+                {
+                    model: db.schedule,
+                    as: "schedules",
+                }
+            ],
+        })
+        data.setDataValue("hospital", hospital);
+        res.status(200).send({
+            success: true,
+            items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+
+}
+
 exports.updateUsers = async (req, res) => {
 
     try {
@@ -254,27 +317,22 @@ exports.GetDoctors = async (req, res) => {
 
         const doctors = await User.findAll({
             where: whereClause,
+            include: [{
+                model: db.doctor_and_hospital,
+                as: 'hospitals',
+                include: [{
+                    model: db.hospital,
+                    as: "hospital",
+                }]
+            }]
         })
 
-        const doctorsWithHospitals = await Promise.all(
-            doctors.map(async (doctor) => {
-                const hospitals = await db.hospital.findAll({
-                    where: {
-                        id: doctor.hospital_ids
-                    }
-                });
 
-                return {
-                    ...doctor.toJSON(),
-                    hospitals
-                };
-            })
-        );
 
 
         res.status(200).send({
             success: true,
-            items: doctorsWithHospitals,
+            items: doctors,
         });
 
     } catch (error) {

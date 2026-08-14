@@ -14,11 +14,6 @@ module.exports = (sequelize, Sequelize) => {
         address: {
             type: Sequelize.STRING
         },
-        doctor_ids: {
-            type: Sequelize.JSON,
-            allowNull: true,
-            defaultValue: []
-        },
         division_id:{
             type: Sequelize.INTEGER,
             allowNull: true,
@@ -54,6 +49,10 @@ module.exports = (sequelize, Sequelize) => {
         Hospital.belongsTo(models.upazila, {
             foreignKey: "upazila_id",
             as: "upazila"
+        });
+        Hospital.hasMany(models.user, {
+            foreignKey: "hospital_id",
+            as: "doctors"
         });
 
     };

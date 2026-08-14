@@ -6,7 +6,7 @@ const http = require('http');
 const server = http.createServer(app);
 require("./socket/socket")(server);
 require("./middleware/index")(app);
-// require("./models/db_init")();
+require("./models/db_init")();
 
 
 require('./routes/user.routes')(app);
