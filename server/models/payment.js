@@ -16,29 +16,19 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: "BDT"
         },
         payment_method: {
-            type: Sequelize.ENUM(
-                "cash",
-                "card",
-                "bkash",
-                "nagad",
-                "rocket",
-                "bank_transfer",
-                "online"
-            ),
+            type: Sequelize.STRING,
             allowNull: false
         },
         payment_status: {
-            type: Sequelize.ENUM(
-                "pending",
-                "paid",
-                "failed",
-                "cancelled",
-                "refunded"
-            ),
+            type: Sequelize.STRING,
             defaultValue: "pending"
         },
         transaction_id: {
             type: Sequelize.STRING,
+            allowNull: true
+        },
+        appoinment_id: {
+            type: Sequelize.INTEGER,
             allowNull: true
         },
         gateway: {

@@ -51,6 +51,7 @@ const Dashboard = () => {
         state: 'Dhaka',
 
     }])
+    const [dashboard, setDashboard]=useState({})
 
 
     const GetAllApoinment = async () => {
@@ -62,7 +63,8 @@ const Dashboard = () => {
             },
         });
         const data = await response.json();
-        setData(data.items)
+        setData(data.items);
+        setDashboard(data?.dashboard)
     }
 
 
@@ -79,10 +81,10 @@ const Dashboard = () => {
             <NotiFi message={message} />
 
             <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5'>
-                <DCart data={{ name: "patient", title: "Total Patients", amount: "2500+" }} className='border-blue-500 bg-cyan-400' black={false} white={false} />
-                <DCart data={{ name: "appoinment", title: "Total Apoinment", amount: "250+" }} className="border-red-500 bg-gradient-to-r from-green-300 to-red-300" black={true} white={false} />
-                <DCart data={{ name: "organ", title: "Total Surgery", amount: "119+" }} className="bg-pink-200 border-pink-500" black={true} white={false} />
-                <DCart data={{ name: "revinue", title: "Total Revineue", amount: "$2500.89" }} className="bg-gradient-to-r from-purple-600 to-pink-200 border-yellow-300" black={false} white={true} />
+                <DCart data={{ name: "patient", title: "Total Patients", amount: `${dashboard?.totalPatients}+` }} className='border-blue-500 bg-cyan-400' black={false} white={false} />
+                <DCart data={{ name: "appoinment", title: "Total Apoinment", amount: `${dashboard?.totalAppointments}+` }} className="border-red-500 bg-gradient-to-r from-green-300 to-red-300" black={true} white={false} />
+                <DCart data={{ name: "organ", title: "Total Surgery", amount: `${dashboard?.totalSurgery}+` }} className="bg-pink-200 border-pink-500" black={true} white={false} />
+                <DCart data={{ name: "revinue", title: "Total Revineue", amount: `${dashboard?.totalRevenue}+` }} className="bg-gradient-to-r from-purple-600 to-pink-200 border-yellow-300" black={false} white={true} />
             </div>
            
            <div className='pt-5 grid grid-cols-2 gap-6'>

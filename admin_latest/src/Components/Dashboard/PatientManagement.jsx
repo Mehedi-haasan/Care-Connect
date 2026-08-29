@@ -61,14 +61,14 @@ const PatientManagement = ({ invoices = [] }) => {
                             </th>
                             <th scope="col" className="px-3 py-3 text-center border-r ">
                                 <div className="flex justify-between items-center">
-                                    Created by
+                                    Reason
                                     <Updown />
                                 </div>
                             </th>
 
                             <th scope="col" className="px-3 py-3 text-right border-r ">
                                 <div className="flex justify-between items-center">
-                                    Created by
+                                    Created AT
                                     <Updown />
                                 </div>
                             </th>
@@ -84,13 +84,13 @@ const PatientManagement = ({ invoices = [] }) => {
                         {invoices?.map((item, i) => (
                             <tr key={i} className={`border-b cursor-pointer ${i % 2 === 1 ? 'bg-[#FAF9EE] dark:bg-[#040404] dark:text-white' : 'bg-white dark:bg-[#1C2426] dark:text-white'}`}>
                                 <th scope="col" className="px-3 py-2 border-x font-thin ">{ReturnSaleCode(item?.type)}-{String(item?.id).padStart(5, '0')}</th>
-                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.created_at}</th>
+                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.appoinment_date}</th>
                                 <th scope="col" className="px-3 py-2 border-r font-thin" >{item?.name}</th>
-                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.state}</th>
-                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.age}</th>
+                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.status}</th>
+                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.patient_age}</th>
                                 <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.gender}</th>
-                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.created_by}</th>
-                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.created_by}</th>
+                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.reason_for_visit}</th>
+                                <th scope="col" className="px-3 py-2 border-r font-thin ">{item?.createdAt}</th>
                                 <th scope="col" className="px-3 py-2 border-r font-thin flex justify-center items-center">
                                     <button  >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">

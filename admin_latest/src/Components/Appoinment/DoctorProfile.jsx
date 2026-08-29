@@ -43,7 +43,7 @@ export default function DoctorProfile({ doctor, HandleSubmit }) {
             </div>
 
             <h1 className="text-3xl font-semibold text-gray-700">
-              {doctor.name}
+              {doctor?.name}
             </h1>
           </div>
 

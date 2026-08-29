@@ -1,5 +1,5 @@
 const db = require("../models");
-const Appoinment = db.carousel;
+const Appoinment = db.appoinment;
 
 
 const Op = db.Sequelize.Op;
@@ -9,9 +9,19 @@ const Op = db.Sequelize.Op;
 exports.GetAppoinment = async (req, res) => {
     try {
         let data = await Appoinment.findAll({})
+        const totalPatients = await Appoinment.count({
+            distinct: true,
+            col: "patient_id"
+        });
         res.status(200).send({
             success: true,
-            items: data
+            items: data,
+            dashboard: {
+                totalPatients: totalPatients,
+                totalAppointments: data?.length,
+                totalSurgery:totalPatients,
+                totalRevenue: totalPatients || 0
+            }
         })
 
     } catch (error) {

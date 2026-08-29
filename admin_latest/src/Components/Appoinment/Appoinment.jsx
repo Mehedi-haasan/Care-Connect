@@ -63,15 +63,34 @@ const Appoinment = () => {
 
     const handleEnter = () => { }
 
-    const HandleSubmit = () => {
+    const HandleSubmit = async () => {
         values['doctor_id'] = params?.doctor_id
         values['hospital_id'] = params?.hospital_id
         console.log(values)
-        setMessage({
-            ...message,
-            id: Date.now(),
-            mgs: 'Your Appoinment booked Succesffully',
-        })
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${BaseUrl}/api/create/apoinment`, {
+            method: 'POST',
+            headers: {
+                "authorization": token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify(values)
+        });
+        const data = await response.json()
+
+
+
+
+        const makepayment = await fetch(`${BaseUrl}/api/create/apoinment`, {
+            method: 'POST',
+            headers: {
+                "authorization": token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify(values)
+        });
+        const payment = await makepayment.json()
+
     }
 
     return (

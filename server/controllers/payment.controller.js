@@ -1,7 +1,7 @@
 const db = require("../models");
 const SSLCommerzPayment = require('sslcommerz-lts')
-const ProductVariant = db.productVariant;
-const ProductAttribute = db.ProductAttribute;
+const Payment = db.payment;
+const Appoinment = db.appoinment;
 const SaleOrderLine = db.saleorderlines;
 const SaleOrder = db.saleorder;
 const State = db.state;
@@ -11,157 +11,138 @@ const store_passwd = 'qubic66e072f1d9e9d@ssl'
 const is_live = false
 
 
-const PlaceOrder = async (data) => {
+const Appoinments = async (req) => {
 
-    let OrderData = [];
-
-    const state = await State.findOne({
-        attributes: ['id', 'name', 'charge'],
-        where: {
-            id: data.state
-        }
+    const appoinment = await Appoinment.create({
+        active: true,
+        name: req.body.name,
+        gender: req.body.gender,
+        address: req.body.address,
+        phone: req.body.phone,
+        emergency_number: req.body.emergency_number,
+        email: req.body.email,
+        running_medecine: req.body.running_medecine,
+        allergic_food: req.body.allergic_food,
+        previous_surgery_or_serious_illness: req.body.previous_surgery_or_serious_illness,
+        appoinment_date: req.body.appoinment_date,
+        appoinment_time: req.appoinment_time,
+        new_patient: req.body.new_patient,
+        patient_age: req.body.patient_age,
+        prev_history: req.body.prev_history,
+        consultation_type: req.body.consultation_type,
+        duration: req.body.duration,
+        is_emergency: req.body.is_emergency,
+        image_url: req.body.image_url,
+        reason_for_visit: req.body.reason_for_visit,
+        status: req.body.status,
+        attachment: req.body.attachment,
+        doctor_id: req.body.doctor_id,
+        patient_id: req.body.patient_id,
+        payment_id: req.body.payment_id,
+        hospital_id: req.body.hospital_id
     });
 
-    let cartData = await SaleOrderLine.findAll({
-        where: {
-            userId: data.userId
-        },
-        include: [
-            {
-                model: ProductVariant,
-                attributes: ['id', 'name', 'image_url', 'price', 'standard_price', 'template_id'],
-                include: [
-                    {
-                        model: ProductAttribute,
-                        attributes: ['name', 'value'],
-                    },
-                ],
-            },
-        ],
-    })
-
-
-    cartData.forEach(item => {
-        OrderData.push({
-            product_id: item.product_product.id,
-            template_id: item.product_product.template_id,
-            price: item.product_product.price,
-            userId: data.userId,
-            name: data.name,
-            state: state.name,
-            address: data.address,
-            phone: data.phone,
-            email: data.email,
-            charge: state.charge,
-            qty: item.qty,
-            tran_id: data?.tran_id,
-            coupon: data.coupon,
-            note: data.note,
-            status: "Draft",
-            paymentstatus:'Done'
-        });
-    });
-
-
-
-    if (data?.paramsId !== '0') {
-        let buyNowData = await ProductVariant.findOne({
-            where: {
-                id: data.paramsId,
-            },
-            attributes: ['id', 'name', 'image_url', 'price', 'standard_price', 'description', 'category_id', 'template_id'],
-            include: [
-                {
-                    model: ProductAttribute,
-                    attributes: ['name', 'value'],
-                },
-            ],
-
-        })
-
-        OrderData.push({
-            product_id: buyNowData?.id,
-            template_id: buyNowData?.template_id,
-            price: buyNowData?.price,
-            userId: data?.userId,
-            name: data?.name,
-            state: state?.name,
-            address: data?.address,
-            phone: data?.phone,
-            email: data?.email,
-            charge: state?.charge,
-            qty: data?.qty,
-            tran_id: data?.tran_id,
-            coupon: data?.coupon,
-            note: data?.note,
-            status: "Draft",
-            paymentstatus:'Done'
-        });
-    }
-
-
-    return OrderData
+    return appoinment
 
 };
 
 exports.CreatePayment = async (req, res) => {
+    
     try {
-        let total = 0;
-        let userData = req.body;
-        userData.userId = req.userId;
-        userData.tran_id = Date.now();
+        const userId = req.userId;
+        const total = Number(req.body.total_amount);
 
-        const orderItem = await PlaceOrder(userData)
+        if (!total || total <= 0) {
+            return res.status(400).send({
+                success: false,
+                message: "Invalid appointment amount"
+            });
+        }
 
-        orderItem.forEach((item) => {
-            total = total + parseInt(item.qty) * parseInt(item.price)
-        })
+        // Generate unique transaction ID
+        const tran_id = `AP-${Date.now()}-${userId}`;
 
-        const data = {
-            total_amount: total,
-            currency: 'BDT',
-            tran_id: userData.tran_id,
-            success_url: `http://localhost:8050/api/payment/success/${userData.tran_id}/${req.userId}`,
-            fail_url: 'http://localhost:8050/api/payment/failed',
-            cancel_url: 'http://localhost:8050/api/payment/cancel',
-            ipn_url: 'http://localhost:3030/ipn',
-            shipping_method: 'Courier',
-            product_name: 'Computer.',
-            product_category: 'Electronic',
-            product_profile: 'general',
-            cus_name: userData.name,
-            cus_email: userData.email,
-            cus_add1: userData.address,
-            cus_add2: 'Dhaka',
-            cus_city: userData.state,
-            cus_state: 'Dhaka',
-            cus_postcode: '1000',
-            cus_country: 'Bangladesh',
-            cus_phone: userData.phone,
-            cus_fax: '01711111111',
-            ship_name: 'Customer Name',
-            ship_add1: 'Dhaka',
-            ship_add2: 'Dhaka',
-            ship_city: 'Dhaka',
-            ship_state: 'Dhaka',
-            ship_postcode: 1000,
-            ship_country: 'Bangladesh',
-        };
+        // 1. Create appointment first
+        const appointment = await Appoinments(req)
 
-
-
-        await SaleOrder.bulkCreate(orderItem);
-        const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
-        sslcz.init(data).then(apiResponse => {
-            let GatewayPageURL = apiResponse.GatewayPageURL
-            res.status(200).send({ url: GatewayPageURL })
+        // 2. Create payment record
+        const payment = await Payment.create({
+            appointment_id: appointment.id,
+            patient_id: userId,
+            amount: total,
+            tran_id: tran_id,
+            status: "PENDING"
         });
 
+        // 3. Save payment ID to appointment if you have payment_id
+        await appointment.update({
+            payment_id: payment.id
+        });
+
+        // 4. Initialize SSLCommerz
+        const paymentData = {
+            total_amount: total,
+            currency: "BDT",
+            tran_id: tran_id,
+            success_url: `https://server.careconnect.com.bd/api/payment/success/${tran_id}`,
+            fail_url: `https://server.careconnect.com.bd/api/payment/failed/${tran_id}`,
+            cancel_url: `https://server.careconnect.com.bd/api/payment/cancel/${tran_id}`,
+            ipn_url: "https://server.careconnect.com.bd/api/payment/ipn",
+            shipping_method: "NO",
+            product_name: "Doctor Consultation",
+            product_category: "Medical Consultation",
+            product_profile: "general",
+            cus_name: req.body.name,
+            cus_email: req.body.email,
+            cus_add1: req.body.address || "Dhaka",
+            cus_add2: "",
+            cus_city: "Dhaka",
+            cus_state: "Dhaka",
+            cus_postcode: "1000",
+            cus_country: "Bangladesh",
+            cus_phone: req.body.phone,
+            ship_name: req.body.name,
+            ship_add1: req.body.address || "Dhaka",
+            ship_add2: "",
+            ship_city: "Dhaka",
+            ship_state: "Dhaka",
+            ship_postcode: "1000",
+            ship_country: "Bangladesh"
+        };
+
+        const sslcz = new SSLCommerzPayment(
+            store_id,
+            store_passwd,
+            is_live
+        );
+
+        const apiResponse = await sslcz.init(paymentData);
+
+        if (!apiResponse?.GatewayPageURL) {
+            return res.status(500).send({
+                success: false,
+                message: "Could not initialize payment"
+            });
+        }
+
+        // 5. Send payment URL to frontend
+        return res.status(200).send({
+            success: true,
+            appointment_id: appointment.id,
+            payment_id: payment.id,
+            tran_id: tran_id,
+            url: apiResponse.GatewayPageURL
+        });
 
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        console.error(error);
+
+        return res.status(500).send({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 
 
