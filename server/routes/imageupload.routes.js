@@ -33,7 +33,7 @@ module.exports = function (app) {
 
             res.status(200).send({
                 success: true,
-                image_url: `http://localhost:8050/uploads/${image_url.filename}`
+                image_url: `https://server.careconnect.com.bd/uploads/${image_url.filename}`
             });
         } catch (error) {
             res.status(500).send({
@@ -59,7 +59,7 @@ module.exports = function (app) {
 
             res.status(200).send({
                 success: true,
-                image_url: `http://localhost:8050/uploads/${image_url.filename}`
+                image_url: `https://server.careconnect.com.bd/uploads/${image_url.filename}`
             });
         } catch (error) {
             res.status(500).send({
@@ -86,7 +86,7 @@ module.exports = function (app) {
     app.post('/api/upload/video', upload.single('video'), async (req, res) => {
         try {
             const video = req.file;
-            const baseUrl = `http://localhost:8050/uploads`;
+            const baseUrl = `https://server.careconnect.com.bd/uploads`;
             if (!video) {
                 return res.status(400).send({
                     success: false,
