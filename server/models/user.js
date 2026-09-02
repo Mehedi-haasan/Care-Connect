@@ -26,6 +26,9 @@ module.exports = (sequelize, Sequelize) => {
         designation: {
             type: Sequelize.STRING
         },
+        experience: {
+            type: Sequelize.STRING
+        },
         degree_name: {
             type: Sequelize.STRING
         },

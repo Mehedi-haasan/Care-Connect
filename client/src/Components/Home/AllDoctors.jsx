@@ -21,33 +21,28 @@ const AllDoctors = ({ data }) => {
 
         {/* Doctors Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-          {data.map((item) => (
+          {data?.map((item) => (
             <div
-              key={item.id}
-              onClick={() => navigate(`/content/details/${item.id}`)}
+              key={item?.id}
+              onClick={() => navigate(`/content/details/${item?.id}`)}
               className="flex items-center bg-white rounded-xl border p-3
                          cursor-pointer transition-all duration-300
                          hover:-translate-y-1 hover:shadow-md"
             >
-              {/* Image */}
-              <img
-                src={item.imageUrl}
-                alt={item.author}
-                className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-lg"
-              />
+              <img src={item?.image_url} alt={item?.name} className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-lg" />
 
               {/* Info */}
               <div className="flex-1 pl-4">
                 <span className="inline-block text-xs bg-[#E8D4F4] px-3 py-1 rounded-full">
-                  {item.title}
+                  {item?.designation}
                 </span>
 
-                <h2 className="font-semibold text-sm sm:text-base mt-2">
-                  {item.author}
+                <h2 className="font-semibold sm:text-base mt-2">
+                  {item?.name}
                 </h2>
 
                 <p className="text-xs sm:text-sm text-gray-600 mt-1">
-                  {item.location}
+                  {item?.hospitals?.[0]?.hospital?.name}
                 </p>
               </div>
             </div>

@@ -1,69 +1,70 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import BASE_URL from "../URL/baseurl";
 
 // 👨‍⚕️ Doctor Data
-const doctors = [
-  {
-    id: 1,
-    name: "ডা. মোঃ কামরুল হাসান",
-    specialty: "মেডিসিন বিশেষজ্ঞ",
-    hospital: "Square Hospital",
-    division: "Dhaka",
-    district: "Dhaka",
-    upazila: "Dhanmondi",
-    phone: "01712345678",
-    experience: "১২ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
-  },
-  {
-    id: 2,
-    name: "ডা. ফারজানা ইসলাম",
-    specialty: "গাইনোকোলজি বিশেষজ্ঞ",
-    hospital: "Holy Family Hospital",
-    division: "ঢাকা",
-    district: "Dhaka",
-    upazila: "Ramna",
-    phone: "01812345678",
-    experience: "৮ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
-  },
-  {
-    id: 3,
-    name: "ডা. ফারজানা ইসলাম",
-    specialty: "গাইনোকোলজি বিশেষজ্ঞ",
-    hospital: "Holy Family Hospital",
-    division: "ঢাকা",
-    district: "Dhaka",
-    upazila: "Ramna",
-    phone: "01812345678",
-    experience: "৮ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
-  },
-  {
-    id: 4,
-    name: "ডা. ফারজানা ইসলাম",
-    specialty: "গাইনোকোলজি বিশেষজ্ঞ",
-    hospital: "Holy Family Hospital",
-    division: "ঢাকা",
-    district: "Dhaka",
-    upazila: "Ramna",
-    phone: "01812345678",
-    experience: "৮ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
-  },
-  {
-    id: 5,
-    name: "ডা. ফারজানা ইসলাম",
-    specialty: "গাইনোকোলজি বিশেষজ্ঞ",
-    hospital: "Holy Family Hospital",
-    division: "ঢাকা",
-    district: "Dhaka",
-    upazila: "Ramna",
-    phone: "01812345678",
-    experience: "৮ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
-  },
-];
+// const doctors = [
+//   {
+//     id: 1,
+//     name: "ডা. মোঃ কামরুল হাসান",
+//     specialty: "মেডিসিন বিশেষজ্ঞ",
+//     hospital: "Square Hospital",
+//     division: "Dhaka",
+//     district: "Dhaka",
+//     upazila: "Dhanmondi",
+//     phone: "01712345678",
+//     experience: "১২ বছর",
+//     image: "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
+//   },
+//   {
+//     id: 2,
+//     name: "ডা. ফারজানা ইসলাম",
+//     specialty: "গাইনোকোলজি বিশেষজ্ঞ",
+//     hospital: "Holy Family Hospital",
+//     division: "ঢাকা",
+//     district: "Dhaka",
+//     upazila: "Ramna",
+//     phone: "01812345678",
+//     experience: "৮ বছর",
+//     image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
+//   },
+//   {
+//     id: 3,
+//     name: "ডা. ফারজানা ইসলাম",
+//     specialty: "গাইনোকোলজি বিশেষজ্ঞ",
+//     hospital: "Holy Family Hospital",
+//     division: "ঢাকা",
+//     district: "Dhaka",
+//     upazila: "Ramna",
+//     phone: "01812345678",
+//     experience: "৮ বছর",
+//     image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
+//   },
+//   {
+//     id: 4,
+//     name: "ডা. ফারজানা ইসলাম",
+//     specialty: "গাইনোকোলজি বিশেষজ্ঞ",
+//     hospital: "Holy Family Hospital",
+//     division: "ঢাকা",
+//     district: "Dhaka",
+//     upazila: "Ramna",
+//     phone: "01812345678",
+//     experience: "৮ বছর",
+//     image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
+//   },
+//   {
+//     id: 5,
+//     name: "ডা. ফারজানা ইসলাম",
+//     specialty: "গাইনোকোলজি বিশেষজ্ঞ",
+//     hospital: "Holy Family Hospital",
+//     division: "ঢাকা",
+//     district: "Dhaka",
+//     upazila: "Ramna",
+//     phone: "01812345678",
+//     experience: "৮ বছর",
+//     image: "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
+//   },
+// ];
 
 // 📍 Location Data
 const locations = {
@@ -164,6 +165,10 @@ const DoctorListPage = () => {
   const [district, setDistrict] = useState("");
   const [upazila, setUpazila] = useState("");
   const [search, setSearch] = useState("");
+  const [doctors, setDoctors] = useState([])
+  const [values, setValues] = useState({
+    division: '', district: '', upazila: ''
+  })
 
   // District & Upazila options
   const districts = division ? Object.keys(locations[division] || {}) : [];
@@ -184,6 +189,25 @@ const DoctorListPage = () => {
         d.specialty.toLowerCase().includes(search.toLowerCase()))
   );
 
+
+  const GetDoctors = async () => {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${BASE_URL}/api/get/doctors`, {
+      method: 'POST',
+      headers: {
+        "authorization": token,
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify(values),
+    });
+    const data = await response.json()
+    setDoctors(data?.items)
+  }
+
+  useEffect(() => {
+    GetDoctors()
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100">
 
@@ -194,44 +218,44 @@ const DoctorListPage = () => {
 
           {/* SEARCH */}
           <div className="flex justify-center mb-8 px-3">
-  <div className="w-full md:w-[85%] relative">
+            <div className="w-full md:w-[85%] relative">
 
-    <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full px-4 py-3 transition-all duration-300 focus-within:shadow-xl focus-within:scale-[1.02]">
-  
-      {/* Input */}
-      <input
-        type="text"
-        placeholder="ডাক্তার/ হাসপাতাল/ ডায়াগনস্টিক/ কনসালটেন্ট খুঁজুন..."
-        className="w-full bg-transparent outline-none text-sm md:text-base placeholder-gray-400"
-      />
+              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full px-4 py-3 transition-all duration-300 focus-within:shadow-xl focus-within:scale-[1.02]">
 
-    
+                {/* Input */}
+                <input
+                  type="text"
+                  placeholder="ডাক্তার/ হাসপাতাল/ ডায়াগনস্টিক/ কনসালটেন্ট খুঁজুন..."
+                  className="w-full bg-transparent outline-none text-sm md:text-base placeholder-gray-400"
+                />
 
-      {/* Search Button */}
-      <button className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:scale-105 transition">
-        খুজুন
-      </button>
 
-    </div>
 
-  
+                {/* Search Button */}
+                <button className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-5 py-2 rounded-full text-sm font-semibold hover:scale-105 transition">
+                  খুজুন
+                </button>
 
-  </div>
-</div>
+              </div>
+
+
+
+            </div>
+          </div>
 
           {/* FILTERS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              <select>
+            <select>
               <option value="">ডাক্তার</option>
-              <option value="">হাসপাতাল</option>    
+              <option value="">হাসপাতাল</option>
             </select>
 
-              <select>
+            <select>
               <option value="">চিকিৎসা ক্ষেত্র</option>
-              <option value="">মানসিক সাপোর্ট</option>    
+              <option value="">মানসিক সাপোর্ট</option>
             </select>
 
-             
+
 
 
             {/* Division */}
@@ -285,15 +309,15 @@ const DoctorListPage = () => {
               ))}
             </select>
 
-               <select >
+            <select >
               <option value="">পুরুষ</option>
-              <option value="">মহিলা</option>   
-              <option value="">অন্যান্য</option>   
+              <option value="">মহিলা</option>
+              <option value="">অন্যান্য</option>
             </select>
-              
-               <select >
+
+            <select >
               <option value="">পরামর্শের ধরন</option>
-                
+
             </select>
 
 
@@ -329,8 +353,8 @@ const DoctorListPage = () => {
             {/* IMAGE */}
             <div className="flex justify-center md:w-[140px]">
               <img
-                src={doc.image}
-                alt={doc.name}
+                src={doc?.image_url}
+                alt={doc?.image_url}
                 className="w-24 h-24 md:w-28 md:h-28 rounded-full border"
               />
             </div>
@@ -339,7 +363,7 @@ const DoctorListPage = () => {
             <div className="flex-1">
 
               <h3 className="text-lg md:text-xl font-bold text-[#0170C0]">
-                {doc.name}
+                {doc?.name}
               </h3>
 
               <p className="text-sm text-gray-600 mt-1">
@@ -347,28 +371,33 @@ const DoctorListPage = () => {
               </p>
 
               <p className="text-green-600 text-sm font-semibold mt-1">
-                {doc.experience} অভিজ্ঞতা
+                {doc?.experience} অভিজ্ঞতা
               </p>
 
               <p className="text-[#8B61C2] font-medium mt-2">
-                {doc.specialty}
+                {doc?.designation}
               </p>
 
               <div className="text-sm text-gray-600 mt-2 space-y-1">
-                <p>• জ্বর, ঠান্ডা, কাশি</p>
-                <p>• ডায়াবেটিস</p>
-                <p>• উচ্চ রক্তচাপ</p>
+                {doc?.specialties?.length > 0 ? (
+                  doc.specialties.map((specialty) => (
+                    <p key={specialty.id}>• {specialty.name}</p>
+                  ))
+                ) : (
+                  <p className="text-gray-400">কোনো বিশেষত্ব পাওয়া যায়নি</p>
+                )}
               </div>
 
+
               <div className="mt-3 text-sm">
-                <p className="font-semibold">{doc.hospital}</p>
+                <p className="font-semibold">{doc?.hospital?.name}</p>
                 <p className="text-gray-500">
-                  📍 {doc.division}, {doc.district}, {doc.upazila}
+                  {doc?.hospital?.division?.name}, {doc?.hospital?.district?.name}, {doc?.hospital?.upazila?.name}
                 </p>
               </div>
 
               <div className="mt-2 text-sm text-blue-600">
-                সময়সূচীঃ শনি-রবি-সোম | সন্ধ্যা ৬টা - রাত ১০টা
+                {doc?.hospitals?.[0]?.time}
               </div>
 
             </div>

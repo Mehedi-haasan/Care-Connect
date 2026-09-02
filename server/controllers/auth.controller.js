@@ -317,14 +317,35 @@ exports.GetDoctors = async (req, res) => {
 
         const doctors = await User.findAll({
             where: whereClause,
-            include: [{
-                model: db.doctor_and_hospital,
-                as: 'hospitals',
-                include: [{
+            include: [
+                {
+                    model: db.doctor_and_hospital,
+                    as: 'hospitals',
+                    include: [{
+                        model: db.hospital,
+                        as: "hospital",
+                    }]
+                },
+                {
+                    model: db.specialtie,
+                    as: 'specialties'
+                }, {
                     model: db.hospital,
                     as: "hospital",
-                }]
-            }]
+                    include: [{
+                        model: db.division,
+                        as: "division",
+                    },
+                    {
+                        model: db.distric,
+                        as: "district",
+                    },
+                    {
+                        model: db.upazila,
+                        as: "upazila",
+                    }]
+                }
+            ]
         })
 
 

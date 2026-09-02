@@ -34,16 +34,14 @@ const Home = () => {
   const all = [
     {
       id: 1,
-      imageUrl:
-        "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=300&auto=format&fit=crop",
+      imageUrl: "https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=300&auto=format&fit=crop",
       title: "চর্মরোগ বিশেষজ্ঞ",
       author: "ডা. তমালিকা দেব",
       location: "নিউরোলজিস্ট, ঢাকা মেডিকেল কলেজ",
     },
     {
       id: 2,
-      imageUrl:
-        "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=300&auto=format&fit=crop",
+      imageUrl: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=300&auto=format&fit=crop",
       title: "জনস্বাস্থ্য বিশেষজ্ঞ",
       author: "ডা. আরাফাত রহমান",
       location: "নিউরোলজিস্ট, ঢাকা মেডিকেল কলেজ",
@@ -77,7 +75,8 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const [contentType, setContentType] = useState([])
-  const [diseases, setDiseases]=useState([])
+  const [diseases, setDiseases] = useState([])
+  const [allDoctor, setAllDoctor] = useState([])
 
   const FetchContents = async () => {
     try {
@@ -94,20 +93,20 @@ const Home = () => {
   const GerDisease = async () => {
     const token = localStorage.getItem('token');
     try {
-        const response = await fetch(`${BASE_URL}/api/get/disease/1/15`, {
-            method: 'GET',
-            headers: {
-                'authorization': token,
-                'Content-type': 'application/json; charset=UTF-8',
-            }
-        });
+      const response = await fetch(`${BASE_URL}/api/get/disease/1/15`, {
+        method: 'GET',
+        headers: {
+          'authorization': token,
+          'Content-type': 'application/json; charset=UTF-8',
+        }
+      });
 
-        const data = await response.json();
-        setDiseases(data?.items)
+      const data = await response.json();
+      setDiseases(data?.items)
     } catch (error) {
 
     }
-}
+  }
 
 
   const GetContentType = async () => {
@@ -123,10 +122,26 @@ const Home = () => {
     setContentType(data.items)
   }
 
+
+  const GetDoctors = async () => {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${BASE_URL}/api/get/doctors`, {
+      method: 'POST',
+      headers: {
+        "authorization": token,
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+      body: JSON.stringify({})
+    });
+    const data = await response.json()
+    setAllDoctor(data.items)
+  }
+
   useEffect(() => {
     GetContentType()
     FetchContents()
     GerDisease()
+    GetDoctors()
   }, []);
 
 
@@ -198,7 +213,7 @@ const Home = () => {
       {/* ================= EXTRA SECTIONS ================= */}
       <Recenthealth title="সাম্প্রতিক স্বাস্থ্য" data={homeContents} />
       <Advertisement className="bg-black text-[#ACA766] w-full my-10" />
-      <AllDoctors data={all} />
+      <AllDoctors data={allDoctor} />
 
       {/* ================= VIDEO SECTION ================= */}
       <HealthVideoSection homeContents={homeContents} />

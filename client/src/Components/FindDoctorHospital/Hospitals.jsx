@@ -1,60 +1,6 @@
 ﻿import React, { useState, useEffect } from "react";
 import BASE_URL from "../URL/baseurl";
-import { Hospital } from "lucide-react";
 
-const hospitals = [
-  {
-    id: 1,
-    name: "Holy Family Red Crescent Medical College Hospital ",
-    address: "1 Eskaton Garden Road, Dhaka-1000",
-    division: "Dhaka",
-    district: "Dhaka",
-    upazila: "Ramna",
-    doctors: 15,
-    services: ["General", "Emergency", "ICU", "Lab"],
-    phone: "01309760132",
-  },
-  {
-    id: 2,
-    name: "Square Hospital",
-    address: "18/F, Bir Uttam Qazi Nuruzzaman Sarak, Dhaka-1205",
-    division: "Dhaka",
-    district: "Dhaka",
-    upazila: "Dhanmondi",
-    doctors: 25,
-    services: ["General", "ICU", "Ambulance"],
-    phone: "01309760111",
-  },
-];
-
-// 👨‍⚕️ Sample doctor data
-const doctors = [
-  {
-    id: 1,
-    name: "ডা. মোঃ কামরুল হাসান",
-    specialty: "মেডিসিন বিশেষজ্ঞ",
-    hospital: "Square Hospital",
-    division: "Dhaka",
-    district: "Dhaka",
-    upazila: "Dhanmondi",
-    phone: "01712345678",
-    experience: "১২ বছর",
-    image: "https://cdn-icons-png.flaticon.com/512/3774/3774299.png",
-  },
-  {
-    id: 2,
-    name: "ডা. ফারজানা ইসলাম",
-    specialty: "গাইনোকোলজি বিশেষজ্ঞ",
-    hospital: "Holy Family Hospital",
-    division: "Dhaka",
-    district: "Dhaka",
-    upazila: "Ramna",
-    phone: "01812345678",
-    experience: "৮ বছর",
-    image:
-      "https://cdn-icons-png.flaticon.com/512/3774/3774298.png",
-  },
-];
 
 
 
@@ -106,9 +52,23 @@ const Hospitals = () => {
     setDoctors(data?.items)
   }
 
+  const GetHospitals = async () => {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${BASE_URL}/api/get/hospital`, {
+      method: 'GET',
+      headers: {
+        "authorization": token,
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    });
+    const data = await response.json()
+    setHospitals(data?.items)
+  }
+
   useEffect(() => {
     GetState()
     GetDoctors()
+    GetHospitals()
   }, []);
 
   return (
@@ -214,7 +174,7 @@ const Hospitals = () => {
       {/* 🏥 Hospital Cards */}
       {tab === "hospital" && (
         <div className="p-6 max-w-5xl mx-auto grid gap-4">
-          {hospitals.map((h) => (
+          {hospitals?.map((h) => (
             <div key={h.id} className="bg-white shadow p-4 rounded flex flex-col md:flex-row gap-4">
               <div className="w-full md:w-1/4 flex items-center justify-center bg-gray-100 rounded">
                 <img
@@ -225,18 +185,18 @@ const Hospitals = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-blue-800">
-                  {h.name}
+                  {h?.name}
                 </h3>
-                <p className="text-sm text-gray-600">{h.address}</p>
+                <p className="text-sm text-gray-600">{h?.address}</p>
                 <p className="text-sm text-purple-600 mt-1">
-                  {h.services.join(", ")}
+                  {/* {h?.services.join(", ")} */}
                 </p>
               </div>
               <div className="w-full md:w-1/4 text-sm flex flex-col justify-between">
                 <div className="mt-2 bg-purple-400 text-white py-1 px-2 rounded">
-                  <p>ডাক্তার: {h.doctors} জন</p>
+                  <p>ডাক্তার: {h?.doctors} জন</p>
                   <a href={`tel:${h.phone}`} className="text-blue-600 mt-2">
-                    📞 {h.phone}
+                    📞 {h?.phone}
                   </a>
                 </div>
                 <button className="mt-2 bg-purple-600 text-white py-1 px-2 rounded">
@@ -252,7 +212,7 @@ const Hospitals = () => {
       {tab === "doctor" && (
         <div className="p-6 max-w-5xl mx-auto grid gap-4">
           {doctors?.map((d) => (
-            <div key={d.id} className="bg-white shadow p-4 rounded flex flex-col md:flex-row gap-4" >
+            <div key={d?.id} className="bg-white shadow p-4 rounded flex flex-col md:flex-row gap-4" >
               <div className="w-full md:w-1/4 flex items-center justify-center bg-gray-100 rounded">
                 <img
                   src={d.image_url}

@@ -1,12 +1,12 @@
 const Jwt = require("../middleware/authentication");
 const upload = require('../multer/Upload')
 
-const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('ffmpeg-static');
-ffmpeg.setFfmpegPath(ffmpegPath);
+// const ffmpeg = require('fluent-ffmpeg');
+// const ffmpegPath = require('ffmpeg-static');
+// ffmpeg.setFfmpegPath(ffmpegPath);
 
-const path = require('path');
-const fs = require('fs');
+// const path = require('path');
+// const fs = require('fs');
 const db = require('../models')
 const StrimData = db.striming_data
 
@@ -86,75 +86,75 @@ module.exports = function (app) {
     app.post('/api/upload/video', upload.single('video'), async (req, res) => {
         try {
             const video = req.file;
-            const baseUrl = `https://server.careconnect.com.bd/uploads`;
-            if (!video) {
-                return res.status(400).send({
-                    success: false,
-                    message: 'No video uploaded'
-                });
-            }
+            // const baseUrl = `https://server.careconnect.com.bd/uploads`;
+            // if (!video) {
+            //     return res.status(400).send({
+            //         success: false,
+            //         message: 'No video uploaded'
+            //     });
+            // }
 
-            const inputPath = video.path;
+            // const inputPath = video.path;
 
-            const videoName = path.parse(video.filename).name;
+            // const videoName = path.parse(video.filename).name;
 
-            const outputDir = path.join("C:", "Video-Striming", "server", "uploads");
+            // const outputDir = path.join("C:", "Video-Striming", "server", "uploads");
 
-            if (!fs.existsSync(outputDir)) {
-                fs.mkdirSync(outputDir, { recursive: true });
-            }
+            // if (!fs.existsSync(outputDir)) {
+            //     fs.mkdirSync(outputDir, { recursive: true });
+            // }
 
-            const resolutions = [
-                { name: '1080p', height: 1080 },
-                { name: '720p', height: 720 },
-                { name: '480p', height: 480 }
-            ];
+            // const resolutions = [
+            //     { name: '1080p', height: 1080 },
+            //     { name: '720p', height: 720 },
+            //     { name: '480p', height: 480 }
+            // ];
 
-            const convertVideo = (resolution) => {
-                return new Promise((resolve, reject) => {
-                    const outputPath = path.join(outputDir, `${Date.now()}-${resolution.name}.mp4`);
+            // const convertVideo = (resolution) => {
+            //     return new Promise((resolve, reject) => {
+            //         const outputPath = path.join(outputDir, `${Date.now()}-${resolution.name}.mp4`);
 
-                    ffmpeg(inputPath)
-                        .videoCodec('libx264')
-                        .size(`?x${resolution.height}`)
-                        .on('end', () => resolve(outputPath))
-                        .on('error', reject)
-                        .save(outputPath);
-                });
-            };
+            //         ffmpeg(inputPath)
+            //             .videoCodec('libx264')
+            //             .size(`?x${resolution.height}`)
+            //             .on('end', () => resolve(outputPath))
+            //             .on('error', reject)
+            //             .save(outputPath);
+            //     });
+            // };
 
-            const outputs = await Promise.all(
-                resolutions.map(convertVideo)
-            );
+            // const outputs = await Promise.all(
+            //     resolutions.map(convertVideo)
+            // );
 
-            const videos = Object.fromEntries(
-                outputs.map(file => {
-                    const fileName = path.basename(file);
-                    const quality = fileName.split('-').pop().replace('.mp4', '');
-                    return [quality, `${fileName}`];
-                })
-            );
+            // const videos = Object.fromEntries(
+            //     outputs.map(file => {
+            //         const fileName = path.basename(file);
+            //         const quality = fileName.split('-').pop().replace('.mp4', '');
+            //         return [quality, `${fileName}`];
+            //     })
+            // );
 
-            await Promise.all(
-                outputs.map(file => {
-                    const fileName = path.basename(file);
-                    const quality = fileName.split('-').pop().replace('.mp4', '');
-                    return StrimData.create({
-                        'name': req.body.name,
-                        'quality': quality,
-                        'video_url': fileName
-                    })
+            // await Promise.all(
+            //     outputs.map(file => {
+            //         const fileName = path.basename(file);
+            //         const quality = fileName.split('-').pop().replace('.mp4', '');
+            //         return StrimData.create({
+            //             'name': req.body.name,
+            //             'quality': quality,
+            //             'video_url': fileName
+            //         })
 
-                })
-            );
+            //     })
+            // );
 
-            const delete_original_file = await fs.promises.unlink(inputPath);
+            // const delete_original_file = await fs.promises.unlink(inputPath);
 
 
 
             res.status(200).send({
                 success: true,
-                videos: videos
+                videos: []
             });
 
         } catch (error) {
