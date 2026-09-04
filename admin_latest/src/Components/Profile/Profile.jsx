@@ -151,8 +151,6 @@ const Profile = () => {
                 {selected === 'Personal' && <PersonalInformation onClick={UpdateUser} user={exactUser} handleChange={handleChange} />}
                 {selected === 'Professional' && <ProfessionalInformation onClick={UpdateUser} user={user} exactUser={exactUser} handleChange={handleChange} hospital={hospital} />}
                 {selected === 'Chamber' && <ChamberDetails onClick={UpdateUser} user={user} exactUser={exactUser} handleChange={handleChange} hospital={hospital} />}
-                {selected === 'Schedule' && <ProfessionalInformation onClick={UpdateUser} />}
-                {selected === 'Fees' && <ConsultationPayment onClick={UpdateUser} />}
                 {selected === 'Media' && <ProfessionalInformation onClick={UpdateUser} />}
             </div>
 

@@ -1,19 +1,21 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import image from "../Logo/Logo.png";
+import profile_logo from "../Logo/userProfile.png"
 
 const Header = () => {
   const [focus, setFocus] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [auth, setAuth] = useState(true)
+  const [isShowProfile, setIsShowProfile] = useState(false);
   const menuItems = [
     { title: "স্বাস্থ্য পাঠ", link: "/" },
     { title: "বিষয়-ভিত্তিক", link: "#" },
     { title: "ডাক্তার", link: "/doctors" },
     { title: "হাসপাতাল", link: "/hospitals" },
     { title: "সেবা সমূহ", link: "#" },
-    { title: "লগইন", link: "/login" },
   ];
+  const info = {}
 
   return (
     <header className="w-full bg-white shadow-md sticky top-0 z-50">
@@ -49,9 +51,8 @@ const Header = () => {
             />
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className={`absolute top-1/2 transform -translate-y-1/2 left-2 text-[#A2775A] w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${
-                focus ? "text-[#8B61C2]" : "text-[#A2775A]"
-              }`}
+              className={`absolute top-1/2 transform -translate-y-1/2 left-2 text-[#A2775A] w-4 h-4 md:w-5 md:h-5 transition-all duration-300 ${focus ? "text-[#8B61C2]" : "text-[#A2775A]"
+                }`}
               fill="currentColor"
               viewBox="0 0 24 24"
             >
@@ -64,6 +65,34 @@ const Header = () => {
               Search
             </button>
           </div>
+
+
+
+          {auth ? <div className="flex justify-start items-start gap-2 cursor-pointer relative">
+            <button className='font-bold text-sm xl:text-md cursor-pointer' onClick={() => setIsShowProfile(!isShowProfile)}>
+              <img src={info?.image ? info.image : profile_logo}
+                onError={(e) => {
+                  e.currentTarget.src = profile_logo;
+                }}
+                alt="profile" className="h-10 w-10 rounded-full cursor-pointer" />
+            </button>
+            <div onClick={() => setIsShowProfile(!isShowProfile)} className="hidden md:block dark:text-white">
+              <h1 className="text-sm font-semibold pt-1">{info?.name}</h1>
+              <p className="text-xs">{info?.role}</p>
+            </div>
+            <div className={`absolute ${isShowProfile ? '' : 'hidden'} bg-[#FFFFFF] shadow h-20 w-32 top-[52px] rounded-lg`}>
+              <div className="">
+                <NavLink to={`/profile`} onClick={() => setIsShowProfile(!isShowProfile)} className="flex justify-start items-center gap-2 border-b p-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0-8 0M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" /></svg>
+                  <h1>Profile</h1>
+                </NavLink>
+                <button className="flex justify-start items-center gap-2 ml-1 p-2" onClick={() => { setIsShowProfile(!isShowProfile); localStorage.setItem('token', ''); isLoggedOut(false); }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M5 11h8v2H5v3l-5-4l5-4zm-1 7h2.708a8 8 0 1 0 0-12H4a9.99 9.99 0 0 1 8-4c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.99 9.99 0 0 1-8-4" /></svg>
+                  <h1> Log out</h1>
+                </button>
+              </div>
+            </div>
+          </div> : <NavLink to={"/login"} className="text-[#8B61C2] hover:text-[#006aff] transition font-medium text-xs md:text-sm">লগইন</NavLink>}
         </nav>
 
         {/* Mobile Hamburger */}
