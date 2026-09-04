@@ -14,6 +14,7 @@ import Appoinment from "./Components/Appoinment/Appoinment";
 import PaymentSuccess from './Components/Payment/Success'
 import PaymentFailed from './Components/Payment/Failed'
 import PaymentCancel from './Components/Payment/Cancel'
+import Profile from "./Components/Profile/Profile";
 
 function App() {
   return (
@@ -22,12 +23,13 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/category/:categorySlug" element={<Category />} />
+        <Route path="/category/:id" element={<Category />} />
         <Route path="/login" element={<Login />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/ForgetPassword" element={<ForgetPassword />} />
         <Route path="/content/details/:id" element={<ContentDetails />} />
         <Route path="/hospitals" element={<Hospitals />} />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/appoinment/:doctor_id/:hospital_id" element={<Appoinment />} />
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/payment/success" element={<PaymentSuccess />} />

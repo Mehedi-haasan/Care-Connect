@@ -64,7 +64,10 @@ exports.singUp = async (req, res) => {
             password: bcrypt.hashSync(req.body.password, 8),
             image_url: req.body.image_url,
             dept_id: req.body.dept_id,
-            address_id: req.body.address_id
+            reg_number: req.body.reg_number,
+            designation: req.body.designation,
+            experience: req.body.experience,
+            degree_name: req.body.degree_name
         });
 
 
@@ -164,36 +167,51 @@ exports.getUsers = async (req, res) => {
 exports.getSingleUsers = async (req, res) => {
     try {
         const data = await User.findOne({
-            include: [{
-                model: db.department,
-                as: 'department'
-            },
-            {
-                model: db.address,
-                as: 'address',
-                include: [
-                    {
-                        model: db.division,
-                        as: 'division'
-                    },
-                    {
-                        model: db.distric,
-                        as: 'district'
-                    },
-                    {
-                        model: db.upazila,
-                        as: 'upazila'
-                    }
-                ]
-            },
-            {
-                model: db.degree,
-                as: 'degrees'
-            },
-            {
-                model: db.role,
-                as: 'roles'
-            }],
+            include: [
+                {
+                    model: db.address,
+                    as: 'address',
+                    include: [
+                        {
+                            model: db.division,
+                            as: 'division'
+                        },
+                        {
+                            model: db.distric,
+                            as: 'district'
+                        },
+                        {
+                            model: db.upazila,
+                            as: 'upazila'
+                        }
+                    ]
+                },
+                {
+                    model: db.doctor_and_hospital,
+                    as: 'hospitals',
+                    include: [
+                        {
+                            model: db.schedule,
+                            as: "schedules",
+                        }
+                    ],
+                },
+                {
+                    model: db.degree,
+                    as: 'degrees'
+                },
+                {
+                    model: db.role,
+                    as: 'roles'
+                },
+                {
+                    model: db.specialtie,
+                    as: 'specialties'
+                },
+                {
+                    model: db.hospital,
+                    as: 'hospital'
+                }],
             where: {
                 id: req.params.id
             }
@@ -227,24 +245,24 @@ exports.getSingleDoctor = async (req, res) => {
                     model: db.degree,
                     as: 'degrees'
                 },
-                // {
-                //     model: db.doctor_and_hospital,
-                //     as: 'hospitals',
-                //     where: {
-                //         doctor_id: req.params.doctor_id,
-                //         hospital_id: req.params.hospital_id
-                //     },
-                //     include: [
-                //         {
-                //             model: db.hospital,
-                //             as: "hospital",
-                //         },
-                //         {
-                //             model: db.schedule,
-                //             as: "schedules",
-                //         }
-                //     ],
-                // },
+                {
+                    model: db.doctor_and_hospital,
+                    as: 'hospitals',
+                    where: {
+                        doctor_id: req.params.doctor_id,
+                        hospital_id: req.params.hospital_id
+                    },
+                    include: [
+                        {
+                            model: db.hospital,
+                            as: "hospital",
+                        },
+                        {
+                            model: db.schedule,
+                            as: "schedules",
+                        }
+                    ],
+                },
                 {
                     model: db.specialtie,
                     as: 'specialties'
@@ -303,7 +321,9 @@ exports.GetDoctors = async (req, res) => {
 
     try {
 
-        let whereClause = {}
+        let whereClause = {
+            'user_type': 'doctor',
+        }
         if (req?.body?.division_id) {
             whereClause['division_id'] = req?.body?.division_id
         }
@@ -358,6 +378,58 @@ exports.GetDoctors = async (req, res) => {
 
     } catch (error) {
         res.status(500).send({ success: false, message: error.message });
+    }
+};
+
+
+
+
+exports.CreateChamber = async (req, res) => {
+    try {
+        const chambers = req.body.chambers
+
+        for (const item of chambers) {
+            const chamber = await db.doctor_and_hospital.create({
+                active: 1,
+                name: item.name,
+                address: item.address,
+                type: item.type,
+                doctor_id: item.doctor_id,
+                hospital_id: item.hospital_id,
+                time: item.time,
+                phone: item.phone,
+                physical: item.physical,
+                video: item.video,
+                latitude:item.latitude,
+                longitude:item.longitude,
+                new_visit_fee: item.new_visit_fee,
+                follow_up_fee: item.follow_up_fee,
+                report_see_fee: item.report_see_fee,
+            });
+
+            const schedules = (item.schedules || []).map((itm) => ({
+                active: true,
+                name: itm.name,
+                chamber_id: chamber.id
+
+            }));
+            console.log(schedules)
+
+            if (schedules.length > 0) {
+                await db.schedule.bulkCreate(schedules);
+            }
+        }
+
+
+        res.status(200).send({
+            success: true,
+            message: 'Chamber Created Successfully',
+        });
+    } catch (error) {
+        res.status(500).send({
+            success: false,
+            message: error.message,
+        });
     }
 };
 

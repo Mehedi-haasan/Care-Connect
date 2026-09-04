@@ -7,6 +7,39 @@ const Op = db.Sequelize.Op;
 
 exports.GetHospital = async (req, res) => {
     try {
+        let data = await Hospital.findAll({
+            include: [
+                {
+                    model: db.division,
+                    as: "division"
+                },
+                {
+                    model: db.distric,
+                    as: "district"
+                },
+                {
+                    model: db.upazila,
+                    as: "upazila"
+                },
+                {
+                    model: db.user,
+                    as: "doctors"
+                }
+            ]
+        })
+        res.status(200).send({
+            success: true,
+            items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+
+exports.GetJustHospital = async (req, res) => {
+    try {
         let data = await Hospital.findAll({})
         res.status(200).send({
             success: true,

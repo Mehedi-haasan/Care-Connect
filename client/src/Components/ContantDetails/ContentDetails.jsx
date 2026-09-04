@@ -78,7 +78,7 @@ const ContentDetails = () => {
             {content?.category?.name} › {content.sub_category?.name}
           </div>
 
-          <h1 className="text-3xl font-bold mb-4">
+          <h1 className="text-xl font-bold mb-4 leading-7">
             {content.title}
           </h1>
 
@@ -87,10 +87,7 @@ const ContentDetails = () => {
             {new Date(content.createdAt).toLocaleDateString()}
           </div>
 
-          <div
-            className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: content.description }}
-          />
+          <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: content.description }} />
         </div>
       </div>
 

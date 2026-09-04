@@ -30,10 +30,7 @@ const Hero = ({ title, data }) => {
           {title}
         </h1>
         {!showAll && data?.length > 4 && (
-          <h1
-            className="mr-9 text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer"
-            onClick={() => setShowAll(true)}
-          >
+          <h1 className="mr-9 text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer" onClick={() => setShowAll(true)}>
             সমস্ত বিষয় পড়ুন
           </h1>
         )}
@@ -42,15 +39,9 @@ const Hero = ({ title, data }) => {
       {/* Grid of Items */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-9 pt-6 pl-9">
         {data?.map((item) => (
-          <div
-            key={item.id}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1"
-            onClick={() => navigate(`/content/details/${item?.id}`)}
-          >
+          <div key={item.id} className="grid grid-cols-1 sm:grid-cols-3 gap-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1">
             <div className="col-span-1">
-              <img
-                src={item?.image_url}
-                alt={item?.title}
+              <img src={item?.image_url} alt={item?.title}
                 className="h-[200px] w-full sm:h-[150px] md:h-[180px] lg:h-[200px] object-cover rounded-2xl"
               />
             </div>
@@ -60,17 +51,13 @@ const Hero = ({ title, data }) => {
                   {item?.creator?.name}
                 </button>
               </div>
-              <h1 className="overflow-wrap font-semibold py-2 text-[22px] sm:text-[20px] leading-5 sm:leading-9 ">
-                {item?.name?.length > 20
-                  ? item?.name?.slice(0, 30) + "..."
-                  : item?.name}
+              <h1 className="overflow-wrap font-bold text-black py-1 text-lg leading-6">
+                {item?.name}
               </h1>
-              <p className="text-[18px] sm:text-x text-gray-700">
-                {truncateHTML(item?.description, 60)}
+              <p className="fint-semibold">
+                {truncateHTML(item?.title, 220)}
               </p>
-              <p className="py-2 text-[12px] sm:text-sm font-medium text-[#0170C0]">
-                {item?.creator?.name || "বিস্তারিত পড়ুন"}
-              </p>
+              <p onClick={() => navigate(`/content/details/${item?.id}`)} className="py-2 text-[12px] sm:text-sm font-medium text-[#0170C0]">বিস্তারিত পড়ুন</p>
             </div>
 
 
@@ -83,3 +70,4 @@ const Hero = ({ title, data }) => {
 };
 
 export default Hero;
+

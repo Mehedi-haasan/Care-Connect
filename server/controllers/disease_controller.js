@@ -5,18 +5,34 @@ const Disease = db.disease;
 
 exports.GetDisease = async (req, res) => {
     try {
-        let data = await Disease.findAll({
-            limit: 12,
-        })
+        const page = parseInt(req.params.page) || 1;
+        const pageSize = parseInt(req.params.pageSize) || 10;
+
+        const offset = (page - 1) * pageSize;
+
+        const { count, rows } = await Disease.findAndCountAll({
+            limit: pageSize,
+            offset: offset,
+            order: [["id", "DESC"]],
+        });
+
         res.status(200).send({
             success: true,
-            items: data
-        })
+            items: rows,
+            total: count,
+            page: page,
+            pageSize: pageSize,
+            totalPages: Math.ceil(count / pageSize),
+        });
 
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
+
 
 
 

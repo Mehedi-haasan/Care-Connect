@@ -3,14 +3,14 @@
 import React, { useState } from 'react';
 
 const SelectionComp = ({ options, onSelect, label }) => {
-    const [selectedId, setSelectedId] = useState(1); // Default to first option ID
+    const [selectedId, setSelectedId] = useState(1);
 
     const handleSelect = (e) => {
         const selectedId = parseInt(e.target.value);
-        const selectedItem = options.find(option => option.id === selectedId); // Find the object
+        const selectedItem = options.find(option => option.id === selectedId);
         if (selectedItem) {
             setSelectedId(selectedItem.id);
-            onSelect({ id: selectedItem.id, name: selectedItem.name }); // Pass both ID & Name
+            onSelect({ id: selectedItem.id, name: selectedItem.name });
         }
     };
 

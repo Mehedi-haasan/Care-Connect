@@ -20,15 +20,11 @@ const AllDoctors = ({ data }) => {
         </div>
 
         {/* Doctors Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pt-6">
           {data?.map((item) => (
-            <div
-              key={item?.id}
-              onClick={() => navigate(`/content/details/${item?.id}`)}
-              className="flex items-center bg-white rounded-xl border p-3
+            <div key={item?.id} className="flex justify-start items-start bg-white rounded-xl border p-3
                          cursor-pointer transition-all duration-300
-                         hover:-translate-y-1 hover:shadow-md"
-            >
+                         hover:-translate-y-1 hover:shadow-md">
               <img src={item?.image_url} alt={item?.name} className="w-24 h-24 sm:w-28 sm:h-28 object-cover rounded-lg" />
 
               {/* Info */}

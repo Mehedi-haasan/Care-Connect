@@ -28,34 +28,8 @@ const CreateCategory = ({ CallAgain, entries }) => {
         document.title = `Categorys - Care-Connect`;
     }, []);
 
-    const handleCreateLocally = async (image_url) => {
-        setIsLoading(true)
-        if (BaseUrl === "http://localhost:8050") {
-            setIsLoading(false)
-            return
-        }
-        values.image_url = image_url;
-        const token = localStorage.getItem('token');
-        try {
-            const response = await fetch(`http://localhost:8050/api/create/category`, {
-                method: 'POST',
-                headers: {
-                    'authorization': token,
-                    'Content-type': 'application/json; charset=UTF-8',
-                },
-                body: JSON.stringify(values),
-            });
-
-            const data = await response.json();
-        } catch (error) {
-            setIsLoading(false)
-            setMessage({ id: Date.now(), mgs: error });
-        }
-        setIsLoading(false)
-    }
-
     const handleCreate = async (image_url) => {
-        handleCreateLocally(image_url)
+
         setIsLoading(true)
         values.image_url = image_url;
         const token = localStorage.getItem('token');

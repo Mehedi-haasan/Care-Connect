@@ -10,6 +10,7 @@ module.exports = function (app) {
     })
 
     app.get('/api/get/content', controller.GetContent);
+    app.get('/api/get/content/:cat_id', controller.GetContentCategoryWise);
     app.get('/api/get/single/content/:id', controller.GetSingleContent);
     app.get('/api/get/content/common/data', controller.GetCommonContent);
     app.post('/api/create/content', controller.CreateContent);

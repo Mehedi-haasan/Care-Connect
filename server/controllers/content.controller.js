@@ -26,7 +26,7 @@ exports.GetContent = async (req, res) => {
                 {
                     model: db.user,
                     as: "creator",
-                    attributes: ["id", "name"],
+                    attributes: ["id", "name", "designation"],
                 }
             ],
             limit: 20
@@ -34,6 +34,55 @@ exports.GetContent = async (req, res) => {
         res.status(200).send({
             success: true,
             items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+exports.GetContentCategoryWise = async (req, res) => {
+    const id = parseInt(req.params.cat_id, 10)
+    try {
+        let data = await Content.findAll({
+            where: {
+                type_id: id
+            },
+            include: [
+                {
+                    model: db.category,
+                    as: "category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.sub_category,
+                    as: "sub_category",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.content_type,
+                    as: "type",
+                    attributes: ["id", "name"],
+                },
+                {
+                    model: db.user,
+                    as: "creator",
+                    attributes: ["id", "name", "designation"],
+                }
+            ],
+            limit: 20
+        })
+
+        let category = await db.content_type.findOne({
+            where: {
+                id: id
+            }
+        })
+
+        res.status(200).send({
+            success: true,
+            items: data,
+            category:category
         })
 
     } catch (error) {

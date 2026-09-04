@@ -8,15 +8,48 @@ module.exports = (sequelize, Sequelize) => {
         active: {
             type: Sequelize.BOOLEAN,
         },
+        phone: {
+            type: Sequelize.BOOLEAN,
+        },
+        physical: {
+            type: Sequelize.BOOLEAN,
+        },
+        video: {
+            type: Sequelize.BOOLEAN,
+        },
         doctor_id: {
             type: Sequelize.INTEGER
         },
         hospital_id: {
             type: Sequelize.INTEGER
         },
-        time:{
-            type: Sequelize.STRING 
-        }
+        time: {
+            type: Sequelize.STRING
+        },
+        name: {
+            type: Sequelize.STRING
+        },
+        type: {
+            type: Sequelize.STRING
+        },
+        address: {
+            type: Sequelize.STRING
+        },
+        latitude: {
+            type: Sequelize.STRING
+        },
+        longitude: {
+            type: Sequelize.STRING
+        },
+        new_visit_fee: {
+            type: Sequelize.INTEGER
+        },
+        follow_up_fee: {
+            type: Sequelize.INTEGER
+        },
+        report_see_fee: {
+            type: Sequelize.INTEGER
+        },
     });
 
     DoctorHospital.associate = (models) => {
@@ -29,7 +62,7 @@ module.exports = (sequelize, Sequelize) => {
             as: "hospital"
         });
         DoctorHospital.hasMany(models.schedule, {
-            foreignKey: "hospital_id",
+            foreignKey: "chamber_id",
             as: "schedules"
         });
     };

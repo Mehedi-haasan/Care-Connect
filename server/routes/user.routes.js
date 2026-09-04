@@ -25,4 +25,6 @@ module.exports = function (app) {
 
     app.post("/api/get/doctors", controller.GetDoctors);
 
+    app.post("/api/create/chamber", controller.CreateChamber);
+
 };

@@ -34,8 +34,7 @@ const RecentHealth = ({ title, data }) => {
           {!showAll && data.length > 4 && (
             <h1
               className="mr-9 text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer"
-              onClick={() => setShowAll(true)}
-            >
+              onClick={() => setShowAll(true)}>
               সমস্ত বিষয় পড়ুন
             </h1>
           )}
@@ -44,18 +43,11 @@ const RecentHealth = ({ title, data }) => {
         {/* ===== CONTENT LIST (OLD DESIGN) ===== */}
         <div className="mt-6 space-y-6 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {data.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => navigate(`/content/details/${item.id}`)}
-              className="flex flex-col sm:flex-row gap-4 bg-white rounded-2xl
-                         cursor-pointer transition-transform duration-300
-                         hover:-translate-y-1"
-            >
+            <div key={item.id}
+              className="flex flex-col sm:flex-row gap-4 bg-white rounded-2xl cursor-pointer transition-transform duration-300 hover:-translate-y-1">
               {/* Image */}
               <div className="w-full sm:w-1/3 h-48">
-                <img
-                  src={item.image_url}
-                  alt={item.title}
+                <img src={item.image_url} alt={item.title}
                   className="w-full h-full object-cover rounded-2xl"
                 />
               </div>
@@ -68,15 +60,15 @@ const RecentHealth = ({ title, data }) => {
                   </span>
 
                   <h2 className="font-semibold text-[15px] mt-3 leading-6">
-                    {item.title}
+                    {truncateHTML(item?.title, 120)}
                   </h2>
 
                   <p className="text-xs text-gray-700 mt-2 leading-5">
-                    {truncateHTML(item?.description, 90)}
+                    {truncateHTML(item?.description, 160)}
                   </p>
                 </div>
 
-                <p className="text-sm text-[#1976D2] mt-3">
+                <p className="text-sm text-[#1976D2] mt-3" onClick={() => navigate(`/content/details/${item.id}`)}>
                   বিস্তারিত পড়ুন
                 </p>
               </div>

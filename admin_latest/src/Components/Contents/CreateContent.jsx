@@ -166,7 +166,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
             anotherFunction();
             handleClose(false);
             callAgain()
-            goto('/items')
+            goto('/contents')
         } catch (error) {
             setIsLoading(false)
             console.error('Error updating variant:', error);
@@ -258,7 +258,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                         <div>
                             <div className='flex justify-start items-center w-full z-50'>
                                 <div className='w-full'>
-                                    <h1 className='text-[15px] pb-1.5'>Content Name/Title</h1>
+                                    <h1 className='text-[15px] pb-1.5'>Content Name</h1>
                                     <input
                                         type="text"
                                         ref={input_name}
@@ -278,11 +278,35 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                             </div>
                         </div>
 
+                        
+
                         <div className='flex justify-start items-end pb-1 z-40'>
                             <SelectionComponent options={contentType} default_select={first} default_value={filter?.bran_value}
                                 onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Content Type*"} className='rounded-l' />
                             <div onClick={() => goto(`/create/brand`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
+                            </div>
+                        </div>
+                        <div className='grid col-span-2'>
+                            <div className='flex justify-start items-center w-full z-50'>
+                                <div className='w-full'>
+                                    <h1 className='text-[15px] pb-1.5'>Content Title</h1>
+                                    <input
+                                        type="text"
+                                        ref={input_name}
+                                        value={values?.title}
+                                        placeholder="Enter item name"
+                                        onChange={(e) => setValues({ ...values, title: e.target.value })}
+                                        className="px-2 pt-[7px] pb-[6px] text-[#6B7280] focus:outline-none rounded-l font-thin border w-full dark:bg-[#040404] dark:text-white"
+
+                                        onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                                setFirst(true);
+                                            } else if (e.key === "Escape") { }
+                                        }}
+                                    />
+
+                                </div>
                             </div>
                         </div>
 
@@ -307,15 +331,6 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                         <div className='my-2 grid col-span-1 pb-2'>
                             <div>
                                 <h1 className="py-1">Description</h1>
-                                {/* <textarea placeholder="Enter your note" ref={desc} value={values?.description}
-                                    onChange={(e) => { setValues({ ...values, description: e?.target?.value }) }}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            setCreator(true)
-                                        }
-                                    }}
-                                    className="font-thin focus:outline-none border p-1.5 w-full rounded dark:bg-[#040404] dark:text-white" /> */}
-
                                 <div>
                                     <ReactQuill
                                         theme="snow"

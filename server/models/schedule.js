@@ -11,14 +11,14 @@ module.exports = (sequelize, Sequelize) => {
         name: {
             type: Sequelize.STRING
         },
-        hospital_id: {
+        chamber_id: {
             type: Sequelize.INTEGER
         }
     });
 
     Schedules.associate = (models) => {
         Schedules.belongsTo(models.doctor_and_hospital, {
-            foreignKey: "hospital_id",
+            foreignKey: "chamber_id",
             as: "hospital"
         });
     };

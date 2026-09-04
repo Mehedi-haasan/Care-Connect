@@ -6,7 +6,6 @@ import BASE_URL from "../URL/baseurl";
 
 const Hospitals = () => {
   const [tab, setTab] = useState("hospital");
-
   const [division, setDivision] = useState([]);
   const [district, setDistrict] = useState([]);
   const [subdistrict, setSubDistrict] = useState([]);
@@ -78,29 +77,21 @@ const Hospitals = () => {
           আপনার এলাকায় বিশেষজ্ঞ ডাক্তার ও হাসপাতাল খুঁজুন
         </h2>
 
-        {/* 🟣 Tabs */}
         <div className="flex w-full max-w-2xl mx-auto mt-4 rounded overflow-hidden shadow-sm">
           <button
             onClick={() => setTab("hospital")}
             className={`w-1/2 py-3 font-medium transition ${tab === "hospital"
-              ? "bg-purple-700 text-white"
-              : "bg-blue-100 text-gray-800"
-              }`}
-          >
+              ? "bg-purple-700 text-white" : "bg-blue-100 text-gray-800"}`}>
             নিকটস্থ হাসপাতাল
           </button>
           <button
             onClick={() => setTab("doctor")}
             className={`w-1/2 py-3 font-medium transition ${tab === "doctor"
-              ? "bg-purple-700 text-white"
-              : "bg-blue-100 text-gray-800"
-              }`}
-          >
+              ? "bg-purple-700 text-white" : "bg-blue-100 text-gray-800"}`}>
             বিশেষজ্ঞ ডাক্তার
           </button>
         </div>
 
-        {/* 🗂️ Filters */}
         <div className="flex flex-wrap justify-center gap-2 mt-4 w-full max-w-2xl mx-auto">
           <select
             value={values?.division}
@@ -188,14 +179,15 @@ const Hospitals = () => {
                   {h?.name}
                 </h3>
                 <p className="text-sm text-gray-600">{h?.address}</p>
+                <p className="text-sm text-gray-600">{h?.division?.name},{h?.district?.name},{h?.upazila?.name}</p>
                 <p className="text-sm text-purple-600 mt-1">
-                  {/* {h?.services.join(", ")} */}
+
                 </p>
               </div>
               <div className="w-full md:w-1/4 text-sm flex flex-col justify-between">
                 <div className="mt-2 bg-purple-400 text-white py-1 px-2 rounded">
-                  <p>ডাক্তার: {h?.doctors} জন</p>
-                  <a href={`tel:${h.phone}`} className="text-blue-600 mt-2">
+                  <p>ডাক্তার: {h?.doctors?.length} জন</p>
+                  <a href={`tel:${h?.phone}`} className="text-blue-600 mt-2">
                     📞 {h?.phone}
                   </a>
                 </div>
@@ -226,12 +218,10 @@ const Hospitals = () => {
                 </h3>
                 <p className="text-sm text-gray-700">{d?.designation}</p>
                 <p className="text-sm text-gray-500">
-                  হাসপাতাল: {d?.hospitals?.map((item)=>{
-                    return item?.name
-                  })}
+                  হাসপাতাল: {d?.hospitals?.map((item) => { return item?.name })}
                 </p>
                 <p className="text-sm text-gray-500">
-                  অভিজ্ঞতা: {'12 Years'}
+                  অভিজ্ঞতা: {d?.experience}
                 </p>
               </div>
               <div className="w-full md:w-1/4 flex flex-col justify-between text-sm">

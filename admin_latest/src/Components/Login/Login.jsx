@@ -9,6 +9,7 @@ import login_logo from '../Logo/login-cover.svg'
 
 
 const Login = ({ auth }) => {
+
   const goto = useNavigate()
   const [values, setValues] = useState({
     username: "",
@@ -17,8 +18,9 @@ const Login = ({ auth }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [message, setMessage] = useState({ id: Date.now(), mgs: '' });
   const pass = useRef()
-  const handleSubmit = async () => {
 
+  
+  const handleSubmit = async () => {
     try {
       const response = await fetch(`${BaseUrl}/api/auth/signin`, {
         method: "POST",
@@ -34,12 +36,6 @@ const Login = ({ auth }) => {
         localStorage.setItem('name', data.name);
         localStorage.setItem('image', data.image);
         localStorage.setItem('role', data.role);
-        // localStorage.setItem('id', data.id);
-        // localStorage.setItem('usertype', data.usertype);
-        // localStorage.setItem('logo', data.logo);
-        // localStorage.setItem('shopname', data.shopname);
-        // localStorage.setItem('compId', data?.compId);
-        // localStorage.setItem('shopcode', data?.shopcode);
         auth(true)
         goto('/dashboard')
       }
@@ -81,9 +77,7 @@ const Login = ({ auth }) => {
               </div>
               <div className='relative mb-5'>
                 <label className="block text-sm font-semibold mb-1">Password</label>
-                {
-                  showPassword ? <Show className='absolute right-2 top-[35px] cursor-pointer ' onClick={() => { setShowPassword(false); }} /> : <Hide className='absolute right-2 top-[35px] cursor-pointer' onClick={() => { setShowPassword(true); }} />
-                }
+                {showPassword ? <Show className='absolute right-2 top-[35px] cursor-pointer ' onClick={() => { setShowPassword(false); }} /> : <Hide className='absolute right-2 top-[35px] cursor-pointer' onClick={() => { setShowPassword(true); }} />}
                 <input type={showPassword ? "text" : "password"} ref={pass} onKeyDown={(e) => { if (e.key === "Enter") { handleSubmit() } }} onChange={(e) => { setValues({ ...values, password: e.target.value }) }} className="w-full p-3 rounded-lg focus:outline-none dark:bg-[#040404] dark:text-white font-thin border focus:ring-2 focus:ring-blue-400 placeholder-gray-300" placeholder="Enter your password" />
               </div>
 

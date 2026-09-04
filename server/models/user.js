@@ -14,6 +14,9 @@ module.exports = (sequelize, Sequelize) => {
         phone: {
             type: Sequelize.STRING
         },
+        gender: {
+            type: Sequelize.STRING
+        },
         user_type: {
             type: Sequelize.STRING
         },
@@ -32,16 +35,37 @@ module.exports = (sequelize, Sequelize) => {
         degree_name: {
             type: Sequelize.STRING
         },
+        reg_number: {
+            type: Sequelize.STRING
+        },
+        graduation_from: {
+            type: Sequelize.STRING
+        },
         username: {
             type: Sequelize.STRING
         },
+        present_address: {
+            type: Sequelize.STRING
+        },
+        parmanent_address: {
+            type: Sequelize.STRING
+        },
         email: {
+            type: Sequelize.STRING
+        },
+        nid_num: {
+            type: Sequelize.STRING
+        },
+        blood_group: {
             type: Sequelize.STRING
         },
         password: {
             type: Sequelize.STRING
         },
         image_url: {
+            type: Sequelize.STRING
+        },
+        bio: {
             type: Sequelize.STRING
         },
         dept_id: {

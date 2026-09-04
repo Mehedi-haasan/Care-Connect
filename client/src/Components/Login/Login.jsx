@@ -3,16 +3,17 @@ import { FaFacebookF } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import image from '../../Logo/Logo.png';
 import BASE_URL from '../URL/baseurl';
+import { useNavigate } from 'react-router-dom';
 
 
 
 export default function LoginPage() {
-
+  const goto = useNavigate()
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
-  
+
   const handleSubmit = async (e) => {
     const response = await fetch(`${BASE_URL}/api/auth/signin`, {
       method: "POST",
@@ -23,7 +24,7 @@ export default function LoginPage() {
     });
     const data = await response.json();
     localStorage.setItem('token', data.accessToken);
-    goTo('/')
+    goto('/')
   }
 
   return (
@@ -40,7 +41,7 @@ export default function LoginPage() {
         </h2>
 
         {/* Form */}
-        <form className="space-y-5">
+        <div className="space-y-5">
           <div>
             <input onChange={(e) => { setValues({ ...values, username: e.target.value }) }}
               type="text"
@@ -56,13 +57,10 @@ export default function LoginPage() {
             />
           </div>
 
-          <button onClick={handleSubmit}
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-full font-semibold hover:bg-blue-700 transition"
-          >
+          <button onClick={handleSubmit} className="w-full bg-blue-600 text-white py-2 rounded-full font-semibold hover:bg-blue-700 transition"          >
             সাইন ইন
           </button>
-        </form>
+        </div>
 
         {/* Forgot Password */}
         <div className="text-center mt-3">
