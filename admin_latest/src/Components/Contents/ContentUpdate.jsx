@@ -10,6 +10,7 @@ import Add from '../../icons/Add';
 import logo from '../Logo/photo.png'
 import ImageSelect from '../Input/ImageSelect'
 import EscapeRedirect from '../Wholesale/EscapeRedirect';
+import RichTextEditor from '../Input/RichTextEditor';
 
 
 
@@ -64,7 +65,7 @@ const UpdateContent = () => {
     })
 
 
-    EscapeRedirect("/items")
+    EscapeRedirect("/contents")
 
     const GetSingleContent = async () => {
         const token = localStorage.getItem('token')
@@ -128,7 +129,7 @@ const UpdateContent = () => {
             });
             const data = await response.json();
             setMessage({ id: Date.now(), mgs: data?.message });
-            goto('/items')
+            goto('/contents')
         } catch (error) {
             console.error('Error updating variant:', error);
         }
@@ -243,26 +244,17 @@ const UpdateContent = () => {
                             </div>
                         </div>
                         <div className='my-2 grid col-span-1 pb-2'>
-                            <div>
-                                <h1 className="py-1">Description</h1>
-                                <div>
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={values.description}
-                                        onChange={(value) =>
-                                            setValues((prev) => ({ ...prev, description: value }))
-                                        }
-                                        formats={["header", "bold", "italic", "underline", "strike", "list", "bullet", "link", "image", "video"]}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                setCreator(true)
-                                            }
-                                        }}
-                                        placeholder="Write description here with images, links, videos..."
-                                        className="bg-white rounded-lg shadow-sm"
-                                    />
-                                </div>
-                            </div>
+                            
+                            <RichTextEditor
+                                value={values.description}
+                                onChange={(value) =>
+                                    setValues((prev) => ({
+                                        ...prev,
+                                        description: value,
+                                    }))
+                                }
+                                placeholder="Write description here with images, links, videos..."
+                            />
                         </div>
 
                         <div className='pt-1'>

@@ -69,47 +69,16 @@ function App() {
     const name = localStorage.getItem('name');
     const image = localStorage.getItem('image');
     const role = localStorage.getItem('role');
-    // const id = localStorage.getItem('id');
-    // const usertype = localStorage.getItem('usertype');
-    // const logo = localStorage.getItem('logo');
-    // const shopname = localStorage.getItem('shopname');
-    // const compId = localStorage.getItem('compId');
-    // const shopcode = localStorage.getItem('shopcode');
-
 
     if (token && token !== "null") {
       setAuth(true);
       setInfo({
-        // id: id,
         name: name,
         image: image,
         role: role,
-        // usertype: usertype,
-        // logo: logo,
-        // shopname: shopname,
-        // compId: compId,
-        // shopcode: shopcode
       })
     } else {
       setAuth(false)
-    }
-
-
-    // if (auth && role === "superadmin") {
-    //   getShop()
-    // } else if (auth && role === "admin") {
-    //   setShop([{
-    //     id: id,
-    //     name: shopname
-    //   }])
-    // }
-
-    if (auth) {
-      // getCategory();
-      // getBrand()
-      // getUser()
-      // getState()
-      // Edition()
     }
 
   }, [auth])
@@ -118,8 +87,6 @@ function App() {
 
   useEffect(() => {
     let language = localStorage.getItem('lan');
-
-    // If not set or invalid, default to English
     if (!language || language === 'undefined') {
       language = 'en';
       localStorage.setItem('lan', 'en');

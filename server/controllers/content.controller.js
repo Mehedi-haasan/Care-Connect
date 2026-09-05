@@ -1,6 +1,7 @@
 const { where } = require("sequelize");
 const db = require("../models");
 const Content = db.content;
+const ContentType = db.content_type;
 
 
 
@@ -34,6 +35,50 @@ exports.GetContent = async (req, res) => {
         res.status(200).send({
             success: true,
             items: data
+        })
+
+    } catch (error) {
+        res.status(500).send({ success: false, message: error.message });
+    }
+}
+
+
+exports.GetContentCateWise = async (req, res) => {
+    try {
+        let cate = await ContentType.findAll({
+            include: [
+                {
+                    model: db.content,
+                    as: "contents",
+                    include: [
+                        {
+                            model: db.category,
+                            as: "category",
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: db.sub_category,
+                            as: "sub_category",
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: db.content_type,
+                            as: "type",
+                            attributes: ["id", "name"],
+                        },
+                        {
+                            model: db.user,
+                            as: "creator",
+                            attributes: ["id", "name", "designation"],
+                        }
+                    ],
+                    limit: 6
+                }]
+        })
+
+        res.status(200).send({
+            success: true,
+            items: cate
         })
 
     } catch (error) {
@@ -82,7 +127,7 @@ exports.GetContentCategoryWise = async (req, res) => {
         res.status(200).send({
             success: true,
             items: data,
-            category:category
+            category: category
         })
 
     } catch (error) {

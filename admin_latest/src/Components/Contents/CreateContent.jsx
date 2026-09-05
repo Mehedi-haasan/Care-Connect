@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Button from '../Input/Button';
-import SelectionComponent from '../Input/SelectionComponent'
+import SelectionComponent from '../Input/SelectionComponentSearch'
 import BaseUrl from '../../Constant';
 import Notification from '../Input/Notification';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import Add from '../../icons/Add';
 import logo from '../Logo/photo.png'
 import ImageSelect from '../Input/ImageSelect'
 import EscapeRedirect from '../Wholesale/EscapeRedirect';
+import RichTextEditor from '../Input/RichTextEditor';
 
 
 
@@ -82,21 +83,64 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
         setContentType(data?.content_type)
     }
 
-    const imageHandler = () => {
+    // const imageHandler = () => {
+    //     const input = document.createElement("input");
+    //     input.type = "file";
+    //     input.accept = "image/*";
+    //     input.click();
+
+    //     input.onchange = async () => {
+    //         const file = input.files?.[0];
+    //         if (!file) return;
+
+    //         const editor = quillRef.current?.getEditor();
+    //         if (!editor) return;
+
+    //         const formData = new FormData();
+    //         formData.append("image_url", file);
+
+    //         try {
+    //             const res = await fetch(`${BaseUrl}/api/upload/image`, {
+    //                 method: "POST",
+    //                 body: formData,
+    //             });
+
+    //             const data = await res.json();
+
+    //             if (data.success && data.image_url) {
+    //                 const range = editor.getSelection(true);
+    //                 editor.insertEmbed(
+    //                     range.index,
+    //                     "image",
+    //                     `${BaseUrl}${data.image_url}`
+    //                 );
+    //                 editor.setSelection(range.index + 1);
+    //             }
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     };
+    // };
+
+
+    const imageHandler = async () => {
         const input = document.createElement("input");
+
         input.type = "file";
         input.accept = "image/*";
         input.click();
 
         input.onchange = async () => {
             const file = input.files?.[0];
+
             if (!file) return;
 
             const editor = quillRef.current?.getEditor();
+
             if (!editor) return;
 
             const formData = new FormData();
-            formData.append("image", file);
+            formData.append("image_url", file);
 
             try {
                 const res = await fetch(`${BaseUrl}/api/upload/image`, {
@@ -106,17 +150,23 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
 
                 const data = await res.json();
 
-                if (data.success && data.path) {
+                console.log("Upload response:", data);
+
+                if (data.success && data.image_url) {
                     const range = editor.getSelection(true);
+
+                    console.log("Inserting:", data.image_url);
+
                     editor.insertEmbed(
                         range.index,
                         "image",
-                        `${BaseUrl}${data.path}`
+                        data.image_url
                     );
+
                     editor.setSelection(range.index + 1);
                 }
-            } catch (err) {
-                console.error(err);
+            } catch (error) {
+                console.error("Image upload failed:", error);
             }
         };
     };
@@ -222,26 +272,43 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
 
 
 
+    // const modules = {
+    //     toolbar: {
+    //         container: [
+    //             [{ header: [1, 2, 3, false] }],
+    //             ["bold", "italic", "underline", "strike"],
+    //             [{ list: "ordered" }, { list: "bullet" }],
+    //             ["link", "image", "video"],
+    //             ["clean"],
+    //         ],
+    //         handlers: {
+    //             image: imageHandler,
+    //         },
+    //     },
+    // };
+
     const modules = {
-        toolbar: {
-            container: [
-                [{ header: [1, 2, 3, false] }],
-                ["bold", "italic", "underline", "strike"],
-                [{ list: "ordered" }, { list: "bullet" }],
-                ["link", "image", "video"],
-                ["clean"],
-            ],
-            handlers: {
-                image: imageHandler,
-            },
-        },
+        toolbar: [
+            [{ header: [1, 2, 3, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "image", "video"],
+            ["clean"],
+        ],
     };
 
+    useEffect(() => {
+        if (!quillRef.current) return;
+
+        const editor = quillRef.current.getEditor();
+        const toolbar = editor.getModule("toolbar");
+
+        toolbar?.addHandler("image", imageHandler);
+    }, []);
 
 
 
-
-
+    console.log()
 
     return (
         <div className='min-h-screen pb-12 py-5 px-3 relative'>
@@ -278,17 +345,17 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                             </div>
                         </div>
 
-                        
+
 
                         <div className='flex justify-start items-end pb-1 z-40'>
                             <SelectionComponent options={contentType} default_select={first} default_value={filter?.bran_value}
                                 onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Content Type*"} className='rounded-l' />
-                            <div onClick={() => goto(`/create/brand`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
+                            <div className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
                         </div>
                         <div className='grid col-span-2'>
-                            <div className='flex justify-start items-center w-full z-50'>
+                            <div className='flex justify-start items-center w-full z-30'>
                                 <div className='w-full'>
                                     <h1 className='text-[15px] pb-1.5'>Content Title</h1>
                                     <input
@@ -310,7 +377,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                             </div>
                         </div>
 
-                        <div className='flex justify-start items-end pb-1 '>
+                        <div className='flex justify-start items-end pb-1 z-50'>
                             <SelectionComponent options={category} default_select={second} default_value={filter?.cate_value}
                                 onSelect={(v) => {
                                     setSecond(false); setThird(true); setValues({ ...values, category_id: v?.id });
@@ -322,33 +389,24 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                         </div>
 
 
-                        <div className='flex justify-start items-end pb-1'>
+                        <div className='flex justify-start items-end pb-1 z-40'>
                             <SelectionComponent options={subCategory} default_select={third} default_value={filter?.sup_value} onSelect={(v) => { desc.current?.focus(); setValues({ ...values, sub_cate_id: v?.id }); setFilter({ ...filter, sup_value: v?.name }) }} label={"Sub Category*"} className='rounded-l' />
                             <div onClick={() => goto(`/create/supplier`)} className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
                         </div>
                         <div className='my-2 grid col-span-1 pb-2'>
-                            <div>
-                                <h1 className="py-1">Description</h1>
-                                <div>
-                                    <ReactQuill
-                                        theme="snow"
-                                        value={values.description}
-                                        onChange={(value) =>
-                                            setValues((prev) => ({ ...prev, description: value }))
-                                        }
-                                        formats={["header", "bold", "italic", "underline", "strike", "list", "bullet", "link", "image", "video"]}
-                                        onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                setCreator(true)
-                                            }
-                                        }}
-                                        placeholder="Write description here with images, links, videos..."
-                                        className="bg-white rounded-lg shadow-sm"
-                                    />
-                                </div>
-                            </div>
+                            
+                            <RichTextEditor
+                                value={values.description}
+                                onChange={(value) =>
+                                    setValues((prev) => ({
+                                        ...prev,
+                                        description: value,
+                                    }))
+                                }
+                                placeholder="Write description here with images, links, videos..."
+                            />
                         </div>
 
                         <div className='pt-1'>
@@ -395,7 +453,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                     </div>
                     <div className='flex justify-start items-center gap-2'>
                         <Button onClick={() => { image_url == null ? handleCreate('') : handleUpload() }} isDisable={isLoading} name={isLoading ? 'Creating' : 'Create'} />
-                        <button onClick={() => { goto('/items') }} className='bg-gray-100 dark:text-black rounded-md px-5 py-2 font-thin hover:bg-gray-300'>Close</button>
+                        <button onClick={() => { goto('/contents') }} className='bg-gray-100 dark:text-black rounded-md px-5 py-2 font-thin hover:bg-gray-300'>Close</button>
                     </div>
 
                 </div>

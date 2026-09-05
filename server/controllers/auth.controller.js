@@ -250,7 +250,7 @@ exports.getSingleDoctor = async (req, res) => {
                     as: 'hospitals',
                     where: {
                         doctor_id: req.params.doctor_id,
-                        hospital_id: req.params.hospital_id
+                        chamber_id: req.params.hospital_id
                     },
                     include: [
                         {
@@ -275,7 +275,7 @@ exports.getSingleDoctor = async (req, res) => {
         const hospital = await db.doctor_and_hospital.findOne({
             where: {
                 doctor_id: req.params.doctor_id,
-                hospital_id: req.params.hospital_id
+                chamber_id: req.params.hospital_id
             },
             include: [
                 {

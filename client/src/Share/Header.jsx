@@ -3,11 +3,12 @@ import { NavLink } from "react-router-dom";
 import image from "../Logo/Logo.png";
 import profile_logo from "../Logo/userProfile.png"
 
-const Header = () => {
+const Header = ({ auth, info,isLoggedOut }) => {
+
   const [focus, setFocus] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [auth, setAuth] = useState(true)
   const [isShowProfile, setIsShowProfile] = useState(false);
+
   const menuItems = [
     { title: "স্বাস্থ্য পাঠ", link: "/" },
     { title: "বিষয়-ভিত্তিক", link: "#" },
@@ -15,7 +16,7 @@ const Header = () => {
     { title: "হাসপাতাল", link: "/hospitals" },
     { title: "সেবা সমূহ", link: "#" },
   ];
-  const info = {}
+
 
   return (
     <header className="w-full bg-white shadow-md sticky top-0 z-50">

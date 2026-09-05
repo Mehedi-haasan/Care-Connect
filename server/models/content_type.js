@@ -16,6 +16,14 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
+    ContentType.associate = (models) => {
+        // many2one → user_type
+        ContentType.hasMany(models.content, {
+            foreignKey: "type_id",
+            as: "contents"
+        });
+    };
+
 
     return ContentType;
 };

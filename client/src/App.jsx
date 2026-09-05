@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Category from "./Components/Category/Category";
 import ContentDetails from "./Components/ContantDetails/ContentDetails";
@@ -17,10 +18,35 @@ import PaymentCancel from './Components/Payment/Cancel'
 import Profile from "./Components/Profile/Profile";
 
 function App() {
+
+
+  const [auth, setAuth] = useState(false)
+  const [info, setInfo] = useState({});
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    const name = localStorage.getItem('name');
+    const image = localStorage.getItem('image');
+    const role = localStorage.getItem('role');
+
+
+    if (token && token !== "null") {
+      setAuth(true);
+      setInfo({
+        name: name,
+        image: image,
+        role: role,
+      })
+    } else {
+      setAuth(false)
+    }
+  }, [auth])
+
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Header />
+      <Header auth={auth} info={info} isLoggedOut={(v) => setAuth(v)}/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/category/:id" element={<Category />} />

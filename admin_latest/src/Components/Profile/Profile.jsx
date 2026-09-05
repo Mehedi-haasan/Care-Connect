@@ -1,16 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import BaseUrl from '../../Constant';
 import EscapeRedirect from '../Wholesale/EscapeRedirect';
 import Notification from "../Input/Notification";
 import { useParams } from 'react-router-dom';
-import Edit from './Edit';
-import Add from '../../icons/Add';
-import InputComponent from '../Input/InputComponent';
-import SelectionComponent from '../Input/SelectionComponent';
 import PersonalInformation from './PersonalInformation';
 import ProfessionalInformation from './ProfessionalInformation';
 import ChamberDetails from './ChamberDetails';
-import ConsultationPayment from './ConsultationPayment';
 
 const Profile = () => {
     const [user, setUser] = useState({});
@@ -97,6 +92,11 @@ const Profile = () => {
         setUser(data?.items || {})
     }
 
+    const fileInputRef = useRef(null);
+    const [preview, setPreview] = useState(user?.image_url || null);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+
 
     const handleChange = (key, value) => {
         setExactUser((prev) => ({
@@ -108,15 +108,106 @@ const Profile = () => {
 
     EscapeRedirect()
 
+
+    const UpdateUserProfile = async (image_url) => {
+        const updatedUser = {
+            ...exactUser,
+            image_url: image_url,
+        };
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${BaseUrl}/api/update/single/user`, {
+            method: 'PATCH',
+            headers: {
+                'authorization': token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+            body: JSON.stringify({ user: updatedUser })
+        });
+        const data = await response.json()
+        setUser(data?.items || {})
+    }
+
+
+    const handleUpdateImage = async () => {
+        if (!selectedFile) return;
+
+        const formData = new FormData();
+        formData.append("image_url", selectedFile);
+
+        const token = localStorage.getItem('token');
+
+        const response = await fetch(`${BaseUrl}/api/upload/image`, {
+            method: 'POST',
+            headers: {
+                'authorization': token,
+            },
+            body: formData,
+        });
+
+        const data = await response.json();
+        if (data) {
+            UpdateUserProfile(data?.image_url)
+        }
+    };
+
+    const handleImageChange = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        // Optional validation
+        if (!file.type.startsWith("image/")) {
+            alert("Please select an image file.");
+            return;
+        }
+
+        setSelectedFile(file);
+        const imageUrl = URL.createObjectURL(file);
+        setPreview(imageUrl);
+    };
     return (
         <div className='pb-12 dark:bg-[#040404] dark:text-white min-h-screen px-3 py-5'>
             <Notification message={message} />
 
             <div className='shadow bg-[#FFFFFF]'>
                 <div className='flex flex-col justify-center items-center gap-5 p-5'>
-                    <div className='border h-[120px] w-[120px] flex justify-center items-center rounded-full'>
+                    {/* <div className='border h-[120px] w-[120px] flex justify-center items-center rounded-full'>
                         <img src={user?.image_url ? user?.image_url : `https://cdn-icons-png.flaticon.com/128/149/149071.png`} alt='fjgkfd' className='h-[100px] w-[100px] rounded-full' />
+                    </div> */}
+
+                    <div className="relative h-[120px] w-[120px]">
+
+                        <div className="h-[120px] w-[120px] rounded-full border-2 border-gray-200 flex items-center justify-center overflow-hidden">
+                            <img src={preview || exactUser?.image_url || "https://cdn-icons-png.flaticon.com/128/149/149071.png"}
+                                alt="Profile" className="h-[100px] w-[100px] rounded-full object-cover" />
+                        </div>
+
+                        {/* Edit Button */}
+                        <button type="button" onClick={() => fileInputRef.current?.click()}
+                            className="absolute bottom-1 right-1 flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-white shadow-md hover:bg-blue-700 transition"
+                            title="Update profile image"
+                        >
+                            ✎
+                        </button>
+
+                        {/* Hidden File Input */}
+                        <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
                     </div>
+
+                    {/* Update Button */}
+                    {selectedFile && (
+                        <button
+                            type="button"
+                            onClick={handleUpdateImage}
+                            className="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 transition"
+                        >
+                            Update Profile Picture
+                        </button>
+                    )}
                     <div>
                         <div className='flex justyfy-start items-center gap-1'>
                             <h1>{user?.name}</h1>
@@ -337,48 +428,48 @@ export default Profile;
 
 //     </div>
 
-    // <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 bg-[#FFFFFF] rounded border shadow mt-5'>
-    //     <div className='grid col-span-2'>
-    //         <div className='flex justify-between items-start'>
-    //             <h1>Address Information</h1>
-    //             <Add onClick={() => setAddAddress(!addAddress)} />
-    //         </div>
-    //     </div>
+// <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 p-5 bg-[#FFFFFF] rounded border shadow mt-5'>
+//     <div className='grid col-span-2'>
+//         <div className='flex justify-between items-start'>
+//             <h1>Address Information</h1>
+//             <Add onClick={() => setAddAddress(!addAddress)} />
+//         </div>
+//     </div>
 
-    //     {addAddress && <div className='grid col-span-2'>
-    //         <div className='flex justify-between items-center'>
-    //             <div className='w-[180px]'>
-    //                 <SelectionComponent options={[{ id: 1, name: 'Parmanent' }]} default_value={adress?.address_type_value}
-    //                     onSelect={(v) => { setAddress({ ...adress, address_type: v?.name, address_type_value: v?.name }) }} label={'Address Type'} />
-    //             </div>
-    //             <InputComponent label={'Name'} onChange={(v) => setAddress({ ...adress, name: v })} />
-    //             <div className='w-[200px]'>
-    //                 <SelectionComponent options={division} default_value={adress?.division_value}
-    //                     onSelect={(v) => { setAddress({ ...adress, division_id: v?.id, division_value: v?.name }) }} label={'Division'} />
-    //             </div>
-    //             <div className='w-[200px]'>
-    //                 <SelectionComponent options={districs} default_value={adress?.distric_value}
-    //                     onSelect={(v) => { setAddress({ ...adress, district_id: v?.id, distric_value: v?.name }) }} label={'District'} />
-    //             </div>
-    //             <div className='w-[200px]'>
-    //                 <SelectionComponent options={upazila} default_value={adress?.upazila_value}
-    //                     onSelect={(v) => { setAddress({ ...adress, upazila_id: v?.id, upazila_value: v?.name }) }} label={'Upazila'} />
-    //             </div>
-    //             <button onClick={CreateAddress} className='border rounded py-1.5 px-2.5 mt-6'>Save</button>
-    //         </div>
-    //     </div>}
+//     {addAddress && <div className='grid col-span-2'>
+//         <div className='flex justify-between items-center'>
+//             <div className='w-[180px]'>
+//                 <SelectionComponent options={[{ id: 1, name: 'Parmanent' }]} default_value={adress?.address_type_value}
+//                     onSelect={(v) => { setAddress({ ...adress, address_type: v?.name, address_type_value: v?.name }) }} label={'Address Type'} />
+//             </div>
+//             <InputComponent label={'Name'} onChange={(v) => setAddress({ ...adress, name: v })} />
+//             <div className='w-[200px]'>
+//                 <SelectionComponent options={division} default_value={adress?.division_value}
+//                     onSelect={(v) => { setAddress({ ...adress, division_id: v?.id, division_value: v?.name }) }} label={'Division'} />
+//             </div>
+//             <div className='w-[200px]'>
+//                 <SelectionComponent options={districs} default_value={adress?.distric_value}
+//                     onSelect={(v) => { setAddress({ ...adress, district_id: v?.id, distric_value: v?.name }) }} label={'District'} />
+//             </div>
+//             <div className='w-[200px]'>
+//                 <SelectionComponent options={upazila} default_value={adress?.upazila_value}
+//                     onSelect={(v) => { setAddress({ ...adress, upazila_id: v?.id, upazila_value: v?.name }) }} label={'Upazila'} />
+//             </div>
+//             <button onClick={CreateAddress} className='border rounded py-1.5 px-2.5 mt-6'>Save</button>
+//         </div>
+//     </div>}
 
 
-    //     {user?.address?.map((add) => {
-    //         return <div className='grid col-span-2'>
-    //             <h1>{add?.address_type} Address</h1>
-    //             <div className='flex justify-between items-start'>
-    //                 <h1 className='text-xs'>{add?.name}, {add?.upazila?.name} {add?.district?.name}, {add?.division?.name}</h1>
-    //                 <Edit />
-    //             </div>
-    //         </div>
-    //     })}
+//     {user?.address?.map((add) => {
+//         return <div className='grid col-span-2'>
+//             <h1>{add?.address_type} Address</h1>
+//             <div className='flex justify-between items-start'>
+//                 <h1 className='text-xs'>{add?.name}, {add?.upazila?.name} {add?.district?.name}, {add?.division?.name}</h1>
+//                 <Edit />
+//             </div>
+//         </div>
+//     })}
 
-    // </div>
+// </div>
 // </div>
 // </div>

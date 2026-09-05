@@ -148,10 +148,10 @@ const Home = () => {
 
 
       <Recenthealth title="সাম্প্রতিক স্বাস্থ্য" data={homeContents} />
-      <Advertisement className="bg-black text-[#ACA766] w-full my-10" />
+      <Advertisement className="bg-black text-[#ACA766] my-10 w-[90%] mx-auto" />
       <AllDoctors data={allDoctor} />
 
-      <section className="mx-auto w-[90%] py-7 bg-[#EFF7F9]">
+      <section className="mx-auto w-[90%] py-7 bg-[#EFF7F9] mb-5">
         <h2 className="p-5 border-b border-[#e5cfe9] pb-4 text-[28px] font-bold text-[#8b5cc7]">স্বাস্থ্য সেবা লিংক</h2>
 
         <div className="grid grid-cols-2 gap-x-8 gap-y-7 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 p-5">
