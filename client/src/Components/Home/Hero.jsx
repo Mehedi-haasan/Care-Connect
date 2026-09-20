@@ -41,7 +41,7 @@ const Hero = ({ title, data }) => {
         {data?.map((item) => (
           <div key={item.id} className="grid grid-cols-1 sm:grid-cols-3 gap-4 cursor-pointer transform transition-all duration-300 hover:-translate-y-1">
             <div className="col-span-1">
-              <img src={item?.image_url} alt={item?.title}
+              <img src={item?.image_url} alt={item?.name}
                 className="h-[200px] w-full sm:h-[150px] md:h-[180px] lg:h-[200px] object-cover rounded-2xl"
               />
             </div>
@@ -55,7 +55,7 @@ const Hero = ({ title, data }) => {
                 {item?.name}
               </h1>
               <p className="fint-semibold">
-                {truncateHTML(item?.title, 220)}
+                {truncateHTML(item?.description, 220)}
               </p>
               <p onClick={() => navigate(`/content/details/${item?.id}`)} className="py-2 text-[12px] sm:text-sm font-medium text-[#0170C0]">বিস্তারিত পড়ুন</p>
             </div>

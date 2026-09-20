@@ -3,11 +3,25 @@ const Hospital = db.hospital;
 
 const Op = db.Sequelize.Op;
 
-
-
 exports.GetHospital = async (req, res) => {
     try {
-        let data = await Hospital.findAll({
+        const { div_id, diz_id, upa_id } = req.params;
+
+        const where = {};
+
+        if (div_id && div_id !== "null") {
+            where.division_id = div_id;
+        }
+        
+        if (diz_id && diz_id !== "null") {
+            where.district_id = diz_id;
+        }
+        
+        if (upa_id && upa_id !== "null") {
+            where.upazila_id = upa_id;
+        }
+        const data = await Hospital.findAll({
+            where,
             include: [
                 {
                     model: db.division,
@@ -26,16 +40,22 @@ exports.GetHospital = async (req, res) => {
                     as: "doctors"
                 }
             ]
-        })
+        });
+
         res.status(200).send({
             success: true,
             items: data
-        })
+        });
 
     } catch (error) {
-        res.status(500).send({ success: false, message: error.message });
+        console.error(error);
+
+        res.status(500).send({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 
 exports.GetJustHospital = async (req, res) => {

@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import BASE_URL from "../URL/baseurl";
-
+import HospitalCard from "./HospitalCard";
+import DoctorCard from "./DoctorCard";
 
 
 
@@ -15,8 +16,16 @@ const Hospitals = () => {
 
   const [hospitals, setHospitals] = useState([])
   const [doctors, setDoctors] = useState([])
+  const [div_id, setDivId] = useState(null)
+  const [dis_id, setDisId] = useState(null)
+  const [upa_id, setUpaId] = useState(null)
   const [values, setValues] = useState({
-    division: '', district: '', upazila: ''
+    division: '',
+    division_id: null,
+    district: '',
+    district_id: null,
+    upazila: '',
+    upazila_id: null
   })
 
 
@@ -45,7 +54,11 @@ const Hospitals = () => {
         "authorization": token,
         'Content-type': 'application/json; charset=UTF-8',
       },
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        division_id: div_id,
+        district_id: dis_id,
+        upazila_id: upa_id
+      }),
     });
     const data = await response.json()
     setDoctors(data?.items)
@@ -53,7 +66,7 @@ const Hospitals = () => {
 
   const GetHospitals = async () => {
     const token = localStorage.getItem('token')
-    const response = await fetch(`${BASE_URL}/api/get/hospital`, {
+    const response = await fetch(`${BASE_URL}/api/get/hospital/${div_id}/${dis_id}/${upa_id}`, {
       method: 'GET',
       headers: {
         "authorization": token,
@@ -65,10 +78,15 @@ const Hospitals = () => {
   }
 
   useEffect(() => {
-    GetState()
-    GetDoctors()
     GetHospitals()
+    GetDoctors()
+  }, [div_id, dis_id, upa_id]);
+
+  useEffect(() => {
+    GetState()
   }, []);
+
+
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -103,6 +121,7 @@ const Hospitals = () => {
                 division: e.target.value,
                 division_id: divi?.id
               })
+              setDivId(divi?.id)
               setSubDistrict(dis)
             }}
             className="flex-1 min-w-[150px] bg-blue-100 p-3 rounded focus:outline-none">
@@ -125,6 +144,7 @@ const Hospitals = () => {
                 district_id: dis?.id
               })
               setSubUpazila(upa)
+              setDisId(dis?.id)
             }}
             setUpazila
             disabled={!division}
@@ -147,6 +167,7 @@ const Hospitals = () => {
                 upazila: e.target.value,
                 upazila_id: upa?.id
               })
+              setUpaId(upa?.id)
             }}
             disabled={!district}
             className="flex-1 min-w-[150px] bg-blue-100 p-3 rounded focus:outline-none disabled:opacity-50"
@@ -165,74 +186,23 @@ const Hospitals = () => {
       {/* 🏥 Hospital Cards */}
       {tab === "hospital" && (
         <div className="p-6 max-w-5xl mx-auto grid gap-4">
-          {hospitals?.map((h) => (
-            <div key={h.id} className="bg-white shadow p-4 rounded flex flex-col md:flex-row gap-4">
-              <div className="w-full md:w-1/4 flex items-center justify-center bg-gray-100 rounded">
-                <img
-                  src="https://images.unsplash.com/photo-1510626176961-4b57d4fbad03?q=80&w=800&auto=format&fit=crop"
-                  alt="Hospital"
-                  className="rounded h-full max-h-40 w-full object-cover"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-blue-800">
-                  {h?.name}
-                </h3>
-                <p className="text-sm text-gray-600">{h?.address}</p>
-                <p className="text-sm text-gray-600">{h?.division?.name},{h?.district?.name},{h?.upazila?.name}</p>
-                <p className="text-sm text-purple-600 mt-1">
-
-                </p>
-              </div>
-              <div className="w-full md:w-1/4 text-sm flex flex-col justify-between">
-                <div className="mt-2 bg-purple-400 text-white py-1 px-2 rounded">
-                  <p>ডাক্তার: {h?.doctors?.length} জন</p>
-                  <a href={`tel:${h?.phone}`} className="text-blue-600 mt-2">
-                    📞 {h?.phone}
-                  </a>
-                </div>
-                <button className="mt-2 bg-purple-600 text-white py-1 px-2 rounded">
-                  অ্যাপয়েন্টমেন্ট নিন
-                </button>
-              </div>
-            </div>
-          ))}
+          {hospitals?.map((hospital) => {
+            return <HospitalCard
+              key={hospital.id}
+              hospital={hospital}
+            />
+          })}
         </div>
       )}
 
       {/* 👨‍⚕️ Doctor Cards */}
       {tab === "doctor" && (
         <div className="p-6 max-w-5xl mx-auto grid gap-4">
-          {doctors?.map((d) => (
-            <div key={d?.id} className="bg-white shadow p-4 rounded flex flex-col md:flex-row gap-4" >
-              <div className="w-full md:w-1/4 flex items-center justify-center bg-gray-100 rounded">
-                <img
-                  src={d.image_url}
-                  alt={d.image_url}
-                  className="rounded-full w-24 h-24"
-                />
-              </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-blue-800">
-                  {d?.name}
-                </h3>
-                <p className="text-sm text-gray-700">{d?.designation}</p>
-                <p className="text-sm text-gray-500">
-                  হাসপাতাল: {d?.hospitals?.map((item) => { return item?.name })}
-                </p>
-                <p className="text-sm text-gray-500">
-                  অভিজ্ঞতা: {d?.experience}
-                </p>
-              </div>
-              <div className="w-full md:w-1/4 flex flex-col justify-between text-sm">
-                <a href={`tel:${d?.phone}`} className="text-blue-600">
-                  📞 {d?.phone}
-                </a>
-                <button className="mt-2 bg-purple-600 text-white py-1 px-2 rounded">
-                  অ্যাপয়েন্টমেন্ট নিন
-                </button>
-              </div>
-            </div>
+          {doctors?.map((doctor, index) => (
+            <DoctorCard
+              key={index}
+              doctor={doctor}
+            />
           ))}
         </div>
       )}

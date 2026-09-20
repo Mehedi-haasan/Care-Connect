@@ -3,7 +3,7 @@ import InputComponent from "../Input/InputComponent";
 import Button from "../Input/Button";
 import BaseUrl from "../../Constant";
 import ImageSelect from "../Input/ImageSelect";
-import logo from '../Logo/logu (2).png'
+import logo from '../Logo/logo_delta.png'
 import { useNavigate, useParams } from "react-router-dom";
 import Notification from "../Input/Notification";
 

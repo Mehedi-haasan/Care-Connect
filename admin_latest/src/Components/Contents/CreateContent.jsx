@@ -65,7 +65,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
     })
 
 
-    EscapeRedirect("/items")
+    EscapeRedirect("/contents")
 
     const GetCommonData = async () => {
         const token = localStorage.getItem('token')
@@ -182,7 +182,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
 
     const anotherFunction = () => {
         setIsLoading(false);
-        goto('/items')
+        goto('/contents')
     }
 
 
@@ -322,10 +322,10 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
                 <div className='w-full mx-auto rounded-lg p-5'>
                     <div className='grid grid-cols-1 lg:grid-cols-2 gap-5 pb-14'>
 
-                        <div>
+                        <div className='grid col-span-2'>
                             <div className='flex justify-start items-center w-full z-50'>
                                 <div className='w-full'>
-                                    <h1 className='text-[15px] pb-1.5'>Content Name</h1>
+                                    <h1 className='text-[15px] pb-1.5'>Content Name/Title</h1>
                                     <input
                                         type="text"
                                         ref={input_name}
@@ -347,14 +347,14 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
 
 
 
-                        <div className='flex justify-start items-end pb-1 z-40'>
+                        {/* <div className='flex justify-start items-end pb-1 z-40'>
                             <SelectionComponent options={contentType} default_select={first} default_value={filter?.bran_value}
                                 onSelect={(v) => { setFirst(false); setSecond(true); setValues({ ...values, type_id: v?.id }); setFilter({ ...filter, bran_value: v?.name }) }} label={"Content Type*"} className='rounded-l' />
                             <div className='border-y border-r px-3 pt-[7px] pb-[6px] rounded-r cursor-pointer text-[#3C96EE] '>
                                 <Add />
                             </div>
-                        </div>
-                        <div className='grid col-span-2'>
+                        </div> */}
+                        {/* <div className=''>
                             <div className='flex justify-start items-center w-full z-30'>
                                 <div className='w-full'>
                                     <h1 className='text-[15px] pb-1.5'>Content Title</h1>
@@ -375,7 +375,7 @@ const CreactContent = ({ handleClose, callAgain, info = {} }) => {
 
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                         <div className='flex justify-start items-end pb-1 z-50'>
                             <SelectionComponent options={category} default_select={second} default_value={filter?.cate_value}

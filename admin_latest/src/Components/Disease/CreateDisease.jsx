@@ -4,6 +4,7 @@ import Button from "../Input/Button";
 import Notification from '../Input/Notification'
 import logo from '../Logo/photo.png'
 import { useNavigate } from "react-router-dom";
+import SelectionComponent from "../Input/SelectionComponent";
 
 
 const CreateDisease = () => {
@@ -14,11 +15,29 @@ const CreateDisease = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState({ id: '', mgs: '' });
     const [focus, setFocus] = useState(true)
+    const [category, setCategory] = useState([])
+    const [subcategory, setSubCategory] = useState([])
     const goto = useNavigate()
     const input_name = useRef(null);
 
+
+    const GetCommonData = async () => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${BaseUrl}/api/get/content/common/data`, {
+            method: 'GET',
+            headers: {
+                "authorization": token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        const data = await response.json()
+        setCategory(data?.category);
+        setSubCategory(data?.sub_category)
+    }
+
     useEffect(() => {
         setFocus(true)
+        GetCommonData()
         input_name.current?.focus();
     }, []);
 
@@ -41,7 +60,7 @@ const CreateDisease = () => {
             const data = await response.json();
             setValues({ ...values, name: '' })
             setMessage({ id: Date.now(), mgs: data?.message });
-            goto('/category')
+            goto('/disease')
         } catch (error) {
             setIsLoading(false)
             setMessage({ id: Date.now(), mgs: error });
@@ -142,8 +161,12 @@ const CreateDisease = () => {
                                 }
                             }}
                         />
-
                     </div>
+
+                    <div className="py-2">
+                    <SelectionComponent label={'Category'} default_value={values?.cate_name} onSelect={(v) => { setValues({ ...values, cate_id: v?.id, cate_name: v?.name }) }} options={category} />
+                    </div>
+                    <SelectionComponent label={'Sub-Category'} default_value={values?.sub_cate_name} onSelect={(v) => { setValues({ ...values, sub_cate_id: v?.id, sub_cate_name: v?.name }) }} options={subcategory} />
 
                     <Button isDisable={isLoading} name="Create" onClick={() => { imageFile ? handleUpload() : handleCreate('') }} className="mt-3 border bg-blue-500 text-white" />
                 </div>

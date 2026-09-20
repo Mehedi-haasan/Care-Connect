@@ -75,6 +75,18 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: true
         },
+        division_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        district_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        upazila_id: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
     });
     User.associate = (models) => {
         User.hasMany(models.role, {

@@ -324,6 +324,14 @@ exports.GetDoctors = async (req, res) => {
         let whereClause = {
             'user_type': 'doctor',
         }
+        if (req?.body?.name) {
+            whereClause.name = {
+                [Op.like]: `%${req.body.name}%`,
+            };
+        }
+        if (req?.body?.gender) {
+            whereClause['gender'] = req?.body?.gender
+        }
         if (req?.body?.division_id) {
             whereClause['division_id'] = req?.body?.division_id
         }
@@ -334,7 +342,6 @@ exports.GetDoctors = async (req, res) => {
             whereClause['upazila_id'] = req?.body?.upazila_id
         }
 
-
         const doctors = await User.findAll({
             where: whereClause,
             include: [
@@ -344,7 +351,12 @@ exports.GetDoctors = async (req, res) => {
                     include: [{
                         model: db.hospital,
                         as: "hospital",
-                    }]
+                    },
+                    {
+                        model: db.schedule,
+                        as: "schedules",
+                    }
+                    ]
                 },
                 {
                     model: db.specialtie,
@@ -363,7 +375,8 @@ exports.GetDoctors = async (req, res) => {
                     {
                         model: db.upazila,
                         as: "upazila",
-                    }]
+                    }
+                    ]
                 }
             ]
         })
@@ -400,8 +413,8 @@ exports.CreateChamber = async (req, res) => {
                 phone: item.phone,
                 physical: item.physical,
                 video: item.video,
-                latitude:item.latitude,
-                longitude:item.longitude,
+                latitude: item.latitude,
+                longitude: item.longitude,
                 new_visit_fee: item.new_visit_fee,
                 follow_up_fee: item.follow_up_fee,
                 report_see_fee: item.report_see_fee,

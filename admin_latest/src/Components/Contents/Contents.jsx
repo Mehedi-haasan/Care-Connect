@@ -11,21 +11,18 @@ import Remove from '../../icons/Remove';
 const Content = () => {
 
     const [contents, setContents] = useState([])
-    const [message, setMessage] = useState({ id: Date.now(), mgs: '' });
     const [data, setData] = useState([]);
     const [page, setPage] = useState(1);
     const [totalItem, setTotalItem] = useState(0)
     const [pageSize, setPageSize] = useState(20);
-    const [catId, setCatId] = useState(null);
-    const [brandId, setBrandId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [comId, setComId] = useState(null);
 
 
 
 
-    const getProduct = async () => {
-        // setIsLoading(true)
+
+    const GetContent = async () => {
+
         const token = localStorage.getItem('token')
         const response = await fetch(`${BaseUrl}/api/get/content`, {
             method: 'GET',
@@ -41,34 +38,8 @@ const Content = () => {
     }
 
     useEffect(() => {
-        getProduct()
-    }, [page, pageSize, brandId, catId, comId])
-
-
-    const SearchProduct = async (e) => {
-        const name = e
-        const token = localStorage.getItem('token')
-        if (name !== '') {
-            const response = await fetch(`${BaseUrl}/api/get/product/search/with/${name}`, {
-                method: 'GET',
-                headers: {
-                    'authorization': token,
-                },
-            });
-            const data = await response.json();
-            setData(data.items)
-        } else {
-            getProduct()
-        }
-
-
-    }
-
-
-
-
-    EscapeRedirect()
-
+        GetContent()
+    }, [page, pageSize])
 
 
 
@@ -83,7 +54,7 @@ const Content = () => {
             body: JSON.stringify({ data: data }),
         });
         const result = await response.json();
-        getProduct()
+        GetContent()
     }
 
 
@@ -91,7 +62,7 @@ const Content = () => {
         <div className="pl-3 pt-5 pr-2 min-h-screen pb-12">
             <div className="flex justify-between items-center px-4 py-2 bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded shadow">
                 <h1 className="font-semibold text-lg">Content List</h1>
-                <NavLink to='/create' className={`border text-white rounded-lg font-thin shadow py-2 px-5 bg-blue-600`}>Create Item</NavLink>
+                <NavLink to='/create' className={`border text-white rounded-lg font-thin shadow py-2 px-5 bg-blue-600`}>Create Article</NavLink>
             </div>
             <div className="bg-[#FFFFFF] dark:bg-[#040404] dark:text-white p-4 shadow rounded-lg mt-2">
                 

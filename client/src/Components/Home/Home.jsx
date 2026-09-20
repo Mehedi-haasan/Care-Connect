@@ -15,8 +15,7 @@ const Home = () => {
 
   const [homeContents, setHomeContents] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showAll, setShowAll] = useState(false);
-  const [contentType, setContentType] = useState([])
+  const [categorys, setCategorys] = useState([])
   const [diseases, setDiseases] = useState([])
   const [allDoctor, setAllDoctor] = useState([])
 
@@ -53,7 +52,7 @@ const Home = () => {
 
   const GetContentType = async () => {
     const token = localStorage.getItem('token')
-    const response = await fetch(`${BASE_URL}/api/get/content/type/${1}/${10}`, {
+    const response = await fetch(`${BASE_URL}/api/get/category/1/100`, {
       method: 'GET',
       headers: {
         "authorization": token,
@@ -61,7 +60,7 @@ const Home = () => {
       },
     });
     const data = await response.json()
-    setContentType(data.items)
+    setCategorys(data.items)
   }
 
 
@@ -93,9 +92,9 @@ const Home = () => {
 
       <div className="bg-[#F9FFF2] py-5 px-3 md:px-10 lg:px-20">
         <div className="grid grid-cols-5 md:grid-cols-10 ">
-          {contentType.map((content, i) => (
-            <NavLink key={i} to={`/category/${content.id}`} className="text-center px-2 py-1.5 rounded-full hover:bg-[#8B61C2] hover:text-white  transition font-medium text-[10px] sm:text-xs md:text-sm whitespace-nowrap overflow-hidden text-ellipsis"  >
-              {content?.name}
+          {categorys.map((category, i) => (
+            <NavLink key={i} to={`/category/${category.id}`} className="text-center px-2 py-1.5 rounded-full hover:bg-[#8B61C2] hover:text-white  transition font-medium text-[10px] sm:text-xs md:text-sm whitespace-nowrap overflow-hidden text-ellipsis"  >
+              {category?.name}
             </NavLink>
           ))}
 
@@ -114,7 +113,7 @@ const Home = () => {
           </h1>
 
           {homeContents && (
-            <h1 className="text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer" onClick={() => setShowAll(true)}>
+            <h1 className="text-[#1976D2] text-[12px] sm:text-sm md:text-[13px] font-bold cursor-pointer">
               সমস্ত বিষয় পড়ুন
             </h1>
           )}

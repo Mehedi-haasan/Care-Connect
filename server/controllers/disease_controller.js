@@ -42,7 +42,9 @@ exports.CreateDisease = async (req, res) => {
             active: 1,
             sequence: req.body.sequence,
             name: req.body.name,
-            image_url: req.body.image_url
+            image_url: req.body.image_url,
+            cate_id: req.body.cate_id,
+            sub_cate_id: req.body.sub_cate_id
         });
 
         res.status(200).send({
@@ -59,7 +61,7 @@ exports.CreateDisease = async (req, res) => {
 
 exports.UpdateDisease = async (req, res) => {
     try {
-        const { id, name, image_url } = req.body;
+        const { id, name, image_url, cate_id, sub_cate_id } = req.body;
 
         if (!id) {
             return res.status(400).send({
@@ -70,7 +72,7 @@ exports.UpdateDisease = async (req, res) => {
 
 
         const [updatedRowsCount] = await Disease.update(
-            { name: name, image_url: image_url },
+            { name: name, image_url: image_url, cate_id: cate_id, sub_cate_id: sub_cate_id },
             { where: { id: id } }
         );
 

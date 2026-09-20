@@ -18,14 +18,8 @@
             {
                 "id": 21,
                 "parent": "2",
-                "name": "Content List",
+                "name": "Article List",
                 "route": "contents"
-            },
-            {
-                "id": 22,
-                "parent": "2",
-                "name": "Content Type",
-                "route": "content/type"
             },
             {
                 "id": 23,

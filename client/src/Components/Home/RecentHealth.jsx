@@ -47,7 +47,7 @@ const RecentHealth = ({ title, data }) => {
               className="flex flex-col sm:flex-row gap-4 bg-white rounded-2xl cursor-pointer transition-transform duration-300 hover:-translate-y-1">
               {/* Image */}
               <div className="w-full sm:w-1/3 h-48">
-                <img src={item.image_url} alt={item.title}
+                <img src={item.image_url} alt={item.name}
                   className="w-full h-full object-cover rounded-2xl"
                 />
               </div>
@@ -60,7 +60,7 @@ const RecentHealth = ({ title, data }) => {
                   </span>
 
                   <h2 className="font-semibold text-[15px] mt-3 leading-6">
-                    {truncateHTML(item?.title, 120)}
+                    {truncateHTML(item?.name, 120)}
                   </h2>
 
                   <p className="text-xs text-gray-700 mt-2 leading-5">

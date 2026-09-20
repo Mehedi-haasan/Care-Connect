@@ -5,6 +5,7 @@ import Button from "../Input/Button";
 import Notification from '../Input/Notification'
 import logo from '../Logo/photo.png'
 import { useNavigate } from "react-router-dom";
+import SelectionComponent from "../Input/SelectionComponent";
 
 
 const CreateSubCategory = ({ CallAgain, entries }) => {
@@ -14,6 +15,7 @@ const CreateSubCategory = ({ CallAgain, entries }) => {
     const [values, setValues] = useState({ name: "", });
     const [isLoading, setIsLoading] = useState(false)
     const [message, setMessage] = useState({ id: '', mgs: '' });
+    const [category, setCategory]=useState([])
     const [focus, setFocus] = useState(true)
     const goto = useNavigate()
     const input_name = useRef(null);
@@ -22,9 +24,23 @@ const CreateSubCategory = ({ CallAgain, entries }) => {
         input_name.current?.focus();
     }, []);
 
+    const GetCommonData = async () => {
+        const token = localStorage.getItem('token')
+        const response = await fetch(`${BaseUrl}/api/get/content/common/data`, {
+            method: 'GET',
+            headers: {
+                "authorization": token,
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+        const data = await response.json()
+        setCategory(data?.category);
+    }
+
 
     useEffect(() => {
         setFocus(true)
+        GetCommonData()
         document.title = `Categorys - Care-Connect`;
     }, []);
 
@@ -101,7 +117,7 @@ const CreateSubCategory = ({ CallAgain, entries }) => {
             <Notification message={message} />
             <div className="pt-1 bg-[#FFFFFF] shadow-lg rounded-lg w-full">
                 <div className="border-b">
-                    <h1 className="pl-5 text-xl py-2">Category Details</h1>
+                    <h1 className="pl-5 text-xl py-2">Sub-Category Details</h1>
                 </div>
                 <div className="flex justify-start items-center gap-5 px-6 pt-5">
                     <div>
@@ -133,7 +149,7 @@ const CreateSubCategory = ({ CallAgain, entries }) => {
                     {/* <InputComponent input_focus={focus} placeholder={`Enter Category name`} handleEnter={() => { imageFile ? handleUpload() : handleCreate('') }}
                         value={values?.name} label={`Category name`} onChange={(e) => { setValues({ ...values, name: e }) }} className='lg:text-lg font-thin' /> */}
 
-                    <div className=''>
+                    <div className='pb-2'>
                         <h1 className='text-[15px] pb-1.5'>Category name</h1>
                         <input
                             type="text"
@@ -151,6 +167,7 @@ const CreateSubCategory = ({ CallAgain, entries }) => {
                         />
 
                     </div>
+                    <SelectionComponent options={category} label={'Parent Category'} default_value={values?.parent_name} onSelect={(v) => { setValues({ ...values, cate_id: v?.id, parent_name: v?.name }) }} />
 
                     <Button isDisable={isLoading} name="Create" onClick={() => { imageFile ? handleUpload() : handleCreate('') }} className="mt-3 border bg-blue-500 text-white" />
                 </div>

@@ -7,6 +7,7 @@ import Button from "../Input/Button";
 import BaseUrl from "../../Constant";
 import logo from '../Logo/photo.png'
 import ImageSelect from "../Input/ImageSelect";
+import SelectionComponent from "../Input/SelectionComponent";
 
 
 
@@ -144,6 +145,8 @@ const DiseaseCard = ({ item, i }) => {
                     </div>
                     <div className="px-6 py-4">
                         <InputComponent placeholder={`Enter Disease name`} value={values?.name} label={`Disease Name`} onChange={(e) => { setValues({ ...values, name: e }) }} handleEnter={() => { handleUpdate(item.image_url, "", item?.id) }} className='lg:text-lg font-thin' />
+                        <SelectionComponent label={'Category'} onSelect={() => { }} options={[]} />
+                        <SelectionComponent label={'Sub-Category'} onSelect={() => { }} options={[]} />
                         <Button isDisable={isLoading} name="Update" onClick={() => { image_url ? handleUpload() : handleUpdate(item.image_url, "", item?.id) }} className="mt-3 border bg-blue-500 text-white" />
                     </div>
                 </div>

@@ -73,7 +73,7 @@ const SubCategory = ({ entries, info = {} }) => {
 
             <div className="flex justify-between items-center px-4 py-2.5 bg-[#FFFFFF] dark:bg-[#040404] dark:text-white rounded shadow">
                 <h1 className="font-semibold text-lg">Sub Category List</h1>
-                <button onClick={() => { goto('/create/sub/category') }} className={`bg-blue-500 rounded px-4 py-1.5 text-white font-thin`}>Create Category</button>
+                <button onClick={() => { goto('/create/sub/category') }} className={`bg-blue-500 rounded px-4 py-1.5 text-white font-thin`}>Create Sub-Category</button>
             </div>
 
             <div className="bg-[#FFFFFF] dark:bg-[#040404] dark:text-white p-4 shadow rounded-lg mt-2">
