@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { BadgeCheck, BriefcaseMedical, Clock3, ChevronDown, MapPin, } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const DoctorCard = ({ doctor }) => {
     const [showMore, setShowMore] = useState(false);
-
+    const goto = useNavigate()
     return (
         <div className="w-full max-w-[740px] rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
             {/* Doctor Information */}
@@ -62,7 +63,7 @@ const DoctorCard = ({ doctor }) => {
 
             {/* Hospital / Chamber */}
             {doctor?.hospitals?.map((hos) => {
-                return <div className="mt-5 rounded-xl border border-blue-200 bg-white px-5 py-4">
+                return <div onClick={()=>{goto(`/appoinment/${doctor?.id}/${hos?.hospital?.id}`)}} className="mt-5 cursor-pointer rounded-xl border border-blue-200 bg-white px-5 py-4">
 
                     <div className="flex gap-3">
                         <div className="mt-0.5 text-blue-400">

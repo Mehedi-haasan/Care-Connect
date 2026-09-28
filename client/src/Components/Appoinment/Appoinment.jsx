@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
 import BaseUrl from '../URL/baseurl';
-// import Notification from "../Input/Notification";
 import DoctorProfile from "./DoctorProfile";
-import { NavLink, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import InputComponent from '../Input/InputComponent'
 import Calendar from "../Input/Calender";
 import SelectionComponent from '../Input/SelectionComponent'
@@ -23,8 +22,8 @@ const Appoinment = () => {
         status: 'draft',
     })
 
-    const [message, setMessage] = useState({ id: '', mgs: '' });
-    const [selected, setSelected] = useState("self");
+
+
 
     const GetDoctor = async () => {
         const token = localStorage.getItem('token')
@@ -76,7 +75,8 @@ const Appoinment = () => {
             body: JSON.stringify(values)
         });
         const data = await response.json()
-        window.location.replace(data.url);
+        console.log(data)
+        // window.location.replace(data.url);
     }
 
     return (
@@ -84,44 +84,7 @@ const Appoinment = () => {
             {/* <Notification message={message} /> */}
             <DoctorProfile doctor={doctor} HandleSubmit={HandleSubmit} />
 
-            <div className="text-center">
-                {/* Heading */}
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                    আপনি কি নিজের জন্য অ্যাপয়েন্টমেন্ট নিচ্ছেন?
-                </h2>
 
-                {/* Toggle Buttons */}
-                <div className="inline-flex rounded overflow-hidden py-4">
-                    <button onClick={() => setSelected("self")}
-                        className={`px-10 py-3 text-sm font-medium transition-all ${selected === "self" ? "bg-purple-700 text-white" : "bg-[#F7F5EE] text-gray-700"}`}>
-                        নিজের জন্য
-                    </button>
-
-                    <button
-                        onClick={() => setSelected("other")}
-                        className={`px-10 py-3 text-sm font-medium transition-all ${selected === "other" ? "bg-purple-700 text-white" : "bg-[#F7F5EE] text-gray-700"}`}>
-                        অন্যের জন্য
-                    </button>
-                </div>
-
-                {/* Links */}
-                <div className={`my-6 flex justify-center items-center gap-3 text-sm ${today ? 'hidden' : ''}`}>
-                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium" >
-                        ইতিমধ্যে অ্যাকাউন্ট আছে
-                    </NavLink>
-
-                    <span className="text-gray-400">|</span>
-
-                    <NavLink to={'/'} className="text-indigo-700 hover:underline font-medium" >
-                        সাইনআপ করুন
-                    </NavLink>
-                </div>
-
-                {/* Bottom Text */}
-                <p className="text-lg text-gray-800">
-                    অ্যাপয়েন্টমেন্ট সম্পর্কিত তথ্য প্রদান করুন
-                </p>
-            </div>
 
             <div className="grid grid-cols-2 gap-5 px-10 pt-5">
                 <InputComponent placeholder={'আপনার পূর্ণ নাম লিখুন'} onChange={(v) => setValues({ ...values, name: v })} value={values?.name} handleEnter={handleEnter} />

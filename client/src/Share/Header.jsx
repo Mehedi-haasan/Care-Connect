@@ -3,18 +3,47 @@ import { NavLink } from "react-router-dom";
 import image from "../Logo/Logo.png";
 import profile_logo from "../Logo/userProfile.png"
 
-const Header = ({ auth, info,isLoggedOut }) => {
+const Header = ({ auth, info, isLoggedOut }) => {
 
   const [focus, setFocus] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isShowProfile, setIsShowProfile] = useState(false);
 
   const menuItems = [
-    { title: "স্বাস্থ্য পাঠ", link: "/" },
-    { title: "বিষয়-ভিত্তিক", link: "#" },
-    { title: "ডাক্তার", link: "/doctors" },
-    { title: "হাসপাতাল", link: "/hospitals" },
-    { title: "সেবা সমূহ", link: "#" },
+    {
+      title: "স্বাস্থ্য পাঠ",
+      link: "/",
+      links: [],
+    },
+    {
+      title: "বিষয়-ভিত্তিক",
+      link: "/",
+      links: [],
+    },
+    {
+      title: "ডাক্তার",
+      link: "/doctors",
+      links: [],
+    },
+    {
+      title: "হাসপাতাল",
+      link: "/hospitals",
+      links: [],
+    },
+    {
+      title: "সেবা সমূহ",
+      link: "/",
+      links: [
+        {
+          title: "অ্যাপয়েন্টমেন্ট",
+          link: "/appointment",
+        },
+        {
+          title: "টেলিমেডিসিন",
+          link: "/telemedicine",
+        },
+      ],
+    },
   ];
 
 
@@ -31,15 +60,49 @@ const Header = ({ auth, info,isLoggedOut }) => {
 
         {/* Desktop Menu */}
         <nav className="hidden md:flex items-center gap-4 md:gap-6 text-sm">
-          {menuItems.map((item, idx) => (
-            <NavLink
-              key={idx}
-              to={item.link}
-              className="text-[#8B61C2] hover:text-[#006aff] transition font-medium text-xs md:text-sm"
-            >
-              {item.title}
-            </NavLink>
-          ))}
+          {/* {menuItems.map((item, idx) => (
+            <div>
+              <NavLink key={idx} to={item.link} className="text-[#8B61C2] hover:text-[#006aff] transition font-medium text-xs md:text-sm">
+                {item.title}
+              </NavLink>
+            </div>
+          ))} */}
+
+          <div className="flex items-center gap-6">
+            {menuItems.map((item, idx) => (
+              <div key={idx} className="relative group">
+                <NavLink
+                  to={item.link}
+                  className="flex items-center gap-1 text-[#8B61C2] hover:text-[#006aff] transition font-medium text-xs md:text-sm"
+                >
+                  {item.title}
+
+                  {item.links?.length > 0 && (
+                    <span className="text-[10px] transition-transform group-hover:rotate-180">
+                      ▼
+                    </span>
+                  )}
+                </NavLink>
+
+                {/* Submenu */}
+                {item.links?.length > 0 && (
+                  <div className="absolute left-0 top-full z-50 hidden min-w-[180px] pt-3 group-hover:block">
+                    <div className="rounded-lg border border-gray-100 bg-white py-2 shadow-lg">
+                      {item.links.map((subItem, subIdx) => (
+                        <NavLink
+                          key={subIdx}
+                          to={subItem.link}
+                          className="block px-4 py-2 text-sm text-gray-600 hover:bg-purple-50 hover:text-[#8B61C2] transition"
+                        >
+                          {subItem.title}
+                        </NavLink>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
 
           {/* Modern Search */}
           <div className="relative">
